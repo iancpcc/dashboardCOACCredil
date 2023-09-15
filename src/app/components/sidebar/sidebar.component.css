@@ -1,0 +1,30 @@
+
+/* Sidebar Submenu */
+
+
+.show-submenu {
+  @apply block  max-h-52 ;
+}
+
+/* Submenu Active */
+
+.active-submenu-link{
+  @apply  bg-slate-500 !text-slate-50 ;
+}
+
+.menu__link{
+  @apply bg-slate-500 !text-slate-50
+}
+/*
+.collapse-sidebar {
+  @apply w-60 transition-all ease-in duration-200;
+} */
+
+
+.show-element {
+  @apply transition-all duration-100 ease-in-out opacity-100;
+}
+
+.icon {
+  @apply text-2xl  cursor-pointer ;
+}

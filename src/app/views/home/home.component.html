@@ -1,0 +1,17 @@
+<div class="flex w-screen overflow-hidden h-screen relative  ">
+  <!-- Sidebar -->
+  <div
+    class="absolute w-12 z-40  h-full sm:relative bg-tertiary transition-all ease-in-out duration-500"
+    [ngClass]="{ 'w-60': !isSidebarClose }"
+  >
+    <app-sidebar (sidebarClose)="isSidebarClose = $event"></app-sidebar>
+  </div>
+  <div
+    class="overflow-hidden w-full border-4 p-5 bg-body_bg ml-12 sm:ml-0 pt-10 transition-all ease-out delay-75"
+  >
+    <main class="relative h-[90vh] p-10  border-green-500 overflow-hidden bg-white">
+
+      <app-root></app-root>
+    </main>
+  </div>
+</div>

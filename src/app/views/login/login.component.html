@@ -1,0 +1,78 @@
+<div class="h-screen w-full flex justify-center items-center ">
+<app-header></app-header>
+<div class="  flex flex-col justify-center  items-center gap-5 ">
+  <!-- Card Login -->
+    <div
+      class=" shadow-md shadow-zinc-400 rounded px-8 pt-6  pb-8 mb-4 w-[300px] min-h-[50vh]   py-5"
+    >
+      <!-- logo -->
+      <div class="flex justify-center p-1">
+        <img
+          class="w-20 h-20 md:w-14 md:h-14"
+          src="../../../assets/img/logo.png"
+          alt=""
+        />
+      </div>
+      <h1 class=" p-1 text-center text-xl font-semibold">
+        Bienvenido
+      </h1>
+      <p class="  text-slate-700 text-center    text-lg">Inicia Sesión para continuar</p>
+      <form
+        [formGroup]="loginForm"
+        (ngSubmit)="onSubmit()"
+        class="flex flex-col gap-5 mt-3"
+      >
+        <div class="">
+          <!-- <label class="lbl__form"  for="">Username</label> -->
+          <input
+            class="h-14 text-base uppercase placeholder:capitalize  appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:shadow-outline"
+            type="text"
+            formControlName="username"
+            placeholder="Usuario"
+            required
+          />
+          <p
+            *ngIf="loginForm.dirty && loginForm.controls.username.errors"
+            class="text-red-500 text-xs mt-2 italic"
+          >
+            {{ usernameErrors }}
+          </p>
+        </div>
+        <div class="item__form">
+          <!-- <label class="lbl__form" for="">Contraseña</label> -->
+          <input
+            class="h-14 text-base uppercase placeholder:capitalize appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:shadow-outline"
+            type="password"
+            formControlName="password"
+            placeholder="Contraseña"
+            required
+          />
+          <p
+          *ngIf="loginForm.controls.password.dirty && loginForm.controls.password.errors"
+          class="text-red-500 mt-2 text-xs italic">
+                     {{ passwordErrors }}
+          </p>
+        </div>
+        <button
+          [disabled]="login && login.state === DataState.LOADING"
+          class="bg-[#095595] h-16 sm:h-12 text-base flex justify-center disabled:bg-[#095595] disabled:cursor-not-allowed disabled:opacity-50 items-center  md:text-sm p-1 w-full  rounded-md text-white btn btn-blue cursor-pointer hover:bg-blue-500"
+          type="submit"
+        >
+        <app-spinner *ngIf="login && login.state == DataState.LOADING"></app-spinner>
+          {{ login && login.state == DataState.LOADING?"Iniciando Sesión...":"Iniciar Sesión"}}
+        </button>
+      </form>
+    </div>
+    <ng-container
+      *ngIf="login"
+      [ngSwitch]="login.state"
+    >
+      <app-danger
+        *ngSwitchCase="DataState.ERROR"
+        [title]="login.error?.message"
+      ></app-danger>
+    </ng-container>
+    <!-- <p>{{loginForm.status}}</p> -->
+</div>
+<app-footer></app-footer>
+</div>

@@ -1,0 +1,56 @@
+/* You can add global styles to this file, and also import other style files */
+/* @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400&display=swap'); */
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400&display=swap");
+@import "~boxicons/css/boxicons.min.css";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html,
+  body {
+    font-family: poppins, sans;
+    font-size: 80%;
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+    height: 100vh;
+    background-color: #f1f2f6;
+  }
+}
+
+.dt-buttons {
+  @apply my-3;
+}
+.dt-button {
+  @apply font-medium border bg-gray-100 border-gray-400 w-[60px] h-[30px] hover:bg-gray-200 p-1 rounded-sm;
+}
+.show_alert-bg {
+ @apply !bg-secondary
+}
+
+
+/* html, body { height: 100vh; padding: 0; margin: 0; box-sizing: border-box; }
+/* body { margin: 0;font-family: 'Poppins', sans-serif; } */
+
+/* .input__form {
+  padding: 1rem 0.5rem;
+  border-radius: 10px;
+  position: relative;
+  box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.5);
+  position: relative;
+  outline: none;
+  height: 45px;
+  width: 100%;
+} */
+
+/* .ng-valid:not(form).ng-dirty {
+  border-left: 5px solid #21b819;
+  @apply border border-green-500 text-green-900 placeholder-green-700  focus:ring-green-500 focus:border-green-500 bg-green-100 border-green-400;
+}
+
+.ng-invalid:not(form).ng-dirty {
+  border-left: 5px solid #c61e3a;
+  @apply bg-red-50 border border-red-500 text-red-900 placeholder-red-700  focus:ring-red-500 focus:border-red-500 dark:bg-red-100 dark:border-red-400;
+} */
