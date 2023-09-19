@@ -19,6 +19,7 @@ import { RegisterComponent } from './views/register/register.component';
 import { ResetPasswordComponent } from './views/reset-password/reset-password.component';
 import { UserCreatePasswordUseCase } from 'src/1.domain/usecases/Users/user-create-password.usecase';
 import { UserLoginUseCase } from 'src/1.domain/usecases/user-login.usecase';
+import { PlazoFijoComponent } from './views/plazo-fijo/plazo-fijo.component';
 
 // import { HomeComponent } from './views/home/home.component';
 
@@ -34,6 +35,7 @@ import { UserLoginUseCase } from 'src/1.domain/usecases/user-login.usecase';
     ResetPasswordComponent,
     HomePageComponent,
     CartaPreferencialComponent,
+    PlazoFijoComponent,
   ],
   providers: [ UserLoginUseCase, UserCreatePasswordUseCase ],
   bootstrap: [AppComponent],

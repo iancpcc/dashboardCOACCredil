@@ -5,6 +5,7 @@ import { HomeComponent } from './home.component';
 import { HomePageComponent } from '../admin/home-page/home-page.component';
 import { NgModule } from '@angular/core';
 import { PageNotFoundComponentComponent } from '../page-not-found-component/page-not-found-component.component';
+import { PlazoFijoComponent } from '../plazo-fijo/plazo-fijo.component';
 import { ProcessRisksComponent } from '../risks/process-risks/process-risks.component';
 import { ReportCreditsComponent } from '../credits/report-credits/report-credits.component';
 import { Role } from 'src/app/interfaces/role.enum';
@@ -18,10 +19,7 @@ const homeRoutes = [
         path: 'main',
         component: HomePageComponent,
       },
-      {
-        path: 'riesgos/procesos',
-        component: ProcessRisksComponent,
-      },
+
       {
         path: 'carta-preferencial',
         component: CartaPreferencialComponent,
@@ -37,8 +35,20 @@ const homeRoutes = [
             Role.ASESOR_CAPTACIONES,
           ],
         },
+
       },
-      // { path: '', redirectTo: '/main', pathMatch: 'full' },
+      {
+        path: 'vencimientos',
+        component: PlazoFijoComponent,
+        data: {
+          roles: [
+            Role.ADMIN,
+            Role.ADMINISTRATIVO,
+            Role.JEFE_NEGOCIOS,
+            Role.ASESOR_CAPTACIONES,
+          ],
+        },
+      },
       {
         path: '**',
         component: PageNotFoundComponentComponent,

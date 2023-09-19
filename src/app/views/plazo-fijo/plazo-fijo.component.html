@@ -1,4 +1,4 @@
-<div class="w-full h-full flex flex-col justify-center items-center">
+<div class="w-full h-full flex flex-col  items-center">
   <form class="md:w-1/2 p-8 grid gap-3">
     <div
       class="w-full space-y-2 md:space-x-2 lg:space-y-0 flex flex-wrap lg:flex-nowrap px-3 mb-6 md:mb-0 m-auto"
@@ -12,20 +12,17 @@
         </label>
         <div class="flex">
           <input
-            [(ngModel)]="socioInfo.numero"
             name="numero"
             class="rounded-none rounded-l-lg border-r-0 bg-gray-50 border border-gray-300 text-gray-900 block flex-1 w-full text-sm p-2.5 outline-none"
             id="grid-first-name"
-            (input)="validarNumero()"
             placeholder="000000"
           />
           <button
-            (click)="findClient()"
-            [disabled]="socioInfo.numero === ''"
+            [disabled]=""
             type="button"
             class="inline-flex h-auto w-12 items-center disabled:opacity-50 disabled:cursor-not-allowed px-3 text-sm text-gray-900 bg-gray-200 border border-l-0 border-gray-300 rounded-r-md"
           >
-            <ng-container *ngIf="cliente.state == DataState.LOADING">
+            <ng-container *ngIf="">
               <div
                 class="inline-block h-4 w-4 animate-spin rounded-full border-4 border-solid border-current border-r-transparent align-[-0.125em] text-warning motion-reduce:animate-[spin_1.5s_linear_infinite]"
                 role="status"
@@ -37,7 +34,7 @@
               </div>
             </ng-container>
             <ng-container
-              *ngIf="cliente.state || cliente.state != DataState.LOADING"
+              *ngIf=""
             >
               <img
                 class=""
@@ -59,7 +56,6 @@
         </label>
         <div class="flex">
           <input
-            [(ngModel)]="socioInfo.monto"
             name="monto"
             class="rounded-lg bg-gray-50 border border-gray-300 text-gray-900 block flex-1 min-w-0 w-full text-sm p-2.5 outline-none"
             id="grid-first-name"
@@ -96,7 +92,6 @@
           </svg>
         </span>
         <input
-          [(ngModel)]="socioInfo.nombre"
           type="text"
           name="nombre"
           readonly
@@ -108,69 +103,10 @@
       </div>
     </div>
     <button
-      [disabled]="
-        socioInfo.numero === '' ||
-        socioInfo.monto! < 500 ||
-        (this.cliente && this.cliente.state === DataState.LOADING)
-      "
-      (click)="generatePDF()"
+      [disabled]=""
       class="mx-auto bg-blue-500 hover:bg-blue-400 text-white py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded mt-5 disabled:opacity-50 disabled:cursor-not-allowed"
     >
       EXPORTAR PDF
     </button>
   </form>
-  <!-- VIEW PDF -->
-
-  <div class="w-full h-full p-5 overflow-scroll bg-slate-100">
-    <div
-      #htmlToPDF
-      class="font-normal relative m-auto text-base border w-[21cm] h-[29.7cm] bg-white p-28"
-    >
-      <img
-        class="absolute right-0 top-0 h-auto w-full"
-        src="../../../assets/img/encabezado.png"
-        alt=""
-      />
-      <h1 class="text-right mt-44">{{ utilSrv.obtenerFechaInforme() }}</h1>
-
-      <h2 class="mt-10">Señor(a)</h2>
-      <h3 class="mt-5">{{ socioInfo.nombre }}</h3>
-      <h3>Socio(a) N° {{ socioInfo.numero }}</h3>
-
-      <h2 class="my-10">Estimado Soci@</h2>
-      <p class="text-justify leading-7">
-        Es muy grato para la Cooperativa de Ahorro y Crédito "CREDIL" Ltda.
-        comunicarles que por su excelente historial de pago de su crédito con
-        nuestra institución usted has sido calificado como
-        <span>CLIENTE PREFERENCIAL</span>. Le felicitamos por su confianza
-        depositada con nosotros y premiamos con un crédito
-        <span>PRE-APROBADO</span> de <span>${{ socioInfo.monto }}</span
-        >. Favor confirmar con su firma si acepta este credito, para que sea
-        tramitado por su asesor de manera inmediata. Con mis más afectuoso
-        saludos
-      </p>
-
-      <h1 class="mt-10">Atentamente:</h1>
-
-      <div class="flex w-full mt-32 mb-20 px-10 justify-around items-center">
-        <div class="text-center">
-          <h1
-            class="w-60 border-t font-bold border-t-black text-base border-dotted"
-          >
-            {{ socioInfo.jefeagencia }}
-          </h1>
-
-          <h2>Jefe de Agencia</h2>
-        </div>
-        <div class="text-center">
-          <h1
-            class="w-60 border-t font-bold border-t-black text-base border-dotted"
-          >
-            {{ socioInfo.asesor }}
-          </h1>
-          <h2>Asesor</h2>
-        </div>
-      </div>
-    </div>
-  </div>
 </div>
