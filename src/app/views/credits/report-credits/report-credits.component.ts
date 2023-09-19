@@ -3,8 +3,8 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { Observable, Subject, catchError, map, of, startWith, tap } from 'rxjs';
 
 import { AgenciasService } from 'src/app/services/agencias.service';
-import { CreditosService } from 'src/app/services/creditos.service';
-import { CuotasVencidas } from 'src/app/interfaces/cuotasVencidas.interface';
+import {  ReportService } from 'src/app/services/report.service';
+import { CuotasVencidas } from 'src/app/interfaces/cuotas-vencidas.interface';
 import { DataTableDirective } from 'angular-datatables';
 import { HelpersService } from 'src/app/utils/helpers.service';
 import { HttpClient } from '@angular/common/http';
@@ -41,7 +41,7 @@ export class ReportCreditsComponent implements OnInit {
   constructor(
     private agenciaService: AgenciasService,
     private usuarioSerice: UsuarioService,
-    private creditoService: CreditosService,
+    private creditoService: ReportService,
     private utils: HelpersService,
   ) { }
 
