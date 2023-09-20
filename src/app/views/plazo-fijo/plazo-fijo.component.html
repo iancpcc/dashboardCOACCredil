@@ -22,7 +22,7 @@
       </label>
       <select
         name="codigoAgencia"
-        [(ngModel)]="paramsToAPI.agencia"
+        [(ngModel)]="paramsToAPI.codigoAgencias"
         class="w-full font-poppins block appearance-none bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
         id="grid-state"
       >
@@ -47,8 +47,8 @@
       </label>
       <select
         name="asesor"
-        [(ngModel)]="paramsToAPI.asesorId"
-        [disabled]="!paramsToAPI.agencia || paramsToAPI.agencia == 0"
+        [(ngModel)]="paramsToAPI.codigoAsesores"
+        [disabled]="!paramsToAPI.codigoAgencias || paramsToAPI.codigoAgencias == 0"
         class="font-poppins block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500 disabled:cursor-not-allowed"
         id="grid-state"
       >

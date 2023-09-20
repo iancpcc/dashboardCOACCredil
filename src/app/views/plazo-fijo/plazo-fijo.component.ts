@@ -24,10 +24,9 @@ export class PlazoFijoComponent {
   // usuarios$: IUsuarioAgencia[] = [];
   readonly DataState = DataState;
   // consultaCuotasVencidas: CuotasVencidas[] = []
-  paramsToAPI: any = { codigoAgencias:"1,2,3,4,5,6",codigoAsesores:0, diaFin: 7, diaInicio: 0 }
+  paramsToAPI: any = { codigoAgencias:0,codigoAsesores:0, diaFin: 7, diaInicio: 0 }
   reportState$: AppStateEntity<RPlazoFijo[]> = {}
   isFirstCallAjax:boolean = true;
-  // dtOptions: any = {};
   dtOptions: any = {};
   dtTrigger = new Subject<any>()
 
@@ -154,12 +153,10 @@ export class PlazoFijoComponent {
   async onSubmit() {
     this.isFirstCallAjax = false;
     await this.reload();
-
-
   }
 
   obtenerUsuariosPorAgencia(agencia: number): void {
-    const rolesId = `${Role.ASESOR_CAPTACIONES, Role.GESTOR_CREDITO}`;
+    const rolesId = `${Role.ASESOR_CAPTACIONES, Role.GESTOR_CREDITO, Role.ASESOR_NEGOCIOS}`;
     this.usuarios$ = this.usuarioSerice.getUsersByAgencies$({ agencia, rolesId })
   }
 
@@ -174,7 +171,7 @@ export class PlazoFijoComponent {
   }
 
   get isReadyAllParameters (){
-    return this.paramsToAPI.asesorId != 0 && this.paramsToAPI.agencia !=0
+    return this.paramsToAPI.codigoAsesores != 0 && this.paramsToAPI.codigoAgencias !=0
   }
 
 
