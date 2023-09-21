@@ -1,5 +1,5 @@
 export interface IUsuarioAgencia{
-usuario?: string
+usuario?: string | null
 nombre?:  string
 agencia?: string
 }

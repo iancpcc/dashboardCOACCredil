@@ -27,9 +27,11 @@ export class UsuarioService {
     return this._userCreatePwd.execute({ userId, password });
   };
 
-  getUsersByAgencies$ = (params: { agencia: string | number, rolesId: string }) => this.genericService.postApiData<IUsuarioAgencia[]>(
+  getUsersByAgencies$ = (params: { agencia: number | string , rolesId: string }) => {
+    params.agencia = params.agencia.toString()
+    return this.genericService.postApiData<IUsuarioAgencia[]>(
     { url: `${this.base_url}/usersByAgency`, body: params  }
-  );
+  );}
 
 
 

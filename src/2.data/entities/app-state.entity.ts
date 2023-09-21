@@ -16,4 +16,5 @@ export interface AppStateEntity<T> {
     message?:string,
     messageDeveloper?:string
   }
-  
+
+

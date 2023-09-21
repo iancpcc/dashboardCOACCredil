@@ -79,8 +79,7 @@
             class="disabled:bg-blue-500 truncate w-40 flex justify-center bg-blue-700 text-white py-2 px-4 rounded-md disabled:cursor-not-allowed"
           >
             <app-spinner
-              [ngSwitchCase]="DataState.LOADING"
-              *ngIf="!isFirstCallAjax"
+              *ngIf="!isFirstCallAjax && reportState$.state == DataState.LOADING"
             ></app-spinner>
             {{
               reportState$.state == DataState.LOADING && !isFirstCallAjax
@@ -93,7 +92,7 @@
     </form>
   </ng-container>
     <div
-      class="overflow-x-auto w-full overflow-y-auto px-10 border-red-500 sm:-mx-6 lg:-mx-8"
+      class="overflow-x-auto w-full overflow-y-auto px-10 pt-5 sm:-mx-6 lg:-mx-8 mt-5 border-t border-slate-300 "
     >
       <table
         datatable

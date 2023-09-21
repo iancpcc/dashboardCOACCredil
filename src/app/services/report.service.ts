@@ -20,16 +20,33 @@ export class ReportService {
     withCredentials: true,
   };
 
-  constructor(
-    private genericCRUDService: GenericCRUDService
-  ) { }
+  OBTENER_TODOS_KEY = 'ALL';
 
+  constructor(private genericCRUDService: GenericCRUDService) {}
 
-  getCuotasVencidasByAsesor$ = (params: { fecha: string, asesorId: string }):Observable<ResponseEntity< CuotasVencidas[]>> => {
-    return this.genericCRUDService.getApiData<CuotasVencidas[]>(`${this.base_url}/cuotas_vencidas?fechaCorte=${params.fecha}&asesorId=${params.asesorId}`)
-  }
+  getCuotasVencidasByAsesor$ = (params: {
+    fecha: string;
+    asesorId: string;
+  }): Observable<ResponseEntity<CuotasVencidas[]>> => {
+    return this.genericCRUDService.getApiData<CuotasVencidas[]>(
+      `${this.base_url}/cuotas_vencidas?fechaCorte=${params.fecha}&asesorId=${params.asesorId}`
+    );
+  };
 
-  obtenerPlazoFijoPorAsesor$ = (params: { codigoAgencias: string , codigoAsesores:string, diaFin: number, diaInicio:number }):Observable<ResponseEntity< RPlazoFijo[]>> => {
-    return this.genericCRUDService.postApiData<RPlazoFijo[]>({ url:`${this.base_url}/proximos_vencimientos`, body: params})
-  }
+  obtenerPlazoFijoPorAsesor$ = (params: {
+    codigoAgencias: string;
+    codigoAsesores: string | null;
+    diaFin: number;
+    diaInicio: number;
+  }): Observable<ResponseEntity<RPlazoFijo[]>> => {
+    params.codigoAgencias = params.codigoAgencias.toString();
+    // debugger
+    if (params.codigoAsesores === this.OBTENER_TODOS_KEY) {
+        params.codigoAsesores = null;
+    }
+    return this.genericCRUDService.postApiData<RPlazoFijo[]>({
+      url: `${this.base_url}/proximos_vencimientos`,
+      body: params,
+    });
+  };
 }

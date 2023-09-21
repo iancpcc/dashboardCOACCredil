@@ -1,5 +1,5 @@
 export interface IAgencia{
-    id?: number,
+    id?: string,
     nombre?: string,
     activo?: string,
 }

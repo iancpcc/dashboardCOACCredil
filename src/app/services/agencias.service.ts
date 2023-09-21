@@ -18,7 +18,6 @@ export class AgenciasService {
 
   constructor( private genericService:GenericCRUDService, private authService:AuthService) { }
 
-
   getAgenciesByUserLogged$ = ()=> this.genericService.getApiData< IAgencia[]>(`${this.base_url}/agenciesByUser?userId=${this.authService.userLogged}`) ;
-  
+
 }

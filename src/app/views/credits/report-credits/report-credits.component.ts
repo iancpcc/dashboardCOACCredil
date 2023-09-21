@@ -1,9 +1,12 @@
-import { AppStateEntity, DataState } from 'src/2.data/entities/app-state.entity';
+import {
+  AppStateEntity,
+  DataState,
+} from 'src/2.data/entities/app-state.entity';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Observable, Subject, catchError, map, of, startWith, tap } from 'rxjs';
 
 import { AgenciasService } from 'src/app/services/agencias.service';
-import {  ReportService } from 'src/app/services/report.service';
+import { ReportService } from 'src/app/services/report.service';
 import { CuotasVencidas } from 'src/app/interfaces/cuotas-vencidas.interface';
 import { DataTableDirective } from 'angular-datatables';
 import { HelpersService } from 'src/app/utils/helpers.service';
@@ -26,24 +29,26 @@ export class ReportCreditsComponent implements OnInit {
   // usuarios$: IUsuarioAgencia[] = [];
   readonly DataState = DataState;
   // consultaCuotasVencidas: CuotasVencidas[] = []
-  paramsToAPI: any = { fecha: this.utils.obtenerFechaActual(), asesorId: 0, agencia: 0 }
-  reportState$: AppStateEntity<CuotasVencidas[]> = {}
-  isFirstCallAjax:boolean = true;
+  paramsToAPI: any = {
+    fecha: this.utils.obtenerFechaActual(),
+    asesorId: 0,
+    agencia: 0,
+  };
+  reportState$: AppStateEntity<CuotasVencidas[]> = {};
+  isFirstCallAjax: boolean = true;
   // dtOptions: any = {};
   dtOptions: any = {};
-  dtTrigger = new Subject<any>()
-
+  dtTrigger = new Subject<any>();
 
   usuarios$!: Observable<ResponseEntity<IUsuarioAgencia[]>>;
   agencias$!: Observable<AppStateEntity<IAgencia[]>>;
 
-
   constructor(
     private agenciaService: AgenciasService,
     private usuarioSerice: UsuarioService,
-    private creditoService: ReportService,
-    private utils: HelpersService,
-  ) { }
+    private reportSrv: ReportService,
+    private utils: HelpersService
+  ) {}
 
   ngOnInit(): void {
     this.agencias$ = this.obtenerAgencias$();
@@ -52,24 +57,27 @@ export class ReportCreditsComponent implements OnInit {
       pageLength: 10,
       processing: true,
       // serverSide: true,
-      data:[],
-      responsive:true,
-      ajax: ({ }, callback: any) => {
-        this.creditoService.getCuotasVencidasByAsesor$(this.paramsToAPI).
-          pipe(
-            map( response => { return { state: DataState.LOADED, data: response.data }}),
+      data: [],
+      responsive: true,
+      ajax: ({}, callback: any) => {
+        this.reportSrv
+          .getCuotasVencidasByAsesor$(this.paramsToAPI)
+          .pipe(
+            map((response) => {
+              return { state: DataState.LOADED, data: response.data };
+            }),
             startWith({ state: DataState.LOADING, data: [] }),
             catchError((error) => {
-              return of({ state: DataState.ERROR, error, data:[] });
+              return of({ state: DataState.ERROR, error, data: [] });
             })
-          ).subscribe(async(resp: AppStateEntity<CuotasVencidas[]>) => {
+          )
+          .subscribe(async (resp: AppStateEntity<CuotasVencidas[]>) => {
             this.reportState$ = resp;
-              callback({
-                recordsTotal: resp.data?.length,
-                recordsFiltered: resp.data?.length,
-                data: resp.data
-              })
-
+            callback({
+              recordsTotal: resp.data?.length,
+              recordsFiltered: resp.data?.length,
+              data: resp.data,
+            });
           });
 
         // })
@@ -77,96 +85,98 @@ export class ReportCreditsComponent implements OnInit {
       columns: [
         {
           title: 'Cliente',
-          data: 'nombre'
+          data: 'nombre',
         },
         {
           title: 'Dirección',
-          data: 'direccion'
+          data: 'direccion',
         },
         {
           title: 'Coordenadas',
-          data: 'coordenadas'
+          data: 'coordenadas',
         },
         {
           title: 'Teléfono',
-          data: 'telefono'
+          data: 'telefono',
         },
         {
           title: 'Saldo',
-          data: 'saldo'
+          data: 'saldo',
         },
         {
           title: 'SaldoVencido',
-          data: 'saldosvencido'
+          data: 'saldosvencido',
         },
         {
           title: 'Diasmoraactual',
-          data: 'diasmoraactual'
+          data: 'diasmoraactual',
         },
         {
           title: 'Garantes',
-          data: 'garantes'
+          data: 'garantes',
         },
-
       ],
       dom: 'Bfrtip',
-      buttons: [
-        'copy',
-        'print',
-        'excel',
-        'pdf'
-      ],
-
-    }
-
+      buttons: ['copy', 'print', 'excel', 'pdf'],
+    };
   }
-
 
   async reload() {
-      let dt  = await this.dtElement?.dtInstance
-      dt?.ajax.reload()
+    let dt = await this.dtElement?.dtInstance;
+    dt?.ajax.reload();
   }
-
 
   obtenerAgencias$(): Observable<AppStateEntity<IAgencia[]>> {
     return this.agenciaService.getAgenciesByUserLogged$().pipe(
       map((response) => {
+        if (response.data && response.data.length > 1) {
+          let consolidado = response.data.map((ag) => ag.id);
+          response.data?.push({
+            nombre: 'TODOS',
+            id: consolidado.toString(),
+          });
+        }
         return { state: DataState.LOADED, data: response.data };
       }),
-      startWith({ state: DataState.LOADING}),
+      startWith({ state: DataState.LOADING }),
       catchError((error) => {
         // console.log(Error,error)
-        return of({ state: DataState.ERROR, error});
+        return of({ state: DataState.ERROR, error });
       })
     );
   }
 
-
   async onSubmit() {
     this.isFirstCallAjax = false;
     await this.reload();
-
-
   }
 
-  obtenerUsuariosPorAgencia(agencia: number): void {
-    const rolesId = `${Role.ASESOR_CAPTACIONES, Role.GESTOR_CREDITO}`;
-    this.usuarios$ = this.usuarioSerice.getUsersByAgencies$({ agencia, rolesId })
+  obtenerUsuariosPorAgencia(agencia: string): void {
+    const rolesId = `${(Role.ASESOR_CAPTACIONES, Role.GESTOR_CREDITO)}`;
+    this.usuarios$ = this.usuarioSerice.getUsersByAgencies$({
+      agencia,
+      rolesId,
+    })
+    .pipe(
+      map((response) => {
+        response.data?.push({
+          nombre: 'TODOS',
+          usuario: this.reportSrv.OBTENER_TODOS_KEY,
+        });
+        return { state: DataState.LOADED, data: response.data };
+      })
+    );
   }
-
 
   // ngAfterViewInit(): void {
   //   this.dtTrigger.next(null);
   // }
 
-
   ngOnDestroy(): void {
     this.dtTrigger.unsubscribe();
   }
 
-  get isReadyAllParameters (){
-    return this.paramsToAPI.asesorId != 0 && this.paramsToAPI.agencia !=0
+  get isReadyAllParameters() {
+    return this.paramsToAPI.asesorId != 0 && this.paramsToAPI.agencia != 0;
   }
-
-
 }
