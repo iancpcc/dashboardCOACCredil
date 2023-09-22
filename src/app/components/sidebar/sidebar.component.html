@@ -39,7 +39,7 @@
       class="text-base md:text-lg"
       [ngClass]="isSidebarClose ? 'opacity-0 hidden' : 'opacity-100'"
     >
-      {{ this.authService.userLogged }}
+      {{ this.authService.userLogged | uppercase}}
     </h1>
   <!-- <ng-template *ngIf="false">
   </ng-template> -->
@@ -47,7 +47,7 @@
 
 <!-- Sidebar Menu  -->
 <ul
-  class="h-[calc(100%-4rem)] list-none pt-2 flex flex-col gap-y-2 transition ease-in-out duration-500"
+  class="h-[calc(100%-4rem)] list-none pt-2 flex flex-col transition ease-in-out duration-500"
 >
   <ng-container *ngFor="let menu of OPTIONS_SIDEBAR; let i = index">
     <!-- Item Menu -->
@@ -59,13 +59,13 @@
       >
         <a
           [ngClass]="{ menu__link: i == currentMenu }"
-          class="p-small inline-flex text-[#a4b0be] hover:text-white grid-cols-3 w-full items-center text-base gap-x-5 hover:bg-slate-500 transition-all ease-in duration-700"
+          class="p-small inline-flex  text-[#a4b0be] hover:text-white grid-cols-3 w-full items-center text-base gap-x-5 hover:bg-slate-500 transition-all ease-in duration-700"
         >
           <!-- Link Icon -->
           <i [class]="menu.icon" class="sidebar__icon icon bx-tada-hover"></i>
           <!-- Name Icon -->
           <span
-            class="transition-all ease-in whitespace-nowrap overflow-hidden"
+            class="transition-all  ease-in whitespace-nowrap overflow-hidden"
             [ngClass]="isSidebarClose ? ' opacity-0' : 'opacity-100'"
           >
             {{ menu.name | uppercase }}</span
@@ -86,16 +86,16 @@
       <!-- Submenu -->
       <ng-container *ngIf="menu.submenu.length > 0">
         <ul
-          class="w-auto bg-slate-600 max-h-0 overflow-hidden transition-all ease-in-out duration-500"
+          class="w-auto   bg-slate-600 max-h-0  overflow-hidden transition-all ease-in-out duration-1000 "
           [ngClass]="{ 'show-submenu ': isSubmenuOpen && i == currentMenu }"
         >
           <li
-            class="p-small text-[#d9e1ea] text-left m-auto relative pl-14 hover:bg-slate-500 hover:text-slate-50 text-sm cursor-pointer"
+            class=" text-[#d9e1ea]  m-auto relative pl-14 hover:bg-slate-500 hover:text-slate-50 text-sm cursor-pointer"
             *ngFor="let submenu of menu.submenu"
             routerLinkActive="active-submenu-link"
             [routerLink]="[submenu.route]"
           >
-            <a class="submenu__link"> {{ submenu.name | titlecase }}</a>
+            <div class="border__lateral"> {{ submenu.name | titlecase }}</div>
           </li>
         </ul>
       </ng-container>

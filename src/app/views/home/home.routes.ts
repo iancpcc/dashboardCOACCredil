@@ -9,6 +9,8 @@ import { PlazoFijoComponent } from '../plazo-fijo/plazo-fijo.component';
 import { ProcessRisksComponent } from '../risks/process-risks/process-risks.component';
 import { ReportCreditsComponent } from '../credits/report-credits/report-credits.component';
 import { Role } from 'src/app/interfaces/role.enum';
+import { UsuariosComponent } from '../admin/usuarios/usuarios.component';
+import { SeguridadComponent } from '../admin/seguridad/seguridad.component';
 
 const homeRoutes = [
   {
@@ -16,10 +18,17 @@ const homeRoutes = [
     component: HomeComponent,
     children: [
       {
-        path: 'main',
+        path: 'home',
         component: HomePageComponent,
       },
-
+      {
+        path: 'usuarios',
+        component: UsuariosComponent,
+      },
+      {
+        path: 'seguridad',
+        component: SeguridadComponent,
+      },
       {
         path: 'carta-preferencial',
         component: CartaPreferencialComponent,

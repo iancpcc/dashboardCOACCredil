@@ -50,6 +50,7 @@ export class CartaPreferencialComponent implements OnDestroy {
         pdf.internal.pageSize.getWidth(),
         pdf.internal.pageSize.getHeight()
       );
+      pdf.addFont('Arial', 'Helvetica', 'normal')
       // Guardar el PDF en un archivo
       pdf.save('carta-preferencial.pdf');
     });
