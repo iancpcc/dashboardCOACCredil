@@ -7,7 +7,6 @@ import { CreditsModule } from '../credits/credits.module';
 import { RisksModule } from '../risks/risks.module';
 
 
-
 @NgModule({
   declarations: [
 
@@ -20,7 +19,7 @@ import { RisksModule } from '../risks/risks.module';
     FormsModule,
     ReactiveFormsModule,
     HomeRoutingModule,
-   
+
 
   ]
 })

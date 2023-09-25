@@ -8,6 +8,10 @@
 @tailwind utilities;
 
 @layer base {
+  :root{
+    --tw-border-opacity: 1;
+  }
+
   html,
   body {
     font-family: poppins, sans;
@@ -18,6 +22,11 @@
     height: 100vh;
     background-color: #f1f2f6;
   }
+  .border-stroke {
+    border-color: rgb(226 232 240 / var(--tw-border-opacity));
+}
+
+
 }
 
 .dt-buttons {
@@ -29,6 +38,8 @@
 .show_alert-bg {
  @apply !bg-secondary
 }
+
+
 
 
 /* html, body { height: 100vh; padding: 0; margin: 0; box-sizing: border-box; }

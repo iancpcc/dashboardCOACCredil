@@ -23,7 +23,6 @@ export class UsuarioService {
 
   resetPassword$ = (password: string): Observable<boolean> => {
     let userId = this._authService.userLogged ?? this._localStorage.getData(USER_LOGGED_KEY)??'';
-    debugger
     return this._userCreatePwd.execute({ userId, password });
   };
 
