@@ -6,13 +6,13 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { Observable, Subject, catchError, map, of, startWith, tap } from 'rxjs';
 
 import { AgenciasService } from 'src/app/services/agencias.service';
-import { ReportService } from 'src/app/services/report.service';
-import { CuotasVencidas } from 'src/app/interfaces/cuotas-vencidas.interface';
+import { CuotasVencidas } from 'src/app/interfaces/IReportes/cuotas-vencidas.interface';
 import { DataTableDirective } from 'angular-datatables';
 import { HelpersService } from 'src/app/utils/helpers.service';
 import { HttpClient } from '@angular/common/http';
 import { IAgencia } from 'src/app/interfaces/agencia.interface';
 import { IUsuarioAgencia } from 'src/app/interfaces/usuario-agencia.interface';
+import { ReportService } from 'src/app/services/report.service';
 import { ResponseEntity } from 'src/2.data/entities/response.entity';
 import { Role } from 'src/app/interfaces/role.enum';
 import { UsuarioService } from 'src/app/services/usuario.service';

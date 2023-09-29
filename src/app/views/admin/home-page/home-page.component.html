@@ -1,8 +1,4 @@
-<!-- <img
-  class="fill-blue-400 absolute left-0 top-0 opacity-80    md:object-contain h-full w-full"
-  src="../../../assets/img/data.svg"
-  alt=""
-/> -->
+<div class="flex flex-col justify-around h-full ">
 <!-- Cards -->
 <div
   class="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-4 2xl:gap-7.5"
@@ -227,13 +223,25 @@
 
 <!-- Charts -->
 <div
-  class="mt-4 grid grid-cols-12 gap-4 md:mt-6 md:gap-6 2xl:mt-7.5 2xl:gap-7.5"
+  class="mt-4 grid grid-cols-12 gap-4 md:mt-6 md:gap-6 2xl:mt-7.5 2xl:gap-7.5  overflow-y-auto"
 >
   <!-- ====== Chart One Start -->
   <div
-    class="col-span-12 rounded-sm border h-full border-stroke bg-white px-5 pt-7.5 pb-5 shadow-lg sm:px-7.5 xl:col-span-8"
+    class="col-span-12 rounded-sm border  border-stroke bg-white px-5 pt-7.5 pb-5 shadow-lg sm:px-7.5 xl:col-span-8"
   >
-  <canvas #myChart id="myChart" ></canvas>
+  <div class="relative max-w-xs mx-auto mt-5">
+    <div class="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none">
+    </div>
+    <!-- <input
+    name="fecha"
+    [(ngModel)] ="fecha"
+    (ngModelChange)="reloadBarChart()"
+    type="date"
+    class="bg-gray-50  border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5 " placeholder="Select date">-->
+  </div>
+  <canvas  id="myChart" >
+
+  </canvas>
 </div>
 
   <!-- ====== Chart One End -->
@@ -242,8 +250,12 @@
   <div
     class="col-span-12 rounded-sm border border-stroke bg-white p-7.5 shadow-lg xl:col-span-4"
   >
-    <div class="mb-4 justify-between gap-4 sm:flex"></div>
+    <div class="mb-4 justify-between gap-4 sm:flex">
+  <canvas  id="myChart2" ></canvas>
+
+    </div>
   </div>
   <!-- ====== Chart Two End -->
 </div>
 <!-- End Charts -->
+</div>

@@ -1,4 +1,5 @@
 import { RouterModule, Routes } from '@angular/router';
+
 import { CartaPreferencialComponent } from '../carta-preferencial/carta-preferencial.component';
 import { HomeComponent } from './home.component';
 import { HomePageComponent } from '../admin/home-page/home-page.component';
@@ -7,8 +8,8 @@ import { PageNotFoundComponentComponent } from '../page-not-found-component/page
 import { PlazoFijoComponent } from '../plazo-fijo/plazo-fijo.component';
 import { ReportCreditsComponent } from '../credits/report-credits/report-credits.component';
 import { Role } from 'src/app/interfaces/role.enum';
-import { UsuariosComponent } from '../admin/usuarios/usuarios.component';
 import { SeguridadComponent } from '../admin/seguridad/seguridad.component';
+import { UsuariosComponent } from '../admin/usuarios/usuarios.component';
 
 const homeRoutes = [
   {

@@ -1,19 +1,20 @@
-import { Component, Type, ViewChild } from '@angular/core';
-import { DataTableDirective } from 'angular-datatables';
-import { Observable, Subject, catchError, map, of, startWith } from 'rxjs';
 import {
   AppStateEntity,
   DataState,
 } from 'src/2.data/entities/app-state.entity';
-import { ResponseEntity } from 'src/2.data/entities/response.entity';
-import { IAgencia } from 'src/app/interfaces/agencia.interface';
-import { RPlazoFijo } from 'src/app/interfaces/plazo-fijo.interface';
-import { Role } from 'src/app/interfaces/role.enum';
-import { IUsuarioAgencia } from 'src/app/interfaces/usuario-agencia.interface';
+import { Component, Type, ViewChild } from '@angular/core';
+import { Observable, Subject, catchError, map, of, startWith } from 'rxjs';
+
 import { AgenciasService } from 'src/app/services/agencias.service';
-import { ReportService } from 'src/app/services/report.service';
-import { UsuarioService } from 'src/app/services/usuario.service';
+import { DataTableDirective } from 'angular-datatables';
 import { HelpersService } from 'src/app/utils/helpers.service';
+import { IAgencia } from 'src/app/interfaces/agencia.interface';
+import { IUsuarioAgencia } from 'src/app/interfaces/usuario-agencia.interface';
+import { RPlazoFijo } from 'src/app/interfaces/IReportes/plazo-fijo.interface';
+import { ReportService } from 'src/app/services/report.service';
+import { ResponseEntity } from 'src/2.data/entities/response.entity';
+import { Role } from 'src/app/interfaces/role.enum';
+import { UsuarioService } from 'src/app/services/usuario.service';
 
 @Component({
   selector: 'app-plazo-fijo',

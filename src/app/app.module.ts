@@ -15,12 +15,11 @@ import { HttpClientModule } from '@angular/common/http';
 import { LoginComponent } from './views/login/login.component';
 import { NgModule } from '@angular/core';
 import { PageNotFoundComponentComponent } from './views/page-not-found-component/page-not-found-component.component';
+import { PlazoFijoComponent } from './views/plazo-fijo/plazo-fijo.component';
 import { RegisterComponent } from './views/register/register.component';
 import { ResetPasswordComponent } from './views/reset-password/reset-password.component';
 import { UserCreatePasswordUseCase } from 'src/1.domain/usecases/Users/user-create-password.usecase';
 import { UserLoginUseCase } from 'src/1.domain/usecases/user-login.usecase';
-import { PlazoFijoComponent } from './views/plazo-fijo/plazo-fijo.component';
-
 
 // import { HomeComponent } from './views/home/home.component';
 
@@ -38,7 +37,7 @@ import { PlazoFijoComponent } from './views/plazo-fijo/plazo-fijo.component';
     CartaPreferencialComponent,
     PlazoFijoComponent,
   ],
-  providers: [ UserLoginUseCase, UserCreatePasswordUseCase ],
+  providers: [UserLoginUseCase, UserCreatePasswordUseCase],
   bootstrap: [AppComponent],
   imports: [
     ComponentsModule,
@@ -53,4 +52,5 @@ import { PlazoFijoComponent } from './views/plazo-fijo/plazo-fijo.component';
     HomeModule,
   ],
 })
-export class AppModule {}
+export class AppModule {
+}
