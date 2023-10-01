@@ -49,8 +49,30 @@
 <ul
   class="h-[calc(100%-4rem)] list-none pt-2 flex flex-col transition ease-in-out duration-500"
 >
+<li
+class="flex flex-col h-auto w-full relative cursor-pointer"
+routerLink="/home"
+(click)="toggleSubMenu($event, -1)"
+>
+<a
+ [ngClass]="{ menu__link: -1 == currentMenu }"
+  class="p-small inline-flex  text-[#a4b0be] hover:text-white grid-cols-3 w-full items-center text-base gap-x-5 hover:bg-slate-500 transition-all ease-in duration-700"
+>
+  <!-- Link Icon -->
+  <i  class="bx bx-home-alt-2 sidebar__icon icon bx-tada-hover"></i>
+  <!-- Name Icon -->
+  <span
+    class="transition-all  ease-in whitespace-nowrap overflow-hidden"
+    [ngClass]="isSidebarClose ? ' opacity-0' : 'opacity-100'"
+  >
+    INICIO</span
+  >
+  <!-- Arrow icon -->
+</a>
+</li>
   <ng-container *ngFor="let menu of OPTIONS_SIDEBAR; let i = index">
     <!-- Item Menu -->
+
     <ng-container *appRoleDirective="menu.roles">
       <li
         class="flex flex-col h-auto w-full relative cursor-pointer"

@@ -4,6 +4,17 @@ export const ACCESS_TOKEN_KEY = 'access_token';
 export const USER_LOGGED_KEY = 'user_logged';
 
 export const MENU_OPTIONS = [
+  // {
+  //   name: 'Inicio',
+  //   icon: 'bx bxs-cog',
+  //   roles: [],
+  //   active: true,
+  //   submenu: [
+  //     // { name: 'usuarios', route: '/usuarios' },
+  //     { name: 'seguridad', route: '/seguridad' },
+  //     // { name: 'permisos', route: '/permisos' },
+  //   ],
+  // },
   {
     name: 'administración',
     icon: 'bx bxs-cog',
@@ -11,14 +22,14 @@ export const MENU_OPTIONS = [
     active: true,
     submenu: [
       // { name: 'usuarios', route: '/usuarios' },
-      { name: 'seguridad', route: '/seguridad' },
+      { name: 'usuarios', route: '/usuarios-adm' },
       // { name: 'permisos', route: '/permisos' },
     ],
   },
   {
     name: 'gerencia',
     icon: 'bx bxs-user',
-    roles: [Role.ADMIN, Role.ADMINISTRATIVO],
+    roles: [Role.ADMIN, Role.ADMINISTRATIVO, Role.OFICIAL_CUMPLIMIENTO, Role.GESTOR_DPF],
     active: true,
     submenu: [
       // { name: 'créditos', route: '/creditos' },
@@ -32,8 +43,8 @@ export const MENU_OPTIONS = [
   {
     name: 'captaciones',
     icon: 'bx bx-male-female',
-    roles: [Role.ADMIN, Role.ADMINISTRATIVO],
-    active: true,
+    roles: [Role.ADMIN, Role.ADMINISTRATIVO, Role.OFICIAL_CUMPLIMIENTO, Role.GESTOR_DPF],
+    active: false,
     submenu: [
       { name: 'ahorros', route: '/ahorros' },
       { name: 'recuperación cartera castigada', route: '/dpf' },
@@ -44,14 +55,14 @@ export const MENU_OPTIONS = [
   {
     name: 'dpf',
     icon: 'bx bx-line-chart',
-    roles: [Role.ADMIN, Role.ADMINISTRATIVO, Role.GESTOR_CREDITO],
+    roles: [Role.ADMIN, Role.ADMINISTRATIVO, Role.GESTOR_CREDITO, Role.OFICIAL_CUMPLIMIENTO, Role.GESTOR_DPF],
     active: true,
     submenu: [{ name: 'vencimientos', route: '/vencimientos' }],
   },
   {
     name: 'plazo fijo',
     icon: 'bx bx-trending-up',
-    roles: [Role.ADMIN, Role.ADMINISTRATIVO, Role.JEFE_AGENCIA],
+    roles: [Role.ADMIN, Role.ADMINISTRATIVO, Role.JEFE_AGENCIA, Role.OFICIAL_CUMPLIMIENTO, Role.GESTOR_DPF],
     active: false,
     submenu: [
       // { name: 'dpf por dias vencimiento', route: '#' },
@@ -62,7 +73,7 @@ export const MENU_OPTIONS = [
   {
     name: 'tesoreria',
     icon: 'bx bx-calculator',
-    roles: [Role.ADMIN, Role.ADMINISTRATIVO],
+    roles: [Role.ADMIN, Role.ADMINISTRATIVO, Role.OFICIAL_CUMPLIMIENTO, Role.GESTOR_DPF],
     active: false,
     submenu: [
       { name: 'consultas', route: '/tesoreria/consultas' },

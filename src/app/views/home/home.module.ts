@@ -1,26 +1,28 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { HomeRoutingModule } from './home.routes';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { ComponentsModule } from 'src/app/components/components.module';
-import { CreditsModule } from '../credits/credits.module';
-import { RisksModule } from '../risks/risks.module';
 
+import { CartaPreferencialComponent } from './carta-preferencial/carta-preferencial.component';
+import { CommonModule } from '@angular/common';
+import { ComponentsModule } from 'src/app/components/components.module';
+import { DataTablesModule } from 'angular-datatables';
+import { HomeComponent } from './home.component';
+import { HomeRoutingModule } from './home.routes';
+import { NgModule } from '@angular/core';
+import { PlazoFijoComponent } from './plazo-fijo/plazo-fijo.component';
+import { ReportCreditsComponent } from './report-credits/report-credits.component';
 
 @NgModule({
   declarations: [
-
+    CartaPreferencialComponent,
+    PlazoFijoComponent,
+    ReportCreditsComponent,
   ],
   imports: [
     ComponentsModule,
-    CreditsModule,
-    RisksModule,
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
     HomeRoutingModule,
-
-
+    DataTablesModule
   ]
 })
 export class HomeModule { }

@@ -9,7 +9,6 @@ import { AgenciasService } from 'src/app/services/agencias.service';
 import { CuotasVencidas } from 'src/app/interfaces/IReportes/cuotas-vencidas.interface';
 import { DataTableDirective } from 'angular-datatables';
 import { HelpersService } from 'src/app/utils/helpers.service';
-import { HttpClient } from '@angular/common/http';
 import { IAgencia } from 'src/app/interfaces/agencia.interface';
 import { IUsuarioAgencia } from 'src/app/interfaces/usuario-agencia.interface';
 import { ReportService } from 'src/app/services/report.service';
@@ -23,7 +22,6 @@ import { UsuarioService } from 'src/app/services/usuario.service';
   styleUrls: ['./report-credits.component.css'],
 })
 export class ReportCreditsComponent implements OnInit {
-  @ViewChild(DataTableDirective, { static: false })
   dtElement: DataTableDirective | undefined;
 
   // usuarios$: IUsuarioAgencia[] = [];
@@ -36,7 +34,6 @@ export class ReportCreditsComponent implements OnInit {
   };
   reportState$: AppStateEntity<CuotasVencidas[]> = {};
   isFirstCallAjax: boolean = true;
-  // dtOptions: any = {};
   dtOptions: any = {};
   dtTrigger = new Subject<any>();
 

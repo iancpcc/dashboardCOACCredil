@@ -8,9 +8,8 @@ import { environment } from 'src/environments/environment.development';
   providedIn: 'root',
 })
 export class ClientService {
-  private readonly base_url = `${environment.url_services}/Cliente`;
+  private readonly base_url = `${environment.url_services}/Client`;
   readonly DataState = DataState;
-
 
   constructor(private genericService: GenericCRUDService) {}
   getClient$ = (socio: number | string) =>

@@ -4,6 +4,7 @@ import { ACCESS_TOKEN_KEY } from 'src/base/config/constantes';
 import { CuotasVencidas } from '../interfaces/IReportes/cuotas-vencidas.interface';
 import { GenericCRUDService } from 'src/2.data/helpers/generic-crud.service';
 import { IDPFAperturados } from '../interfaces/IReportes/dpf-aperturados.interface';
+import { ITotalUsuariosPanel } from '../interfaces/IReportes/RTotalUsuariosPanel.interface';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { RPlazoFijo } from '../interfaces/IReportes/plazo-fijo.interface';
@@ -35,12 +36,18 @@ export class ReportService {
   };
 
   getDPFAperturadosPorAgencia$ = (
-    fechaCorte: string
+   params:{monthIndex:number, year:number}
   ): Observable<ResponseEntity<IDPFAperturados[]>> => {
     return this.genericCRUDService.getApiData<IDPFAperturados[]>(
-      `${this.base_url}/dpf_aperturados_por_agencia?fechaCorte=${fechaCorte}`
+      `${this.base_url}/dpf_aperturados_por_agencia?mes=${params.monthIndex}&anio=${params.year}`
     );
   };
+
+  getTotalClientesSocios$ = (): Observable<ResponseEntity<ITotalUsuariosPanel>> => {
+     return this.genericCRUDService.getApiData<ITotalUsuariosPanel>(
+       `${this.base_url}/total_usuarios?`
+     );
+   };
 
   obtenerPlazoFijoPorAsesor$ = (params: {
     codigoAgencias: string;

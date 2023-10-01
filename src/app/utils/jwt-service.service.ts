@@ -12,7 +12,7 @@ export class JwtService {
     let tokenDecoded: any = jwt_decode(token);
     const username =
       tokenDecoded[
-      'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name'
+      'http://schemas.microsoft.com/ws/2008/06/identity/claims/userdata'
       ];
     const roles =
       tokenDecoded[

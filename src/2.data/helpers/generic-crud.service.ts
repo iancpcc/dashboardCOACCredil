@@ -60,10 +60,17 @@ export class GenericCRUDService {
   private handleError(error: HttpErrorResponse) {
     // debugger
     let errorMessage: CustomError = { message:"Un error ha ocurrido: ",  code: error.status};
+    // debugger
+
     if (error.error instanceof ErrorEvent) {
       errorMessage.message =`${error.error.message}`;
     } else {
-      errorMessage.message = `${error.status} - ${error.error.Message?? error.name} `;
+      errorMessage.message = `${error.status} - ${error?.error?.Message?? error.name} `;
+
+      if (error.status ==0 ){
+        errorMessage.message = `${error.status} - ${error.name} | No se pudo conectar con el servidor `;
+      }
+
       errorMessage.messageDeveloper = error.error;
     }
     // debugger

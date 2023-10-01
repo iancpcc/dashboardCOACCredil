@@ -1,53 +1,97 @@
 import { Chart, registerables } from 'chart.js';
-import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { Observable, Subscription, catchError, map, of, startWith, tap } from 'rxjs';
+import {
+  Component,
+  ElementRef,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
+import {
+  Observable,
+  Subscription,
+  catchError,
+  map,
+  of,
+  startWith,
+  tap,
+} from 'rxjs';
 
+import { AlertService } from 'src/app/utils/alert.service';
 import { DataState } from 'src/2.data/entities/app-state.entity';
 import { HelpersService } from 'src/app/utils/helpers.service';
+import { ITotalUsuariosPanel } from 'src/app/interfaces/IReportes/RTotalUsuariosPanel.interface';
 import { ReportService } from 'src/app/services/report.service';
+import { ResponseEntity } from 'src/2.data/entities/response.entity';
 
 @Component({
   selector: 'app-home-page',
   templateUrl: './home-page.component.html',
   styleUrls: ['./home-page.component.css'],
 })
-export class HomePageComponent implements OnInit,OnDestroy {
+export class HomePageComponent implements OnInit, OnDestroy {
   constructor(
     private reportSrv: ReportService,
-    private utilsSrv: HelpersService
+    private utilsSrv: HelpersService,
+    private alertSrv: AlertService
   ) {
     Chart.register(...registerables);
   }
-  ngOnDestroy(): void {
-    this.myObservable$.unsubscribe();
-    console.log("Observable destruido.")
-  }
+
 
   etiquetas: string[] = [];
   datos: number[] = [];
   fecha: string = this.utilsSrv.obtenerFechaActual();
   readonly DataState = DataState;
-  myObservable$ = new  Subscription;
-  ngOnInit(): void {}
+  apiResponseUsuarios$! : Observable<ResponseEntity<ITotalUsuariosPanel>>;
+  apiSuscription$! :Subscription;
+  paramsToApi = { monthIndex: 0, year: 0 };
+  monthsOfYear = [
+    'Enero',
+    'Febrero',
+    'Marzo',
+    'Abril',
+    'Mayo',
+    'Junio',
+    'Julio',
+    'Agosto',
+    'Septiembre',
+    'Octubre',
+    'Noviembre',
+    'Diciembre',
+  ];
+
+  ngOnInit(): void {
+    this.cargarParametrosIniciales();
+    this.obtenerDatosParaBarChart();
+    this.buildBarChart();
+    this.createPieChart();
+    this.obtenerDatosParaCards();
+  }
+  ngOnDestroy(): void {
+    this.apiSuscription$.unsubscribe();
+  }
+
+  cargarParametrosIniciales() {
+    let currentDate = new Date();
+    this.paramsToApi.monthIndex = currentDate.getMonth() + 1;
+    this.paramsToApi.year = currentDate.getFullYear();
+  }
 
   @ViewChild('myChart', { static: true })
   myChartCanvas!: ElementRef<HTMLCanvasElement>;
   chart: any;
-  ngAfterViewInit() {
-    this.createPieChart();
-    this.obtenerDatos();
-    this.buildBarChart();
-  }
 
   buildBarChart() {
     this.chart = new Chart('myChart', {
       type: 'bar', //this denotes tha type of chart
+
       data: {
         // values on X-Axis
         labels: this.etiquetas,
+
         datasets: [
           {
-            label: 'Creciminento Cartera',
+            label: 'DPFs Aperturados',
             data: this.datos,
             backgroundColor: [
               'rgba(255, 99, 132, 0.2)',
@@ -68,30 +112,32 @@ export class HomePageComponent implements OnInit,OnDestroy {
               'rgb(201, 203, 207)',
             ],
             borderWidth: 1,
+
           },
         ],
       },
-
       options: {
         responsive: true,
+        aspectRatio:2.75
       },
     });
   }
 
-  obtenerDatos() {
-   this.myObservable$ = this.reportSrv
-      .getDPFAperturadosPorAgencia$(this.fecha)
+  obtenerDatosParaBarChart() {
+    this.apiSuscription$ = this.reportSrv
+      .getDPFAperturadosPorAgencia$(this.paramsToApi)
       .pipe(
         map((response) => {
           return { state: DataState.LOADED, data: response.data };
         }),
         startWith({ state: DataState.LOADING, data: [] }),
-        catchError((error) => of({ state: DataState.ERROR, error, data: [] }))
+        catchError((error) => {
+          // this.alertSrv.showAlertError(error.message)
+          return of({ state: DataState.ERROR, error, data: [] });
+        })
       )
       .subscribe((response) => {
-
         if (response.state === DataState.LOADED) {
-          console.log("datos", response.data)
           this.etiquetas = response.data?.map((res: any) => res.agencia)!;
           this.datos = response.data?.map((res: any) => res.monto)!;
           this.chart.data.labels = this.etiquetas;
@@ -100,31 +146,40 @@ export class HomePageComponent implements OnInit,OnDestroy {
           });
           this.chart.update();
         }
-        else if(response.state == DataState.ERROR){
-          console.log("Ocurrio un error")
-        }
       });
   }
+  obtenerDatosParaCards() {
+   this.apiResponseUsuarios$ =  this.reportSrv
+      .getTotalClientesSocios$()
+      .pipe(
+        map((response) => {
+          return { state: DataState.LOADED, data: response.data };
+        }),
+        startWith({ state: DataState.LOADING, data:{}}),
+        catchError((error) => of({ state: DataState.ERROR, error })
+        )
+      )
+  }
 
-  reloadBarChart() {
-    this.obtenerDatos();
+  reloadBarChart(monthIndex: number = 1) {
+    this.paramsToApi.monthIndex = monthIndex;
+    this.obtenerDatosParaBarChart();
   }
 
   createPieChart() {
     new Chart('myChart2', {
-      type: 'pie', //this denotes tha type of chart
+      type: 'doughnut', //this denotes tha type of chart
       data: {
-        labels: ['Activos', 'Inactivos', 'Otros'],
-        yLabels: ['Hola'],
+        labels: ['Activos', 'Inactivos'],
         datasets: [
           {
             label: 'Socios',
 
-            data: [300, 50, 100],
+            data: [1961, 50],
             backgroundColor: [
               'rgb(54, 162, 235)',
-              'rgb(255, 99, 132)',
               'rgb(255, 205, 86)',
+              'rgb(255, 99, 132)',
             ],
             hoverOffset: 4,
           },
@@ -135,11 +190,22 @@ export class HomePageComponent implements OnInit,OnDestroy {
         plugins: {
           legend: {
             display: true,
+            labels:{
+
+            }
 
             // position:"center",
           },
+          title: {
+            display: true,
+            text: 'Usuarios que utilizan banca'
+          }
         },
       },
     });
   }
+
+
+
+
 }

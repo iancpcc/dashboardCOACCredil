@@ -1,1 +1,82 @@
-<p>seguridad works!</p>
+<!-- <div
+class="overflow-x-auto w-full overflow-y-auto px-10 pt-5 sm:-mx-6 lg:-mx-8 mt-5 border-t border-slate-300 "
+>
+<button class="px-4 py-2 font-medium text-white bg-blue-600 rounded-md hover:bg-blue-500 focus:outline-none focus:shadow-outline-blue active:bg-blue-600 transition duration-150 ease-in-out">Editar</button>
+<button class="ml-2 px-4 py-2 font-medium text-white bg-red-600 rounded-md hover:bg-red-500 focus:outline-none focus:shadow-outline-red active:bg-red-600 transition duration-150 ease-in-out">Eliminar</button>
+
+<table
+  datatable
+  [dtOptions]="dtOptions"
+  class="display"
+></table>
+<tbody>
+  <tr>
+    <td>
+<button class="ml-2 px-4 py-2 font-medium text-white bg-red-600 rounded-md hover:bg-red-500 focus:outline-none focus:shadow-outline-red active:bg-red-600 transition duration-150 ease-in-out">Eliminar</button>
+
+    </td>
+  </tr>
+</tbody>
+</div>
+ -->
+
+<div class="h-full  overflow-y-scroll flex justify-center">
+  <ng-container *ngIf="(usuarios$ | async) as usuarios" [ngSwitch]="usuarios.state">
+
+    <app-spinner class="absolute" *ngSwitchCase="DataState.LOADING"></app-spinner>
+    <app-danger
+    *ngSwitchCase="DataState.ERROR"
+    [title]="usuarios?.error?.message??'Error'"></app-danger>
+    <ng-container  *ngSwitchCase="DataState.LOADED">
+
+    <table class="table-auto min-w-full text-left text-sm font-light border border-stoke ">
+      <thead class="border-b bg-white font-medium">
+        <tr>
+          <th scope="col" class="px-6 py-4">Usuario</th>
+          <th scope="col" class="px-6 py-4 text-center">Cambió Contraseña</th>
+          <th scope="col" class="px-6 py-4">Estado</th>
+          <th scope="col" class="px-6 py-4">Acción</th>
+        </tr>
+      </thead>
+      <tbody >
+        <tr
+
+          *ngFor="let usuario of usuarios.data; let i = index"
+          class="border-b bg-neutral-100"
+          [ngClass]="{ '!bg-white': i % 2 == 0 }"
+        >
+          <td class="whitespace-nowrap px-6 py-4 font-medium">
+            {{ usuario.usuario }}
+          </td>
+          <td class="whitespace-nowrap px-6 py-4 text-center">
+            <span
+              class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800"
+              [ngClass]="{ 'bg-red-100 text-red-800': !usuario.cambiaClave }"
+            >
+              {{ usuario.cambiaClave ? "si" : "no" }}</span
+            >
+          </td>
+          <td class="whitespace-nowrap px-6 py-4">
+            <span
+              class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800"
+              [ngClass]="{ 'bg-red-100 text-red-800': !usuario.activo }"
+            >
+              {{ usuario.activo ? "activo" : "inactivo" }}</span
+            >
+          </td>
+          <td class="whitespace-nowrap px-6 py-4">
+            <button
+              (click)="modalRestablecerClave(usuario.usuario!)"
+              class="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded-full"
+            >
+              Restablecer Contraseña
+            </button>
+          </td>
+        </tr>
+
+      </tbody>
+    </table>
+  </ng-container>
+
+  </ng-container>
+</div>

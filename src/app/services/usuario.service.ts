@@ -1,6 +1,7 @@
+import { IUsuario, IUsuarioAgencia } from '../interfaces/usuario-agencia.interface';
+
 import { AuthService } from './auth.service';
 import { GenericCRUDService } from 'src/2.data/helpers/generic-crud.service';
-import { IUsuarioAgencia } from '../interfaces/usuario-agencia.interface';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ResponseEntity } from 'src/2.data/entities/response.entity';
@@ -21,7 +22,7 @@ export class UsuarioService {
     private _authService:AuthService
   ) { }
 
-  resetPassword$ = (password: string): Observable<boolean> => {
+  changePasswordToLogin$ = (password: string): Observable<boolean> => {
     let userId = this._authService.userLogged ?? this._localStorage.getData(USER_LOGGED_KEY)??'';
     return this._userCreatePwd.execute({ userId, password });
   };
@@ -31,6 +32,11 @@ export class UsuarioService {
     return this.genericService.postApiData<IUsuarioAgencia[]>(
     { url: `${this.base_url}/usersByAgency`, body: params  }
   );}
+
+  getAllUsers$ = ():Observable<ResponseEntity<IUsuario[]>> => {
+    return this.genericService.getApiData<IUsuario[]>(`${this.base_url}/getAllUsers` )
+  }
+
 
 
 

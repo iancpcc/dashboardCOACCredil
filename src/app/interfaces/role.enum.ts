@@ -10,5 +10,6 @@ export enum Role {
     ASESOR_CAPTACIONES = "022",
     JEFE_AGENCIA = "51",
     GESTOR_DPF = "062",
-    GESTOR_CREDITO = "016"
+    GESTOR_CREDITO = "016",
+    OFICIAL_CUMPLIMIENTO = "025"
 }

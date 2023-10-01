@@ -1,19 +1,18 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { InputComponent } from './input/input.component';
 import { DangerComponent } from './danger/danger.component';
-import { SuccessComponent } from './success/success.component';
-import { SpinnerComponent } from './spinner/spinner.component';
-import { ProgressBarComponent } from './progress-bar/progress-bar.component';
-import { LoadingPageComponent } from './loading-page/loading-page.component';
-import { SuccessBoxComponent } from './success-box/success-box.component';
-import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
-import { SidebarComponent } from './sidebar/sidebar.component';
-import { RouterModule } from '@angular/router';
+import { HeaderComponent } from './header/header.component';
+import { InputComponent } from './input/input.component';
+import { LoadingPageComponent } from './loading-page/loading-page.component';
+import { NgModule } from '@angular/core';
+import { ProgressBarComponent } from './progress-bar/progress-bar.component';
 import { RoleUserDirective } from '../directives/role-user.directive';
-
-
+import { RouterModule } from '@angular/router';
+import { SidebarComponent } from './sidebar/sidebar.component';
+import { SpinnerComponent } from './spinner/spinner.component';
+import { SuccessBoxComponent } from './success-box/success-box.component';
+import { SuccessComponent } from './success/success.component';
+import { UserInfoComponent } from './user-info/user-info.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +26,8 @@ import { RoleUserDirective } from '../directives/role-user.directive';
     HeaderComponent,
     FooterComponent,
     SidebarComponent,
-    RoleUserDirective
+    RoleUserDirective,
+    UserInfoComponent,
   ],
   imports: [
     CommonModule,
@@ -43,7 +43,7 @@ import { RoleUserDirective } from '../directives/role-user.directive';
     SuccessBoxComponent,
     HeaderComponent,
     FooterComponent,
-    SidebarComponent
+    SidebarComponent,
   ]
 })
 export class ComponentsModule { }

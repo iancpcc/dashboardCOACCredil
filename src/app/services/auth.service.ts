@@ -5,7 +5,9 @@ import {
 import { EventEmitter, Injectable } from '@angular/core';
 import { Observable, tap } from 'rxjs';
 
+import { GenericCRUDService } from 'src/2.data/helpers/generic-crud.service';
 import { JwtService } from '../utils/jwt-service.service';
+import { ResponseEntity } from 'src/2.data/entities/response.entity';
 import { Role } from '../interfaces/role.enum';
 import { StorageService } from './storage.service';
 import { TokenModel } from 'src/1.domain/models/token.model';
@@ -26,7 +28,8 @@ export class AuthService {
   constructor(
     private _localStorage: StorageService,
     private _userLoginUseCase: UserLoginUseCase,
-    private jwtService: JwtService
+    private jwtService: JwtService,
+    private genericService:GenericCRUDService
   ) {
     this.loadUserDataFromStorage();
   }
@@ -67,6 +70,10 @@ export class AuthService {
     }
   }
 
+  resetPassword$ = (userId:string):Observable<ResponseEntity<boolean>> => {
+    return this.genericService.getApiData<boolean>(`${this.base_url}/resetPassword?userId=${userId}` )
+  }
+
   get loadRoles(): Role[] | [] {
     if (!this.userAccessToken) return [];
     return this.jwtService.decodeJwt(this.userAccessToken).role ?? [];
@@ -74,10 +81,9 @@ export class AuthService {
 
   get isTokenExpired(): boolean {
     try {
-      const currentTime = new Date().getMilliseconds();
-      debugger
-      let valid =  currentTime  >= this.userSessionExpires ;
-      return valid;
+      const currentTime =  Date.now() / 1000;
+      let expired =  currentTime  > this.userSessionExpires ;
+      return expired;
     } catch (error) {
       console.log('Error', error);
       throw error;

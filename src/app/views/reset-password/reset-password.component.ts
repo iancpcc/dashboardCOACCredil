@@ -97,7 +97,7 @@ export class ResetPasswordComponent implements OnInit {
       return;
     }
 
-    this._userService.resetPassword$(confirmPassword!)
+    this._userService.changePasswordToLogin$(confirmPassword!)
       .pipe(
         map((response) => {
           return {

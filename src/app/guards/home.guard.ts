@@ -26,7 +26,7 @@ export class HomeGuard implements CanActivateChild {
   ): Observable<boolean> | boolean {
 
     //If token is null redirecto to login and emmit false
-    if (this._authService.isLoggedIn ) {
+    if (this._authService.isLoggedIn && !this._authService.isTokenExpired  ) {
       return true;
     }
     this._authService.isAuthenticated$.emit(false);
