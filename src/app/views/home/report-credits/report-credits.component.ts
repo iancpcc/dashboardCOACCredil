@@ -22,13 +22,14 @@ import { UsuarioService } from 'src/app/services/usuario.service';
   styleUrls: ['./report-credits.component.css'],
 })
 export class ReportCreditsComponent implements OnInit {
+  @ViewChild(DataTableDirective, { static: false })
   dtElement: DataTableDirective | undefined;
 
   // usuarios$: IUsuarioAgencia[] = [];
   readonly DataState = DataState;
   // consultaCuotasVencidas: CuotasVencidas[] = []
   paramsToAPI: any = {
-    fecha: this.utils.obtenerFechaActual(),
+    fechaCorte: this.utils.obtenerFechaActual(),
     asesorId: 0,
     agencia: 0,
   };
@@ -53,8 +54,10 @@ export class ReportCreditsComponent implements OnInit {
       pagingType: 'full_numbers',
       pageLength: 10,
       processing: true,
+      language: {
+        url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json',
+    },
       // serverSide: true,
-      data: [],
       responsive: true,
       ajax: ({}, callback: any) => {
         this.reportSrv
@@ -148,7 +151,8 @@ export class ReportCreditsComponent implements OnInit {
     await this.reload();
   }
 
-  obtenerUsuariosPorAgencia(agencia: string): void {
+  obtenerUsuariosPorAgencia(event:any): void {
+    let agencia = event.target.value
     const rolesId = `${(Role.ASESOR_CAPTACIONES, Role.GESTOR_CREDITO)}`;
     this.usuarios$ = this.usuarioSerice.getUsersByAgencies$({
       agencia,
@@ -158,7 +162,7 @@ export class ReportCreditsComponent implements OnInit {
       map((response) => {
         response.data?.push({
           nombre: 'TODOS',
-          usuario: this.reportSrv.OBTENER_TODOS_KEY,
+          usuario: null,
         });
         return { state: DataState.LOADED, data: response.data };
       })

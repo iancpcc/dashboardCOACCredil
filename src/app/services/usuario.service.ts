@@ -29,6 +29,7 @@ export class UsuarioService {
 
   getUsersByAgencies$ = (params: { agencia: number | string , rolesId: string }) => {
     params.agencia = params.agencia.toString()
+    // debugger
     return this.genericService.postApiData<IUsuarioAgencia[]>(
     { url: `${this.base_url}/usersByAgency`, body: params  }
   );}

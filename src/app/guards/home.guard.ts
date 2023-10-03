@@ -7,6 +7,7 @@ import {
 import { ApplicationRef, Injectable } from '@angular/core';
 import { Observable, catchError, map, of, tap } from 'rxjs';
 
+import { AlertService } from '../utils/alert.service';
 import { AuthService } from '../services/auth.service';
 import { StorageService } from '../services/storage.service';
 
@@ -17,7 +18,7 @@ export class HomeGuard implements CanActivateChild {
   constructor(
     private _authService: AuthService,
     private _route: Router,
-    private _localStorage: StorageService
+    private _alertSrv:AlertService
   ) {}
 
   canActivateChild(
@@ -30,6 +31,7 @@ export class HomeGuard implements CanActivateChild {
       return true;
     }
     this._authService.isAuthenticated$.emit(false);
+     this._alertSrv.showAlertError("Sesión caducada, Vuelva a ingresar")
     this._route.navigateByUrl('/login');
     return false;
 

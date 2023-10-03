@@ -30,7 +30,7 @@ export class PlazoFijoComponent {
   // consultaCuotasVencidas: CuotasVencidas[] = []
   paramsToAPI: any = {
     codigoAgencias: 0,
-    codigoAsesores: null,
+    codigoAsesores: 0,
     diaFin: 7,
     diaInicio: 0,
   };
@@ -45,7 +45,6 @@ export class PlazoFijoComponent {
   constructor(
     private agenciaService: AgenciasService,
     private usuarioSerice: UsuarioService,
-    private utils: HelpersService,
     private reportSrv: ReportService
   ) {}
 
@@ -53,10 +52,12 @@ export class PlazoFijoComponent {
     this.agencias$ = this.obtenerAgencias$();
     this.dtOptions = {
       pagingType: 'full_numbers',
+      language: {
+        url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json',
+    },
       pageLength: 10,
       processing: true,
       // serverSide: true,
-      data: [],
       responsive: true,
       ajax: ({}, callback: any) => {
         this.reportSrv
@@ -66,9 +67,7 @@ export class PlazoFijoComponent {
               return { state: DataState.LOADED, data: response.data };
             }),
             startWith({ state: DataState.LOADING, data: [] }),
-            catchError((error) =>
-              of({ state: DataState.ERROR, error, data: [] })
-            )
+            catchError((error) => of({ state: DataState.ERROR, error }))
           )
           .subscribe(async (resp: AppStateEntity<RPlazoFijo[]>) => {
             this.reportState$ = resp;
@@ -116,12 +115,12 @@ export class PlazoFijoComponent {
           data: 'fechavencimiento',
         },
         {
-          title: 'Dias',
+          title: 'Vence en(Días)',
           data: 'diasfaltantes',
         },
         {
           title: 'Asesor',
-          data: 'codigousuario',
+          data: 'nombre',
         },
         {
           title: 'Agencia',
@@ -164,7 +163,8 @@ export class PlazoFijoComponent {
     await this.reload();
   }
 
-  obtenerUsuariosPorAgencia(agencia: number | string): void {
+  obtenerUsuariosPorAgencia(event: any): void {
+    let agencia = event.target.value;
     const rolesId = `${
       (Role.ASESOR_CAPTACIONES, Role.GESTOR_CREDITO, Role.ASESOR_NEGOCIOS)
     }`;
@@ -176,11 +176,15 @@ export class PlazoFijoComponent {
       })
       .pipe(
         map((response) => {
+          console.log('Respuesta', response);
           response.data?.push({
             nombre: 'TODOS',
-            usuario: this.reportSrv.OBTENER_TODOS_KEY,
+            usuario: null,
           });
           return { state: DataState.LOADED, data: response.data };
+        }),
+        catchError((err) => {
+          return of({ state: DataState.ERROR, error: err });
         })
       );
   }

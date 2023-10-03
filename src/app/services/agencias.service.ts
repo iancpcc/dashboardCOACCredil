@@ -1,11 +1,11 @@
+import { AuthService } from './auth.service';
+import { GenericCRUDService } from 'src/2.data/helpers/generic-crud.service';
+import { HttpHeaders } from '@angular/common/http';
+import { IAgencia } from '../interfaces/agencia.interface';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment.development';
-import { HttpHeaders } from '@angular/common/http';
 import { of } from "rxjs";
-import { GenericCRUDService } from 'src/2.data/helpers/generic-crud.service';
-import { AuthService } from './auth.service';
-import { IAgencia } from '../interfaces/agencia.interface';
-import { ResponseEntity } from 'src/2.data/entities/response.entity';
+
 @Injectable({
   providedIn: 'root'
 })

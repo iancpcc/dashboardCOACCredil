@@ -25,6 +25,7 @@
         <select
           name="codigoAgencia"
           [(ngModel)]="paramsToAPI.agencia"
+          (change)="obtenerUsuariosPorAgencia($event)"
           class="w-full font-poppins block appearance-none bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
           id="grid-state"
         >
@@ -33,7 +34,7 @@
             <option
               *ngFor="let agencia of agencias.data"
               [value]="[agencia.id]"
-              (click)="obtenerUsuariosPorAgencia(agencia.id!)"
+
             >
               {{ agencia.nombre }}
             </option>
@@ -74,7 +75,7 @@
             [disabled]="
               !isReadyAllParameters || reportState$.state == DataState.LOADING
             "
-            type="button"
+            type="submit"
             (click)="onSubmit()"
             class="disabled:bg-blue-500 truncate w-40 flex justify-center bg-blue-700 text-white py-2 px-4 rounded-md disabled:cursor-not-allowed"
           >
@@ -97,7 +98,7 @@
       <table
         datatable
         [dtOptions]="dtOptions"
-        class="text-left text-sm row-border hover"
+        class="text-left text-sm row-border hover shadow-md"
       ></table>
     </div>
 

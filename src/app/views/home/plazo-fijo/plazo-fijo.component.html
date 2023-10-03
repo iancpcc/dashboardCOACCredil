@@ -23,6 +23,7 @@
         <select
           name="codigoAgencia"
           [(ngModel)]="paramsToAPI.codigoAgencias"
+          (change)="obtenerUsuariosPorAgencia($event)"
           class="w-full font-poppins block appearance-none bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
           id="grid-state"
         >
@@ -31,7 +32,7 @@
             <option
               *ngFor="let agencia of agencias.data"
               [value]="[agencia.id]"
-              (click)="obtenerUsuariosPorAgencia(agencia.id!)"
+
             >
               {{ agencia.nombre }}
             </option>
@@ -54,8 +55,8 @@
           class="font-poppins block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500 disabled:cursor-not-allowed"
           id="grid-state"
         >
-          <option value="null">--Escoja una Asesor--</option>
-          <ng-container *ngIf="usuarios$ | async as asesores">
+          <option value="0">--Escoja una Asesor--</option>
+          <ng-container *ngIf="usuarios$ &&  (usuarios$ | async) as asesores">
             <option
               *ngFor="let asesor of asesores.data"
               [value]="asesor.usuario"
@@ -64,6 +65,15 @@
             </option>
           </ng-container>
         </select>
+      </div>
+      <div>
+        <label
+          class="block uppercase tracking-wide text-gray-700 text-xs mb-2"
+          for="grid-password"
+        >
+          Dia Inicio
+        </label>
+        <input max="0" class="font-poppins block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" [(ngModel)]="paramsToAPI.diaInicio" type="number" name="diaInicio" id="">
       </div>
 
       <!-- <p class="text-gray-600 text-xs italic">Make it as long and as crazy as you'd like</p> -->
@@ -98,7 +108,7 @@
     <table
       datatable
       [dtOptions]="dtOptions"
-      class="text-left text-sm row-border hover "
+      class="text-left text-sm row-border hover shadow-md "
     ></table>
   </div>
 </div>

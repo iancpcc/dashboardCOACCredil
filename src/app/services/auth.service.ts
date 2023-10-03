@@ -12,7 +12,7 @@ import { Role } from '../interfaces/role.enum';
 import { StorageService } from './storage.service';
 import { TokenModel } from 'src/1.domain/models/token.model';
 import { UserLoginUseCase } from 'src/1.domain/usecases/user-login.usecase';
-import { environment } from 'src/environments/environment';
+import { environment } from 'src/environments/environment.development';
 
 @Injectable({
   providedIn: 'root',

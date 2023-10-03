@@ -5,6 +5,7 @@ export interface RPlazoFijo {
   agencia:          string;
   codigo:           string;
   cliente:           string;
+  nombre:           string;
   identificacion:   string;
   codigousuario:    string;
   valor:            number;

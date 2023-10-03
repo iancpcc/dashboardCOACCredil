@@ -1,15 +1,12 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-
-import { ACCESS_TOKEN_KEY } from 'src/base/config/constantes';
 import { CuotasVencidas } from '../interfaces/IReportes/cuotas-vencidas.interface';
 import { GenericCRUDService } from 'src/2.data/helpers/generic-crud.service';
+import { HttpHeaders } from '@angular/common/http';
 import { IDPFAperturados } from '../interfaces/IReportes/dpf-aperturados.interface';
 import { ITotalUsuariosPanel } from '../interfaces/IReportes/RTotalUsuariosPanel.interface';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { RPlazoFijo } from '../interfaces/IReportes/plazo-fijo.interface';
 import { ResponseEntity } from 'src/2.data/entities/response.entity';
-import { StorageService } from './storage.service';
 import { environment } from 'src/environments/environment.development';
 
 @Injectable({
@@ -22,17 +19,21 @@ export class ReportService {
     withCredentials: true,
   };
 
-  OBTENER_TODOS_KEY = 'ALL';
 
   constructor(private genericCRUDService: GenericCRUDService) {}
 
   getCuotasVencidasByAsesor$ = (params: {
-    fecha: string;
-    asesorId: string;
+    fechaCorte: string;
+    asesorId: string| null;
   }): Observable<ResponseEntity<CuotasVencidas[]>> => {
-    return this.genericCRUDService.getApiData<CuotasVencidas[]>(
-      `${this.base_url}/cuotas_vencidas?fechaCorte=${params.fecha}&asesorId=${params.asesorId}`
-    );
+    // debugger
+    if (params.asesorId === "null") {
+      params.asesorId = null;
+    }
+    return this.genericCRUDService.postApiData<CuotasVencidas[]>({
+      url:`${this.base_url}/cuotas_vencidas?`,
+      body:params
+    });
   };
 
   getDPFAperturadosPorAgencia$ = (
@@ -57,7 +58,7 @@ export class ReportService {
   }): Observable<ResponseEntity<RPlazoFijo[]>> => {
     params.codigoAgencias = params.codigoAgencias.toString();
     // debugger
-    if (params.codigoAsesores === this.OBTENER_TODOS_KEY) {
+    if (params.codigoAsesores === "null") {
       params.codigoAsesores = null;
     }
     return this.genericCRUDService.postApiData<RPlazoFijo[]>({
