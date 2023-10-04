@@ -46,7 +46,7 @@ export class AuthService {
           const data = this.jwtService.decodeJwt(accessToken);
           this.roles = data.role ?? [];
           this.userSessionExpires = data.exp ?? 0;
-          console.log('Esta es toda la info', data);
+
           this.userAccessToken = accessToken;
           this.isAuthenticated$.emit(true);
         }
@@ -67,6 +67,7 @@ export class AuthService {
       this.roles = this.loadRoles;
       const data = this.jwtService.decodeJwt(this.userAccessToken);
       this.userSessionExpires = data.exp!
+
     }
   }
 
@@ -85,7 +86,7 @@ export class AuthService {
       let expired =  currentTime  > this.userSessionExpires ;
       return expired;
     } catch (error) {
-      console.log('Error', error);
+
       throw error;
     }
   }

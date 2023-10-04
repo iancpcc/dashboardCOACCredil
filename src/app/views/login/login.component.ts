@@ -65,7 +65,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     if (this.loginForm.invalid || !username || !password) {
       this.loginForm.controls.username.markAsDirty();
       this.loginForm.controls.password.markAsDirty();
-      // console.log('error', this.loginForm.controls.clave.errors);
+      //
       return;
     }
     //Form valid
@@ -83,7 +83,7 @@ export class LoginComponent implements OnInit, OnDestroy {
         }),
         startWith({ state: DataState.LOADING }),
         catchError((error) => {
-          console.log('Error', error);
+
           return of({ state: DataState.ERROR, error });
         })
       )
@@ -94,7 +94,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.dataSubscription.unsubscribe();
-    console.log('login desuscrito');
+
   }
 
   get usernameErrors(): string {

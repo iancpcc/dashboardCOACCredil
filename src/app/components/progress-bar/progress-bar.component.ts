@@ -11,7 +11,7 @@ export class ProgressBarComponent implements OnInit {
 
   ngOnInit(): void {
     // const obs = this.seconds.subscribe((value) => {
-    //   console.log(value);
+    //
     //   if (value == 10) {
     //     obs.unsubscribe();
     //   }

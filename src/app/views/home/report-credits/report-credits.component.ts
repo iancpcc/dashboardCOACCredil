@@ -140,7 +140,7 @@ export class ReportCreditsComponent implements OnInit {
       }),
       startWith({ state: DataState.LOADING }),
       catchError((error) => {
-        // console.log(Error,error)
+        //
         return of({ state: DataState.ERROR, error });
       })
     );

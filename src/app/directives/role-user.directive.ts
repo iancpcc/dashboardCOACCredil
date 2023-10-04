@@ -1,4 +1,5 @@
 import { ApplicationRef, Directive, Input, OnInit, TemplateRef, ViewContainerRef } from '@angular/core';
+
 import { AuthService } from '../services/auth.service';
 import { Role } from '../interfaces/role.enum';
 
@@ -6,32 +7,32 @@ import { Role } from '../interfaces/role.enum';
   selector: '[appRoleDirective]'
 })
 export class RoleUserDirective implements OnInit{
- 
+
 
   private currentUserRoles: Role[]=[];
   private rolesAllowed: Role[]=[];
 
-  constructor(private templateRef: TemplateRef<any>, 
-    private viewContainer:ViewContainerRef, 
+  constructor(private templateRef: TemplateRef<any>,
+    private viewContainer:ViewContainerRef,
     private authService:AuthService ,
-    ) { 
+    ) {
 
       this.currentUserRoles = this.authService.roles;
     }
-   
+
 
   ngOnInit(): void {
-    
+
   //   this.authService.userLoggedIn$.subscribe( res=>{
   //     this.currentUserRoles = res.data?.role ?? [Role.ADMIN];
   //    this.appRef.tick();
 
-  //   console.log({rol: res});
+  //
   //  });
   }
 
 
-  @Input() 
+  @Input()
   set appRoleDirective(val:Role[]){
      this.viewContainer.createEmbeddedView(this.templateRef);
      this.rolesAllowed = val;
@@ -43,7 +44,7 @@ export class RoleUserDirective implements OnInit{
     if (this.checkPermissions()){
       this.viewContainer.createEmbeddedView(this.templateRef);
     }
-     
+
   }
 
   checkPermissions():boolean {

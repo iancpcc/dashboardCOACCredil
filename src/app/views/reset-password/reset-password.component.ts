@@ -112,7 +112,7 @@ export class ResetPasswordComponent implements OnInit {
         }),
         startWith({ state: DataState.LOADING }),
         catchError((error) => {
-          console.log('Error es', error);
+
 
           return of({ state: DataState.ERROR, error });
         })

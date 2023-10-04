@@ -151,7 +151,7 @@ export class PlazoFijoComponent {
       }),
       startWith({ state: DataState.LOADING }),
       catchError((error) => {
-        // console.log(Error,error)
+        //
         return of({ state: DataState.ERROR, error });
       })
     );
@@ -176,7 +176,7 @@ export class PlazoFijoComponent {
       })
       .pipe(
         map((response) => {
-          console.log('Respuesta', response);
+
           response.data?.push({
             nombre: 'TODOS',
             usuario: null,

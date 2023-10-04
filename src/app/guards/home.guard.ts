@@ -30,8 +30,10 @@ export class HomeGuard implements CanActivateChild {
     if (this._authService.isLoggedIn && !this._authService.isTokenExpired  ) {
       return true;
     }
+    if (this._authService.isLoggedIn){
+      this._alertSrv.showAlertError("Sesión caducada, Vuelva a ingresar")
+    }
     this._authService.isAuthenticated$.emit(false);
-     this._alertSrv.showAlertError("Sesión caducada, Vuelva a ingresar")
     this._route.navigateByUrl('/login');
     return false;
 

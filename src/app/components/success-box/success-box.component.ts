@@ -1,5 +1,6 @@
-import { Component, Input, OnInit } from '@angular/core';
 import { AppStateEntity, DataState } from 'src/2.data/entities/app-state.entity';
+import { Component, Input, OnInit } from '@angular/core';
+
 // import { AppState } from 'src/domain/models/app-state.interface';
 // import { DataState } from 'src/domain/models/data-state.enum';
 // import { IResponse } from 'src/domain/models/response.interface';
@@ -19,8 +20,8 @@ export class SuccessBoxComponent implements OnInit {
 
   ngOnInit(): void {
 
-    console.log('Items', this.listItems);
-    
+
+
   }
 
 

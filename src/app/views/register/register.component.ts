@@ -1,3 +1,4 @@
+import { AppStateEntity, CustomError } from 'src/2.data/entities/app-state.entity';
 import { FormBuilder, Validators } from '@angular/forms';
 import {
   Observable,
@@ -16,16 +17,15 @@ import {
 
 import { AuthService } from 'src/app/services/auth.service';
 import { Component } from '@angular/core';
+import { DataState } from 'src/2.data/entities/app-state.entity';
+import { ResponseEntity } from 'src/2.data/entities/response.entity';
 import { Router } from '@angular/router';
 import { StorageService } from 'src/app/services/storage.service';
-import { AppStateEntity, CustomError } from 'src/2.data/entities/app-state.entity';
-import { DataState } from 'src/2.data/entities/app-state.entity';
+import { UserAuthImplementationRepository } from 'src/2.data/repositories/user/user-auth-imp.repository';
+import { UserAuthRepository } from 'src/1.domain/repositories/user-auth.repository';
+import { UserLoginUseCase } from 'src/1.domain/usecases/user-login.usecase';
 import { UserModel } from 'src/1.domain/models/user.model';
 import { UserRegisterUseCase } from 'src/1.domain/usecases/user-register.usecase';
-import { UserAuthImplementationRepository } from 'src/2.data/repositories/user/user-auth-imp.repository';
-import { UserLoginUseCase } from 'src/1.domain/usecases/user-login.usecase';
-import { UserAuthRepository } from 'src/1.domain/repositories/user-auth.repository';
-import { ResponseEntity } from 'src/2.data/entities/response.entity';
 
 @Component({
   selector: 'app-register',
@@ -85,15 +85,14 @@ export class RegisterComponent {
           return { state: DataState.LOADED, data: {message: this.MESSAGE_SUCCESS} };
         }),
         tap(() => {
-          console.log('Registro exitoso!!');
-          
-          timer(5000).subscribe(() => {
-            this.router.navigateByUrl('/login');
-          });
+
+          // timer(5000).subscribe(() => {
+          //   this.router.navigateByUrl('/login');
+          // });
         }),
         startWith({ state: DataState.LOADING }),
         catchError((error) => {
-          console.log('Error', error);
+
           return of({ state: DataState.ERROR, error });
         })
       )
@@ -123,7 +122,7 @@ export class RegisterComponent {
   //     ),
   //     startWith({ state: DataState.LOADING }),
   //     catchError((error) => {
-  //       console.log('Error', error);
+  //
   //       return of({ state: DataState.ERROR, error: error.message });
   //     }),
   //   ).subscribe((res) => {
