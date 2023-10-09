@@ -12,6 +12,7 @@ import {
   catchError,
   map,
   of,
+  shareReplay,
   startWith,
   tap,
 } from 'rxjs';
@@ -29,6 +30,10 @@ import { ResponseEntity } from 'src/2.data/entities/response.entity';
   styleUrls: ['./home-page.component.css'],
 })
 export class HomePageComponent implements OnInit, OnDestroy {
+  @ViewChild('myChart', { static: true })
+  myChartCanvas!: ElementRef<HTMLCanvasElement>;
+  chart: any;
+
   constructor(
     private reportSrv: ReportService,
     private utilsSrv: HelpersService,
@@ -77,9 +82,6 @@ export class HomePageComponent implements OnInit, OnDestroy {
     this.paramsToApi.year = currentDate.getFullYear();
   }
 
-  @ViewChild('myChart', { static: true })
-  myChartCanvas!: ElementRef<HTMLCanvasElement>;
-  chart: any;
 
   buildBarChart() {
     this.chart = new Chart('myChart', {
@@ -128,13 +130,16 @@ export class HomePageComponent implements OnInit, OnDestroy {
       .getDPFAperturadosPorAgencia$(this.paramsToApi)
       .pipe(
         map((response) => {
+          console.log("datos cargados",response.data)
           return { state: DataState.LOADED, data: response.data };
         }),
         startWith({ state: DataState.LOADING, data: [] }),
         catchError((error) => {
           // this.alertSrv.showAlertError(error.message)
           return of({ state: DataState.ERROR, error, data: [] });
-        })
+        }),
+        shareReplay(1)
+
       )
       .subscribe((response) => {
         if (response.state === DataState.LOADED) {

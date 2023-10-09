@@ -1,4 +1,8 @@
-import { IUsuario, IUsuarioAgencia } from '../interfaces/usuario-agencia.interface';
+import {
+  IPaginationModel,
+  IUsuario,
+  IUsuarioAgencia,
+} from '../interfaces/usuario-agencia.interface';
 
 import { AuthService } from './auth.service';
 import { GenericCRUDService } from 'src/2.data/helpers/generic-crud.service';
@@ -19,27 +23,32 @@ export class UsuarioService {
     private _userCreatePwd: UserCreatePasswordUseCase,
     private _localStorage: StorageService,
     private genericService: GenericCRUDService,
-    private _authService:AuthService
-  ) { }
+    private _authService: AuthService
+  ) {}
 
   changePasswordToLogin$ = (password: string): Observable<boolean> => {
-    let userId = this._authService.userLogged ?? this._localStorage.getData(USER_LOGGED_KEY)??'';
+    let userId =
+      this._authService.userLogged ??
+      this._localStorage.getData(USER_LOGGED_KEY) ??
+      '';
     return this._userCreatePwd.execute({ userId, password });
   };
 
-  getUsersByAgencies$ = (params: { agencia: number | string , rolesId: string }) => {
-    params.agencia = params.agencia.toString()
+  getUsersByAgencies$ = (params: {
+    agencia: number | string;
+    rolesId: string;
+  }) => {
+    params.agencia = params.agencia.toString();
     // debugger
-    return this.genericService.postApiData<IUsuarioAgencia[]>(
-    { url: `${this.base_url}/usersByAgency`, body: params  }
-  );}
+    return this.genericService.postApiData<IUsuarioAgencia[]>({
+      url: `${this.base_url}/usersByAgency`,
+      body: params,
+    });
+  };
 
-  getAllUsers$ = ():Observable<ResponseEntity<IUsuario[]>> => {
-    return this.genericService.getApiData<IUsuario[]>(`${this.base_url}/getAllUsers` )
-  }
-
-
-
-
-
+  getAllUsers$ = (page: number = 1): Observable<ResponseEntity<IPaginationModel<IUsuario[]>>> => {
+    return this.genericService.getApiData<IPaginationModel<IUsuario[]>>(
+      `${this.base_url}/getAllUsers?pagina=${page}`
+    );
+  };
 }

@@ -1,26 +1,40 @@
-<!-- <div
-class="overflow-x-auto w-full overflow-y-auto px-10 pt-5 sm:-mx-6 lg:-mx-8 mt-5 border-t border-slate-300 "
->
-<button class="px-4 py-2 font-medium text-white bg-blue-600 rounded-md hover:bg-blue-500 focus:outline-none focus:shadow-outline-blue active:bg-blue-600 transition duration-150 ease-in-out">Editar</button>
-<button class="ml-2 px-4 py-2 font-medium text-white bg-red-600 rounded-md hover:bg-red-500 focus:outline-none focus:shadow-outline-red active:bg-red-600 transition duration-150 ease-in-out">Eliminar</button>
+<div class="h-full   grid  gap-y-5">
+  <!-- (click)="modalRestablecerClave(usuario.usuario!)" -->
+  <div class=" space-y-5 md:flex md:justify-between md:space-y-0">
+    <button
+    class="bg-blue-500 max-w-52 h-10 hover:bg-blue-700 text-white py-2 px-4  rounded-ss-md rounded-e-md"
+  >
+  <i class='bx bx-message-square-add'></i>
+    Nuevo Usuario
+  </button>
 
-<table
-  datatable
-  [dtOptions]="dtOptions"
-  class="display"
-></table>
-<tbody>
-  <tr>
-    <td>
-<button class="ml-2 px-4 py-2 font-medium text-white bg-red-600 rounded-md hover:bg-red-500 focus:outline-none focus:shadow-outline-red active:bg-red-600 transition duration-150 ease-in-out">Eliminar</button>
+  <div>
 
-    </td>
-  </tr>
-</tbody>
-</div>
- -->
+    <div class="flex">
+      <input
+      type="search"
+        name="search"
+        class="rounded-none rounded-l-lg border-r-0 bg-gray-50 border border-gray-300 text-gray-900 block flex-1 w-full text-sm p-2.5 outline-none"
+        id="grid-first-name"
+        placeholder="Ej: JuanSoto"
+      />
+      <div
+        class="inline-flex h-auto w-12 items-center px-3 text-sm text-gray-900 bg-gray-200 border border-l-0 border-gray-300 rounded-r-md"
+      >
+          <img
+            class=""
+            src="../../../assets/icons/search2.png"
+            alt=""
+            srcset=""
+          />
+    </div>
+      <!-- <p class="text-red-500 text-xs italic">Please fill out this field.</p> -->
+    </div>
+  </div>
 
-<div class="h-full  overflow-y-scroll flex justify-center">
+  </div>
+  <div class="overflow-y-scroll">
+
   <ng-container *ngIf="(usuarios$ | async) as usuarios" [ngSwitch]="usuarios.state">
 
     <app-spinner class="absolute" *ngSwitchCase="DataState.LOADING"></app-spinner>
@@ -29,9 +43,10 @@ class="overflow-x-auto w-full overflow-y-auto px-10 pt-5 sm:-mx-6 lg:-mx-8 mt-5 
     [title]="usuarios?.error?.message??'Error'"></app-danger>
     <ng-container  *ngSwitchCase="DataState.LOADED">
 
-    <table class="table-auto min-w-full text-left text-sm font-light border border-stoke ">
+    <table class=" min-w-full text-left text-xs md:text-sm font-light border border-stoke ">
       <thead class="border-b bg-white font-medium">
         <tr>
+          <th scope="col" class="px-6 py-4">#</th>
           <th scope="col" class="px-6 py-4">Usuario</th>
           <th scope="col" class="px-6 py-4 text-center">Cambió Contraseña</th>
           <th scope="col" class="px-6 py-4">Estado</th>
@@ -40,15 +55,17 @@ class="overflow-x-auto w-full overflow-y-auto px-10 pt-5 sm:-mx-6 lg:-mx-8 mt-5 
       </thead>
       <tbody >
         <tr
-
-          *ngFor="let usuario of usuarios.data; let i = index"
-          class="border-b bg-neutral-100"
-          [ngClass]="{ '!bg-white': i % 2 == 0 }"
+          *ngFor="let usuario of usuariosLimitados; let i = index; even as impar; trackBy:trackByFn"
+          class="border-b bg-neutral-100  "
+          [ngClass]="{ '!bg-white': impar }"
         >
-          <td class="whitespace-nowrap px-6 py-4 font-medium">
+        <td class="whitespace-nowrap px-6 py-4 border font-medium">
+          {{ i+1 }}
+        </td>
+          <td class="whitespace-nowrap px-6 py-4 border font-medium">
             {{ usuario.usuario }}
           </td>
-          <td class="whitespace-nowrap px-6 py-4 text-center">
+          <td class="whitespace-nowrap px-6 py-4 border text-center">
             <span
               class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800"
               [ngClass]="{ 'bg-red-100 text-red-800': !usuario.cambiaClave }"
@@ -56,7 +73,7 @@ class="overflow-x-auto w-full overflow-y-auto px-10 pt-5 sm:-mx-6 lg:-mx-8 mt-5 
               {{ usuario.cambiaClave ? "si" : "no" }}</span
             >
           </td>
-          <td class="whitespace-nowrap px-6 py-4">
+          <td class="whitespace-nowrap px-6 py-4 border">
             <span
               class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800"
               [ngClass]="{ 'bg-red-100 text-red-800': !usuario.activo }"
@@ -64,11 +81,12 @@ class="overflow-x-auto w-full overflow-y-auto px-10 pt-5 sm:-mx-6 lg:-mx-8 mt-5 
               {{ usuario.activo ? "activo" : "inactivo" }}</span
             >
           </td>
-          <td class="whitespace-nowrap px-6 py-4">
+          <td class="whitespace-nowrap px-6 py-0">
             <button
               (click)="modalRestablecerClave(usuario.usuario!)"
-              class="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded-full"
+              class="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded-md"
             >
+            <i class='bx bx-reset' ></i>
               Restablecer Contraseña
             </button>
           </td>
@@ -78,5 +96,54 @@ class="overflow-x-auto w-full overflow-y-auto px-10 pt-5 sm:-mx-6 lg:-mx-8 mt-5 
     </table>
   </ng-container>
 
-  </ng-container>
+
+  <div class="flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3 sm:px-6">
+  <div class="flex flex-1 justify-between sm:hidden">
+    <a href="#" class="relative inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50">Previous</a>
+    <a href="#" class="relative ml-3 inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50">Next</a>
+  </div>
+  <div class="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
+    <div>
+      <p class="text-sm text-gray-700">
+        Mostrando
+        <span class="font-medium">1</span>
+        al
+        <span class="font-medium">10</span>
+        de
+        <span class="font-medium">{{this.usuariosObtenidos.length}}</span>
+        resultados
+      </p>
+    </div>
+    <div>
+      <nav class="isolate inline-flex -space-x-px rounded-md shadow-sm" aria-label="Pagination">
+        <a class="relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0">
+          <span class="sr-only">Anterior</span>
+          <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+            <path fill-rule="evenodd" d="M12.79 5.23a.75.75 0 01-.02 1.06L8.832 10l3.938 3.71a.75.75 0 11-1.04 1.08l-4.5-4.25a.75.75 0 010-1.08l4.5-4.25a.75.75 0 011.06.02z" clip-rule="evenodd" />
+          </svg>
+        </a>
+        <!-- Current: "z-10 bg-indigo-600 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600", Default: "text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:outline-offset-0" -->
+        <a *ngFor="let item of numerosPagina; let i = index; "
+        (click)="nextPage(item)"
+        class="relative inline-flex cursor-pointer items-center px-4 py-2 text-sm hover:bg-blue-500 hover:text-white text-gray-900 ring-1 ring-inset ring-gray-300  focus:z-20 focus:outline-offset-0">
+        {{item}}
+      </a>
+        <span class="relative inline-flex items-center px-4 py-2 text-sm hover:bg-blue-500  text-gray-700 ring-1 ring-inset ring-gray-300 focus:outline-offset-0">...</span>
+        <a
+        class="relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300  focus:z-20 focus:outline-offset-0"
+
+        >
+          <span class="sr-only">Siguiente</span>
+          <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+            <path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clip-rule="evenodd" />
+          </svg>
+        </a>
+      </nav>
+    </div>
+  </div>
+  </div>
+
+</ng-container>
+</div>
+
 </div>
