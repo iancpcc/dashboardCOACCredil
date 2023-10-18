@@ -1,14 +1,16 @@
 import { RouterModule, Routes } from '@angular/router';
 
 import { CartaPreferencialComponent } from './carta-preferencial/carta-preferencial.component';
+import { CuotasVencidasComponent } from './cuotas-vencidas/cuotas-vencidas.component';
+import { DashboardPageComponent } from './panel-principal/dashboard-page.component';
 import { HomeComponent } from './home.component';
-import { HomePageComponent } from '../admin/home-page/home-page.component';
+import { MENU_OPTIONS } from 'src/base/config/rutas-app';
 import { NgModule } from '@angular/core';
 import { PageNotFoundComponentComponent } from '../page-not-found-component/page-not-found-component.component';
-import { PlazoFijoComponent } from './plazo-fijo/plazo-fijo.component';
-import { ReportCreditsComponent } from './report-credits/report-credits.component';
+import { PlazoFijoComponent } from './proximos-vencimientos/plazo-fijo.component';
 import { Role } from 'src/app/interfaces/role.enum';
 import { SeguridadComponent } from '../admin/seguridad/seguridad.component';
+import { SituacionCrediticiaComponent } from './situacion-crediticia/situacion-crediticia.component';
 import { UsuariosComponent } from '../admin/usuarios/usuarios.component';
 
 const homeRoutes = [
@@ -18,7 +20,7 @@ const homeRoutes = [
     children: [
       {
         path: 'home',
-        component: HomePageComponent,
+        component: DashboardPageComponent,
         data: {
           roles: [
             Role.ADMIN,
@@ -52,46 +54,40 @@ const homeRoutes = [
           ],
         },
       },
+      //MODULO GERENCIA
       {
-        path: 'carta-preferencial',
-        component: CartaPreferencialComponent,
+        path: MENU_OPTIONS[1].submenu[0].route.replace('/',''),
+        component: CuotasVencidasComponent,
         data: {
-          roles: [
-            Role.ADMIN,
-            Role.ADMINISTRATIVO,
-            Role.JEFE_NEGOCIOS,
-            Role.ASESOR_CAPTACIONES,
-          ],
-        },
-      },
-      {
-        path: 'cuotas-vencidas',
-        component: ReportCreditsComponent,
-        data: {
-          roles: [
-            Role.ADMIN,
-            Role.ADMINISTRATIVO,
-            Role.JEFE_NEGOCIOS,
-            Role.ASESOR_CAPTACIONES,
-          ],
+          roles: MENU_OPTIONS[1].roles
         },
 
       },
       {
-        path: 'vencimientos',
+        path: MENU_OPTIONS[1].submenu[1].route.replace('/',''),
+        component: CartaPreferencialComponent,
+        data: {
+          roles: MENU_OPTIONS[1].roles
+        },
+      },
+      {
+        path: MENU_OPTIONS[1].submenu[2].route.replace('/',''),
+        component: SituacionCrediticiaComponent,
+        data: {
+          roles: MENU_OPTIONS[1].roles
+        },
+      },
+      //DPFs
+      {
+        path:  MENU_OPTIONS[2].submenu[0].route.replace('/',''),
         component: PlazoFijoComponent,
         data: {
-          roles: [
-            Role.ADMIN,
-            Role.ADMINISTRATIVO,
-            Role.JEFE_NEGOCIOS,
-            Role.ASESOR_CAPTACIONES,
-          ],
+          roles: MENU_OPTIONS[2].roles
         },
       },
       {
         path: '',
-        component: HomePageComponent,
+        component: DashboardPageComponent,
       },
     ],
 

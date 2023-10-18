@@ -10,7 +10,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ResponseEntity } from 'src/2.data/entities/response.entity';
 import { StorageService } from './storage.service';
-import { USER_LOGGED_KEY } from 'src/base/config/constantes';
+import { USER_LOGGED_KEY } from 'src/base/config/rutas-app';
 import { UserCreatePasswordUseCase } from 'src/1.domain/usecases/Users/user-create-password.usecase';
 import { environment } from 'src/environments/environment.development';
 

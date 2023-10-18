@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, catchError, of } from 'rxjs';
 
-import { ACCESS_TOKEN_KEY } from 'src/base/config/constantes';
+import { ACCESS_TOKEN_KEY } from 'src/base/config/rutas-app';
 import { Injectable } from '@angular/core';
 import { ResponseEntity } from 'src/2.data/entities/response.entity';
 import { StorageService } from './storage.service';

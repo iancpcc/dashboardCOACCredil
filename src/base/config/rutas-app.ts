@@ -34,12 +34,19 @@ export const MENU_OPTIONS = [
     submenu: [
       // { name: 'créditos', route: '/creditos' },
       { name: 'cuotas vencidas', route: '/cuotas-vencidas' },
-      // { name: 'crédito preferencial', route: '/preferenciales' },
       // { name: 'recuperación cartera castigada', route: '/cartera-castigada' },
       { name: 'carta preferencial', route: '/carta-preferencial' },
+      { name: 'situación crediticia', route: '/situacion-crediticia' },
     ],
   },
 
+   {
+    name: 'dpf',
+    icon: 'bx bx-line-chart',
+    roles: [Role.ADMIN, Role.ADMINISTRATIVO, Role.GESTOR_CREDITO, Role.OFICIAL_CUMPLIMIENTO, Role.GESTOR_DPF],
+    active: true,
+    submenu: [{ name: 'vencimientos', route: '/proximos-vencimientos' }],
+  },
   {
     name: 'captaciones',
     icon: 'bx bx-male-female',
@@ -51,13 +58,6 @@ export const MENU_OPTIONS = [
       // { name: 'mayores depositantes a 90 días', route: '#' },
       // { name: 'ahorro programado', route: '#' },
     ],
-  },
-  {
-    name: 'dpf',
-    icon: 'bx bx-line-chart',
-    roles: [Role.ADMIN, Role.ADMINISTRATIVO, Role.GESTOR_CREDITO, Role.OFICIAL_CUMPLIMIENTO, Role.GESTOR_DPF],
-    active: true,
-    submenu: [{ name: 'vencimientos', route: '/vencimientos' }],
   },
   {
     name: 'plazo fijo',

@@ -1,8 +1,9 @@
-import { Injectable } from '@angular/core';
 import { CanActivate, Router } from '@angular/router';
-import { Observable } from 'rxjs';
-import { ACCESS_TOKEN_KEY } from '../../base/config/constantes';
+
+import { ACCESS_TOKEN_KEY } from '../../base/config/rutas-app';
 import { AuthService } from '../services/auth.service';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 import { StorageService } from '../services/storage.service';
 
 @Injectable({

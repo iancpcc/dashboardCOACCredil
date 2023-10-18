@@ -18,10 +18,10 @@ import { UsuarioService } from 'src/app/services/usuario.service';
 
 @Component({
   selector: 'app-report-credits',
-  templateUrl: './report-credits.component.html',
-  styleUrls: ['./report-credits.component.css'],
+  templateUrl: './cuotas-vencidas.component.html',
+  styleUrls: ['./cuotas-vencidas.component.css'],
 })
-export class ReportCreditsComponent implements OnInit {
+export class CuotasVencidasComponent implements OnInit {
   @ViewChild(DataTableDirective, { static: false })
   dtElement: DataTableDirective | undefined;
 

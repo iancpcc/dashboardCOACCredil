@@ -1,7 +1,7 @@
 import {
   ACCESS_TOKEN_KEY,
   USER_LOGGED_KEY,
-} from '../../base/config/constantes';
+} from '../../base/config/rutas-app';
 import { EventEmitter, Injectable } from '@angular/core';
 import { Observable, tap } from 'rxjs';
 

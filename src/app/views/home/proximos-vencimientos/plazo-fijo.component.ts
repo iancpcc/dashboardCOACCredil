@@ -44,7 +44,7 @@ export class PlazoFijoComponent {
 
   constructor(
     private agenciaService: AgenciasService,
-    private usuarioSerice: UsuarioService,
+    private usuarioService: UsuarioService,
     private reportSrv: ReportService
   ) {}
 
@@ -72,13 +72,13 @@ export class PlazoFijoComponent {
           .subscribe(async (resp: AppStateEntity<RPlazoFijo[]>) => {
             this.reportState$ = resp;
             callback({
-              recordsTotal: resp.data?.length,
-              recordsFiltered: resp.data?.length,
-              data: resp.data,
+              recordsTotal: 0,
+              recordsFiltered: 0,
+              data: [],
             });
           });
 
-        // })
+
       },
       columns: [
         {
@@ -128,13 +128,42 @@ export class PlazoFijoComponent {
         },
       ],
       dom: 'Bfrtip',
-      buttons: ['copy', 'print', 'excel', 'pdf'],
+      buttons: [
+        'copy', 'csv', 'excel', 'pdf', 'print'
+    ]
     };
   }
 
   async reload() {
     let dt = await this.dtElement?.dtInstance;
     dt?.ajax.reload();
+
+this.dtOptions ={
+ajax: ({}, callback: any) => {
+  this.reportSrv
+    .obtenerPlazoFijoPorAsesor$(this.paramsToAPI)
+    .pipe(
+      map((response) => {
+        return { state: DataState.LOADED, data: response.data };
+      }),
+      startWith({ state: DataState.LOADING, data: [] }),
+      catchError((error) => of({ state: DataState.ERROR, error }))
+    )
+    .subscribe(async (resp: AppStateEntity<RPlazoFijo[]>) => {
+      this.reportState$ = resp;
+      callback({
+        recordsTotal: resp.data?.length,
+        recordsFiltered: resp.data?.length,
+        data: resp.data,
+      });
+    });
+  }
+}
+
+
+
+
+
   }
 
   obtenerAgencias$(): Observable<AppStateEntity<IAgencia[]>> {
@@ -169,7 +198,7 @@ export class PlazoFijoComponent {
       (Role.ASESOR_CAPTACIONES, Role.GESTOR_CREDITO, Role.ASESOR_NEGOCIOS)
     }`;
     // this.paramsToAPI.codigoAsesores = null;
-    this.usuarios$ = this.usuarioSerice
+    this.usuarios$ = this.usuarioService
       .getUsersByAgencies$({
         agencia,
         rolesId,

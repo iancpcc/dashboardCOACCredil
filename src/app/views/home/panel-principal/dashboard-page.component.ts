@@ -26,10 +26,10 @@ import { ResponseEntity } from 'src/2.data/entities/response.entity';
 
 @Component({
   selector: 'app-home-page',
-  templateUrl: './home-page.component.html',
-  styleUrls: ['./home-page.component.css'],
+  templateUrl: './dashboard-page.component.html',
+  styleUrls: ['./dashboard-page.component.css'],
 })
-export class HomePageComponent implements OnInit, OnDestroy {
+export class DashboardPageComponent implements OnInit, OnDestroy {
   @ViewChild('myChart', { static: true })
   myChartCanvas!: ElementRef<HTMLCanvasElement>;
   chart: any;

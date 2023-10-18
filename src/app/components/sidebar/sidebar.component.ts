@@ -11,7 +11,7 @@ import {
 } from '@angular/core';
 
 import { AuthService } from 'src/app/services/auth.service';
-import { MENU_OPTIONS } from 'src/base/config/constantes';
+import { MENU_OPTIONS } from 'src/base/config/rutas-app';
 
 @Component({
   selector: 'app-sidebar',

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
-import { MENU_OPTIONS } from 'src/base/config/constantes';
+import { MENU_OPTIONS } from 'src/base/config/rutas-app';
 import { Router } from '@angular/router';
 
 @Component({
