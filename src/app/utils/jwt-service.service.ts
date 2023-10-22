@@ -19,6 +19,9 @@ export class JwtService {
       'http://schemas.microsoft.com/ws/2008/06/identity/claims/role'
       ];
     const expirationTime = tokenDecoded['exp'];
-    return { name: username, role: roles, exp: expirationTime };
+
+    const rolesToArray = Array.isArray(roles)? roles : [roles]
+
+    return { name: username, role: rolesToArray, exp: expirationTime };
   }
 }

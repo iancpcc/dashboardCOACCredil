@@ -1,8 +1,11 @@
-<div class="w-full h-full flex flex-col items-center">
+<div
+  class="relative flex flex-col justify-start h-full items-center overflow-hidden space-y-5 py-1 "
+>
   <ng-container
-    *ngIf="agencias$ | async as agencias"
+    *ngIf="(agencias$ | async) as agencias"
     [ngSwitch]="agencias.state"
   >
+  <!-- Alert Error -->
     <div
       class="md:absolute top-5 right-0 bg-orange-100 border-l-4 max-w-xs border-orange-500 text-orange-700 p-4"
       role="alert"
@@ -12,8 +15,8 @@
       <p>No se pudo conectar al servidor</p>
     </div>
     <!-- Form -->
-    <form class="md:w-1/3 flex flex-col space-y-5 p-2">
-      <div>
+    <form class="md:w-64 flex flex-col space-y-5 p-2">
+      <div >
         <label
           class="uppercase tracking-wide text-gray-700 text-xs mb-2"
           for="grid-last-name"
@@ -22,7 +25,7 @@
         </label>
         <select
           name="codigoAgencia"
-          [(ngModel)]="paramsToAPI.codigoAgencias"
+          [(ngModel)]="paramsToAPI.agencia"
           (change)="obtenerUsuariosPorAgencia($event)"
           class="w-full font-poppins block appearance-none bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
           id="grid-state"
@@ -47,16 +50,14 @@
           Usuario
         </label>
         <select
-          [(ngModel)]="paramsToAPI.codigoAsesores"
           name="asesor"
-          [disabled]="
-            !paramsToAPI.codigoAgencias || paramsToAPI.codigoAgencias == 0
-          "
+          [(ngModel)]="paramsToAPI.asesorId"
+          [disabled]="!paramsToAPI.agencia || paramsToAPI.agencia == 0"
           class="font-poppins block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500 disabled:cursor-not-allowed"
           id="grid-state"
         >
           <option value="0">--Escoja una Asesor--</option>
-          <ng-container *ngIf="usuarios$ &&  (usuarios$ | async) as asesores">
+          <ng-container *ngIf="usuarios$ | async as asesores">
             <option
               *ngFor="let asesor of asesores.data"
               [value]="asesor.usuario"
@@ -65,15 +66,6 @@
             </option>
           </ng-container>
         </select>
-      </div>
-      <div>
-        <label
-          class="block uppercase tracking-wide text-gray-700 text-xs mb-2"
-          for="grid-password"
-        >
-          Dias Atras
-        </label>
-        <input max="0" class="font-poppins block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" [(ngModel)]="paramsToAPI.diaInicio" type="number" name="diaInicio" id="">
       </div>
 
       <!-- <p class="text-gray-600 text-xs italic">Make it as long and as crazy as you'd like</p> -->
@@ -84,12 +76,12 @@
             [disabled]="
               !isReadyAllParameters || reportState$.state == DataState.LOADING
             "
-            type="button"
+            type="submit"
             (click)="onSubmit()"
             class="disabled:bg-blue-500 truncate w-40 flex justify-center bg-blue-700 text-white py-2 px-4 rounded-md disabled:cursor-not-allowed"
           >
             <app-spinner
-              *ngIf="!isFirstCallAjax && reportState$.state == DataState.LOADING "
+              *ngIf="!isFirstCallAjax && reportState$.state == DataState.LOADING"
             ></app-spinner>
             {{
               reportState$.state == DataState.LOADING && !isFirstCallAjax
@@ -101,14 +93,20 @@
       </div>
     </form>
   </ng-container>
-  <!-- Tabla -->
-  <div
-    class="overflow-x-auto w-full overflow-y-auto px-10 pt-5 sm:-mx-6 lg:-mx-8 mt-5  "
-  >
-    <table
-      datatable
-      [dtOptions]="dtOptions"
-      class="text-left text-sm row-border hover  cell-border stripe"
-    ></table>
-  </div>
+    <div
+      class="overflow-x-auto w-full overflow-y-auto px-10 pt-2 sm:-mx-6 lg:-mx-8 mt-5  "
+    >
+      <table
+        #tablaCuotas
+        id="tablaCuotas"
+        datatable
+        [dtOptions]="dtOptions"
+        class="text-left text-sm font-light   row-border hover cell-border stripe "
+      ></table>
+    </div>
+
+    <div class="">
+
+    </div>
+
 </div>

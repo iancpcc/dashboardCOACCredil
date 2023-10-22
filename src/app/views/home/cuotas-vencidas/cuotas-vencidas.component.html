@@ -1,10 +1,13 @@
+
+
 <div
-  class="relative flex flex-col justify-start h-full items-center overflow-hidden space-y-5 py-5"
+  class="relative flex flex-col justify-start h-full items-center overflow-hidden space-y-5 py-1 "
 >
   <ng-container
     *ngIf="(agencias$ | async) as agencias"
     [ngSwitch]="agencias.state"
   >
+  <!-- Alert Error -->
     <div
       class="md:absolute top-5 right-0 bg-orange-100 border-l-4 max-w-xs border-orange-500 text-orange-700 p-4"
       role="alert"
@@ -14,7 +17,7 @@
       <p>No se pudo conectar al servidor</p>
     </div>
     <!-- Form -->
-    <form class="md:w-1/3 flex flex-col space-y-5 p-2">
+    <form class="md:w-64 flex flex-col space-y-5 p-2">
       <div >
         <label
           class="uppercase tracking-wide text-gray-700 text-xs mb-2"
@@ -34,7 +37,6 @@
             <option
               *ngFor="let agencia of agencias.data"
               [value]="[agencia.id]"
-
             >
               {{ agencia.nombre }}
             </option>
@@ -92,14 +94,109 @@
       </div>
     </form>
   </ng-container>
+
+
+      <!-- VIEW PDF -->
+
+  <div class="w-full h-full p-5 overflow-scroll bg-slate-100 ">
     <div
-      class="overflow-x-auto w-full overflow-y-auto px-10 pt-5 sm:-mx-6 lg:-mx-8 mt-5 border-t border-slate-300 "
+      #htmlToPDF
+      class="font-normal relative m-auto  border  w-full h-auto bg-white px-5 pt-5"
+    >
+
+      <div
+      class="overflow-x-auto w-full overflow-y-auto px-10 pt-2 sm:-mx-6 lg:-mx-8 mt-5  "
     >
       <table
         datatable
         [dtOptions]="dtOptions"
-        class="text-left text-sm row-border hover shadow-md"
-      ></table>
+        class=" font-light   row-border hover cell-border stripe "
+      >
+
+      <thead>
+
+         <div class=" absolute  w-full  flex  justify-center items-center space-x-10">
+
+        <img
+        class=" h-10 w-auto "
+        src="../../../assets/img/logofull.png"
+        alt=""
+        />
+
+        <span class=" text-right text-lg font-bold text-tertiary ">REPORTE DE CUOTAS VENCIDAS</span>
+      </div>
+
+
+
+        <div class="ml-5 mt-10 grid gap-2">
+          <div class="space-x-2">
+            <label class="font-bold" for="">Asesor:</label>
+            <span>{{paramsToAPI.asesor}}</span>
+          </div>
+          <div class="space-x-2">
+            <label class="font-bold" for="">Agencia:</label>
+            <span>{{agenciaNombre}}</span>
+          </div>
+          <div class="space-x-2">
+            <label class="font-bold" for="">Fecha:</label>
+            <span>{{paramsToAPI.fechaCorte}}</span>
+          </div>
+
+        </div>
+
+
+
+
+
+
+      </thead>
+      <tbody></tbody>
+      <tfoot class="text-primary">
+        <tr>
+          <th></th>
+          <th></th>
+          <th></th>
+          <th></th>
+          <th>Totales:</th>
+            <th  class="font-thin text-right"></th>
+            <th  class="font-thin text-right"></th>
+            <th></th>
+            <th  class="font-thin text-right"></th>
+            <th></th>
+            <th></th>
+        </tr>
+
+        <div
+        *ngIf="reportState$.state ===DataState.LOADED && !isFirstCallAjax"
+        class="ml-5 text-primary grid gap-2  w-52">
+          <div class="space-x-2">
+            <label class="font-bold" for="">Cartera:</label>
+            <span>{{calculosCuotas.cartera}}</span>
+          </div>
+          <div class="space-x-2">
+            <label class="font-bold" for="">Colocación:</label>
+            <span>{{calculosCuotas.colocacion}}</span>
+          </div>
+          <div class="space-x-2">
+            <label class="font-bold" for="">Morosidad:</label>
+            <span>{{calculosCuotas.morosidad}}</span>
+          </div>
+          <div class="space-x-2">
+            <label class="font-bold" for="">Socios Nuevos:</label>
+            <span>{{calculosCuotas.sociosNuevos}}</span>
+          </div>
+          <div class="space-x-2">
+            <label class="font-bold" for="">Socios:</label>
+            <span>{{calculosCuotas.socios}}</span>
+          </div>
+
+        </div>
+
+    </tfoot>
+    </table>
     </div>
+    </div>
+  </div>
 
 </div>
+

@@ -20,8 +20,10 @@ export interface CuotasVencidas {
     diasmoraactual: number;
     garantes:       string;
     socios:         number;
-    sociosnuevos:   null;
+    sociosnuevos:   number;
     scartera:       number;
-    ncol:           null;
+    ncol:           number | null;
+    provision:      number;
+    porcentajeprovision:           number;
 }
 

@@ -35,11 +35,11 @@ export class SidebarComponent implements OnInit {
 
   ngOnInit(): void {
     const rutaActual = this.router.url;
-
     this.breakpointObserver.observe([Breakpoints.XSmall]).subscribe(result => {
       this.isSidebarClose = result.matches;
       this.sidebarClose.emit(this.isSidebarClose)
     });
+
 
     this.OPTIONS_SIDEBAR.forEach((element, index) => {
       let existRoute = element.submenu.some(name=> name.route === rutaActual)

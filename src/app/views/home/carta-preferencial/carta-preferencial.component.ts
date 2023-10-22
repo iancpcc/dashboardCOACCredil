@@ -57,6 +57,7 @@ export class CartaPreferencialComponent implements OnDestroy {
   }
 
   findClient() {
+    console.log("click")
 
     if (this.socioInfo.numero!.toString().length <=4){
        this._alertSrv.showAlertError("Ingrese un número de socio válido")
@@ -67,10 +68,12 @@ export class CartaPreferencialComponent implements OnDestroy {
       .getClient$(this.socioInfo.numero!)
       .pipe(
         tap((response) => {
+          debugger
           const {nombre, numero, jefeagencia="SIN-JEFEAGENCIA", asesor="SIN-ASESOR"} = response.data!;
           this.socioInfo = {nombre, numero,jefeagencia,asesor, monto:0};
         }),
         map((response) => {
+          debugger
           return { state: DataState.LOADED, data: response.data };
         }),
         startWith({ state: DataState.LOADING }),
@@ -79,8 +82,8 @@ export class CartaPreferencialComponent implements OnDestroy {
           return of({ state: DataState.ERROR, error });
         })
       )
-      .subscribe((res)=>this.cliente = res
-      );
+      .subscribe((res)=>
+      this.cliente = res);
     }
 
   }

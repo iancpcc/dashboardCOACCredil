@@ -16,13 +16,10 @@ export class RoleUserDirective implements OnInit{
     private viewContainer:ViewContainerRef,
     private authService:AuthService ,
     ) {
-
       this.currentUserRoles = this.authService.roles;
     }
 
-
   ngOnInit(): void {
-
   //   this.authService.userLoggedIn$.subscribe( res=>{
   //     this.currentUserRoles = res.data?.role ?? [Role.ADMIN];
   //    this.appRef.tick();
@@ -34,8 +31,9 @@ export class RoleUserDirective implements OnInit{
 
   @Input()
   set appRoleDirective(val:Role[]){
-     this.viewContainer.createEmbeddedView(this.templateRef);
-     this.rolesAllowed = val;
+    this.viewContainer.createEmbeddedView(this.templateRef);
+    this.rolesAllowed = val;
+
       this.updateView();
   }
 

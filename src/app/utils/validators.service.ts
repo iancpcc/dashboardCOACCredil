@@ -12,7 +12,7 @@ export const controlErrorMessage = {
 }
 
 export const patternValidators = {
-  onlyLetters: "[a-zA-Z]+$",
+  onlyLetters: "[a-zA-Z-Ññ]+$",
   passwordSecure: "(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[^\w\s]).{8,}$"
 }
 

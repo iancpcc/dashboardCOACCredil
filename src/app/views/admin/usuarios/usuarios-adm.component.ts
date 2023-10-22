@@ -6,34 +6,26 @@ import {
   Component,
   OnDestroy,
   OnInit,
-  TemplateRef,
-  ViewChild,
 } from '@angular/core';
 import { Observable, catchError, map, of, startWith, tap } from 'rxjs';
 
 import { AuthService } from 'src/app/services/auth.service';
 import { DataTableDirective } from 'angular-datatables';
 import { IUsuario } from 'src/app/interfaces/usuario-agencia.interface';
-import { ResponseEntity } from 'src/2.data/entities/response.entity';
 import Swal from 'sweetalert2';
 import { UsuarioService } from 'src/app/services/usuario.service';
-import { error } from 'jquery';
 
 @Component({
-  selector: 'app-seguridad',
-  templateUrl: './seguridad.component.html',
-  styleUrls: ['./seguridad.component.css'],
+  selector: 'app-usuarios-adm',
+  templateUrl: './usuarios-adm.component.html',
+  styleUrls: ['./usuarios-adm.component.css'],
 })
-export class SeguridadComponent implements OnInit, OnDestroy {
+export class UsuariosAdmComponent implements OnInit, OnDestroy {
   dtElement: DataTableDirective | undefined;
-  @ViewChild('btnEdit') btnEditar!: TemplateRef<any>;
-  @ViewChild('btnDelete') btnEliminar!: TemplateRef<any>;
   dtOptions: any = {};
   usuariosObtenidos: IUsuario[] = [];
   usuariosLimitados: IUsuario[] = [];
   numerosPagina: number[] = [];
-  indexStart= 0 ;
-  indexEnd = 5;
 
   usuarios$!: Observable<AppStateEntity<IUsuario[]>>;
   currentPage = 1;
@@ -45,7 +37,7 @@ export class SeguridadComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {}
 
   ngOnInit(): void {
-    // console.log("USUARIOS:", this.usuariosObtenidos)
+
     this.obtenerUsuariosPorPagina(this.currentPage);
   }
 

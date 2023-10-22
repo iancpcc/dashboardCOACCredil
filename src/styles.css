@@ -31,17 +31,23 @@
 }
 
 .dt-buttons {
-  @apply my-3;
+  @apply my-1 absolute;
 }
 .dt-button {
-  @apply font-medium border bg-gray-100 border-gray-400 w-[60px] h-[30px] hover:bg-gray-200 p-1 rounded-sm;
+  @apply  font-medium border bg-gray-100 border-gray-400 w-[60px] h-[30px] hover:bg-gray-200 p-1 rounded-sm;
 }
 .show_alert-bg {
  @apply !bg-secondary
 }
 
+table thead th {
+  font-weight: 400!important;
+  color:#2A3F54 ;
+}
 
-
+table tbody tr {
+  color:#2A3F54 ;
+}
 
 /* html, body { height: 100vh; padding: 0; margin: 0; box-sizing: border-box; }
 /* body { margin: 0;font-family: 'Poppins', sans-serif; } */

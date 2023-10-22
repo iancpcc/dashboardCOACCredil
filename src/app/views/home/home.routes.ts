@@ -1,6 +1,8 @@
 import { RouterModule, Routes } from '@angular/router';
 
 import { CartaPreferencialComponent } from './carta-preferencial/carta-preferencial.component';
+import { CumpleaniosClientesComponent } from './cumpleanios-clientes/cumpleanios-clientes.component';
+import { CuotasVencidasAgenciaComponent } from './cuotas-vencidas-agencia/cuotas-vencidas-agencia.component';
 import { CuotasVencidasComponent } from './cuotas-vencidas/cuotas-vencidas.component';
 import { DashboardPageComponent } from './panel-principal/dashboard-page.component';
 import { HomeComponent } from './home.component';
@@ -9,15 +11,19 @@ import { NgModule } from '@angular/core';
 import { PageNotFoundComponentComponent } from '../page-not-found-component/page-not-found-component.component';
 import { PlazoFijoComponent } from './proximos-vencimientos/plazo-fijo.component';
 import { Role } from 'src/app/interfaces/role.enum';
-import { SeguridadComponent } from '../admin/seguridad/seguridad.component';
 import { SituacionCrediticiaComponent } from './situacion-crediticia/situacion-crediticia.component';
-import { UsuariosComponent } from '../admin/usuarios/usuarios.component';
+import { UsuariosAdmComponent } from '../admin/usuarios/usuarios-adm.component';
 
 const homeRoutes = [
   {
     path: '',
     component: HomeComponent,
     children: [
+      //Dashboard
+      {
+        path: '',
+        component: DashboardPageComponent,
+      },
       {
         path: 'home',
         component: DashboardPageComponent,
@@ -30,31 +36,16 @@ const homeRoutes = [
           ],
         },
       },
+      //Modulo de Adminitracion
       {
-        path: 'usuarios',
-        component: UsuariosComponent,
+        path: MENU_OPTIONS[0].submenu[0].route.replace("/",""),
+        component: UsuariosAdmComponent,
         data: {
-          roles: [
-            Role.ADMIN,
-            Role.ADMINISTRATIVO,
-            Role.JEFE_NEGOCIOS,
-            Role.ASESOR_CAPTACIONES,
-          ],
+          roles: MENU_OPTIONS[0].roles
         },
       },
-      {
-        path: 'usuarios-adm',
-        component: SeguridadComponent,
-        data: {
-          roles: [
-            Role.ADMIN,
-            Role.ADMINISTRATIVO,
-            Role.JEFE_NEGOCIOS,
-            Role.ASESOR_CAPTACIONES,
-          ],
-        },
-      },
-      //MODULO GERENCIA
+
+      //MODULO GERENCIA 1
       {
         path: MENU_OPTIONS[1].submenu[0].route.replace('/',''),
         component: CuotasVencidasComponent,
@@ -64,20 +55,27 @@ const homeRoutes = [
 
       },
       {
-        path: MENU_OPTIONS[1].submenu[1].route.replace('/',''),
+        path:  MENU_OPTIONS[1].submenu[1].route.replace('/',''),
+        component: CuotasVencidasAgenciaComponent,
+        data: {
+          roles: MENU_OPTIONS[2].roles
+        },
+      },
+      {
+        path: MENU_OPTIONS[1].submenu[2].route.replace('/',''),
         component: CartaPreferencialComponent,
         data: {
           roles: MENU_OPTIONS[1].roles
         },
       },
       {
-        path: MENU_OPTIONS[1].submenu[2].route.replace('/',''),
+        path: MENU_OPTIONS[1].submenu[3].route.replace('/',''),
         component: SituacionCrediticiaComponent,
         data: {
           roles: MENU_OPTIONS[1].roles
         },
       },
-      //DPFs
+      //Modulo DPFs 2
       {
         path:  MENU_OPTIONS[2].submenu[0].route.replace('/',''),
         component: PlazoFijoComponent,
@@ -85,10 +83,19 @@ const homeRoutes = [
           roles: MENU_OPTIONS[2].roles
         },
       },
+
+
+      //Modulo Clientes 3
       {
-        path: '',
-        component: DashboardPageComponent,
+
+        path:  MENU_OPTIONS[3].submenu[0].route.replace('/',''),
+        component: CumpleaniosClientesComponent,
+        data: {
+          roles: MENU_OPTIONS[3].roles
+        },
       },
+
+
     ],
 
   },

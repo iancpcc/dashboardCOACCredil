@@ -16,7 +16,6 @@
             name="numero"
             class="rounded-none rounded-l-lg border-r-0 bg-gray-50 border border-gray-300 text-gray-900 block flex-1 w-full text-sm p-2.5 outline-none"
             id="grid-first-name"
-            (input)="validarNumero()"
             placeholder="000000"
           />
           <button
@@ -119,9 +118,10 @@
       EXPORTAR PDF
     </button>
   </form>
+
   <!-- VIEW PDF -->
 
-  <div class="w-full h-full p-5 overflow-scroll bg-slate-100">
+  <div class="w-full h-full p-5 overflow-scroll bg-slate-100 font-serif">
     <div
       #htmlToPDF
       class="font-normal relative m-auto text-base border w-[21cm] h-[29.7cm] bg-white p-28"
@@ -152,23 +152,23 @@
 
       <h1 class="mt-10">Atentamente:</h1>
 
-      <div class="flex w-full mt-32 mb-20 px-10 justify-around items-center">
-        <div class="text-center">
+      <div class="flex w-full mt-32 mb-20 text-center px-10 justify-around items-center  relative">
+        <div class="w-full ">
           <h1
-            class="w-60 border-t font-bold border-t-black text-base border-dotted"
+            class="w-60 border-t font-bold border-t-black text-base border-dotted absolute left-28"
           >
-            {{ socioInfo.jefeagencia }}
+            {{ socioInfo.jefeagencia??"NO ESTABLECIDO" }}
           </h1>
 
-          <h2>Jefe de Agencia</h2>
+          <h2 class="mt-12 text-center">Jefe de Agencia</h2>
         </div>
-        <div class="text-center">
+        <div class="w-full ">
           <h1
-            class="w-60 border-t font-bold border-t-black text-base border-dotted"
+            class="w-60 border-t font-bold border-t-black text-base border-dotted absolute right-20 "
           >
-            {{ socioInfo.asesor }}
+            {{ socioInfo.asesor ??"NO ESTABLECIDO"}}
           </h1>
-          <h2>Asesor</h2>
+          <h2 class="mt-12">Asesor de Negocios</h2>
         </div>
       </div>
     </div>

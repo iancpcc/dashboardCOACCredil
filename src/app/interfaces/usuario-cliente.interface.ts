@@ -4,4 +4,5 @@ export interface IUsuarioCliente{
   asesor?: string
   jefeagencia?: string
   monto?:number
+  telefono?:number
 }

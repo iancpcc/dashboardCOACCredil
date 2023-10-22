@@ -6,6 +6,7 @@ import { Component, Type, ViewChild } from '@angular/core';
 import { Observable, Subject, catchError, map, of, startWith } from 'rxjs';
 
 import { AgenciasService } from 'src/app/services/agencias.service';
+import { AlertService } from 'src/app/utils/alert.service';
 import { DataTableDirective } from 'angular-datatables';
 import { HelpersService } from 'src/app/utils/helpers.service';
 import { IAgencia } from 'src/app/interfaces/agencia.interface';
@@ -29,8 +30,8 @@ export class PlazoFijoComponent {
   readonly DataState = DataState;
   // consultaCuotasVencidas: CuotasVencidas[] = []
   paramsToAPI: any = {
-    codigoAgencias: 0,
-    codigoAsesores: 0,
+    codigoAgencias: '0',
+    codigoAsesores: '0',
     diaFin: 7,
     diaInicio: 0,
   };
@@ -45,7 +46,8 @@ export class PlazoFijoComponent {
   constructor(
     private agenciaService: AgenciasService,
     private usuarioService: UsuarioService,
-    private reportSrv: ReportService
+    private reportSrv: ReportService,
+    private alertSrv:AlertService
   ) {}
 
   ngOnInit(): void {
@@ -67,14 +69,19 @@ export class PlazoFijoComponent {
               return { state: DataState.LOADED, data: response.data };
             }),
             startWith({ state: DataState.LOADING, data: [] }),
-            catchError((error) => of({ state: DataState.ERROR, error }))
+            catchError((error) => {
+              if (!this.isFirstCallAjax){ //Hago esta condicion para que no aparezca el error apenas se carga la página
+
+                this.alertSrv.showAlertError(error.message)
+              }
+              return of({ state: DataState.ERROR, error })})
           )
           .subscribe(async (resp: AppStateEntity<RPlazoFijo[]>) => {
             this.reportState$ = resp;
             callback({
-              recordsTotal: 0,
-              recordsFiltered: 0,
-              data: [],
+              recordsTotal: resp.data?.length,
+              recordsFiltered: resp.data?.length,
+              data: resp.data,
             });
           });
 
@@ -92,6 +99,7 @@ export class PlazoFijoComponent {
         {
           title: 'Dirección',
           data: 'direccion',
+          width:'40%'
         },
         {
           title: 'Teléfono',

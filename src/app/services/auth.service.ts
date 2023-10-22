@@ -1,7 +1,4 @@
-import {
-  ACCESS_TOKEN_KEY,
-  USER_LOGGED_KEY,
-} from '../../base/config/rutas-app';
+import { ACCESS_TOKEN_KEY, USER_LOGGED_KEY } from '../../base/config/rutas-app';
 import { EventEmitter, Injectable } from '@angular/core';
 import { Observable, tap } from 'rxjs';
 
@@ -29,7 +26,7 @@ export class AuthService {
     private _localStorage: StorageService,
     private _userLoginUseCase: UserLoginUseCase,
     private jwtService: JwtService,
-    private genericService:GenericCRUDService
+    private genericService: GenericCRUDService
   ) {
     this.loadUserDataFromStorage();
   }
@@ -45,6 +42,7 @@ export class AuthService {
           this._localStorage.saveData(ACCESS_TOKEN_KEY, accessToken);
           const data = this.jwtService.decodeJwt(accessToken);
           this.roles = data.role ?? [];
+
           this.userSessionExpires = data.exp ?? 0;
 
           this.userAccessToken = accessToken;
@@ -55,25 +53,26 @@ export class AuthService {
     );
 
   get isLoggedIn(): boolean {
-    return this.userAccessToken != null ;
+    return this.userAccessToken != null;
   }
 
   // TODO: CARGAR EL NOMBRE DE USUARIO DESDE EL LOCALSTORAGE Y ASIGNARLO AL userLoggedIn
   loadUserDataFromStorage(): void {
     const token = this._localStorage.getData(ACCESS_TOKEN_KEY);
-    if (token){
-      this.userAccessToken = token ;
+    if (token) {
+      this.userAccessToken = token;
       this.userLogged = this._localStorage.getData(USER_LOGGED_KEY);
       this.roles = this.loadRoles;
       const data = this.jwtService.decodeJwt(this.userAccessToken);
-      this.userSessionExpires = data.exp!
-
+      this.userSessionExpires = data.exp!;
     }
   }
 
-  resetPassword$ = (userId:string):Observable<ResponseEntity<boolean>> => {
-    return this.genericService.getApiData<boolean>(`${this.base_url}/resetPassword?userId=${userId}` )
-  }
+  resetPassword$ = (userId: string): Observable<ResponseEntity<boolean>> => {
+    return this.genericService.getApiData<boolean>(
+      `${this.base_url}/resetPassword?userId=${userId}`
+    );
+  };
 
   get loadRoles(): Role[] | [] {
     if (!this.userAccessToken) return [];
@@ -82,11 +81,10 @@ export class AuthService {
 
   get isTokenExpired(): boolean {
     try {
-      const currentTime =  Date.now() / 1000;
-      let expired =  currentTime  > this.userSessionExpires ;
+      const currentTime = Date.now() / 1000;
+      let expired = currentTime > this.userSessionExpires;
       return expired;
     } catch (error) {
-
       throw error;
     }
   }

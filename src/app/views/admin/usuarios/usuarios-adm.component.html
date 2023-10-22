@@ -43,7 +43,7 @@
     [title]="usuarios?.error?.message??'Error'"></app-danger>
     <ng-container  *ngSwitchCase="DataState.LOADED">
 
-    <table class=" min-w-full text-left text-xs md:text-sm font-light border border-stoke ">
+    <table class=" h-min-[500px] min-w-full text-left text-xs md:text-sm font-light border border-stoke ">
       <thead class="border-b bg-white font-medium">
         <tr>
           <th scope="col" class="px-6 py-4">#</th>
@@ -104,7 +104,7 @@
   </div>
   <div class="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
     <div>
-      <p class="text-sm text-gray-700">
+      <!-- <p class="text-sm text-gray-700">
         Mostrando
         <span class="font-medium">1</span>
         al
@@ -112,7 +112,7 @@
         de
         <span class="font-medium">{{this.usuariosObtenidos.length}}</span>
         resultados
-      </p>
+      </p> -->
     </div>
     <div>
       <nav class="isolate inline-flex -space-x-px rounded-md shadow-sm" aria-label="Pagination">
@@ -128,7 +128,7 @@
         class="relative inline-flex cursor-pointer items-center px-4 py-2 text-sm hover:bg-blue-500 hover:text-white text-gray-900 ring-1 ring-inset ring-gray-300  focus:z-20 focus:outline-offset-0">
         {{item}}
       </a>
-        <span class="relative inline-flex items-center px-4 py-2 text-sm hover:bg-blue-500  text-gray-700 ring-1 ring-inset ring-gray-300 focus:outline-offset-0">...</span>
+        <!-- <span class="relative inline-flex items-center px-4 py-2 text-sm hover:bg-blue-500  text-gray-700 ring-1 ring-inset ring-gray-300 focus:outline-offset-0">...</span> -->
         <a
         class="relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300  focus:z-20 focus:outline-offset-0"
 

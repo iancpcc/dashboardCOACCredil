@@ -2,7 +2,7 @@ import {
   AppStateEntity,
   DataState,
 } from 'src/2.data/entities/app-state.entity';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { Observable, Subject, catchError, map, of, startWith, tap } from 'rxjs';
 
 import { AgenciasService } from 'src/app/services/agencias.service';
@@ -18,11 +18,11 @@ import { Role } from 'src/app/interfaces/role.enum';
 import { UsuarioService } from 'src/app/services/usuario.service';
 
 @Component({
-  selector: 'app-report-credits',
-  templateUrl: './cuotas-vencidas.component.html',
-  styleUrls: ['./cuotas-vencidas.component.css'],
+  selector: 'app-cuotas-vencidas-agencia',
+  templateUrl: './cuotas-vencidas-agencia.component.html',
+  styleUrls: ['./cuotas-vencidas-agencia.component.css']
 })
-export class CuotasVencidasComponent implements OnInit {
+export class CuotasVencidasAgenciaComponent {
   @ViewChild(DataTableDirective, { static: false })
   dtElement: DataTableDirective | undefined;
 
@@ -39,16 +39,6 @@ export class CuotasVencidasComponent implements OnInit {
   dtOptions: any = {};
   dtTrigger = new Subject<any>();
 
-  calculosCuotas = {
-    cartera: 0,
-    colocacion: 0,
-    morosidad: 0,
-    socios: 0,
-    sociosNuevos: 0,
-  };
-
-  agenciaNombre = 'NINGUNA';
-
   usuarios$!: Observable<ResponseEntity<IUsuarioAgencia[]>>;
   agencias$!: Observable<AppStateEntity<IAgencia[]>>;
 
@@ -57,60 +47,33 @@ export class CuotasVencidasComponent implements OnInit {
     private usuarioSerice: UsuarioService,
     private reportSrv: ReportService,
     private utils: HelpersService,
-    private alertSrv: AlertService
+    private alertSrv:AlertService
   ) {}
 
   ngOnInit(): void {
     this.agencias$ = this.obtenerAgencias$();
     this.dtOptions = {
       pagingType: 'full_numbers',
-
       pageLength: 10,
       processing: true,
-      bPaginate: false,
       language: {
         url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json',
-        searchPanes: {
-          count: '{total} found',
-          countFiltered: '{shown} / {total}',
-        },
-      },
+    },
       // serverSide: true,
       responsive: true,
       ajax: ({}, callback: any) => {
         this.reportSrv
           .getCuotasVencidasByAsesor$(this.paramsToAPI)
           .pipe(
-            tap((response) => {
-              if (response.data && response.data.length > 0) {
-                let totalSaldo =
-                  response.data
-                    ?.map((r) => r.saldo)
-                    .reduce((a, b) => a + b, 0) ?? 0;
-                let totalCartera =
-                  response.data
-                    ?.map((r) => r.scartera)
-                    .reduce((a, b) => a + b, 0) ?? 0;
-                this.calculosCuotas = {
-                  cartera: response.data[0].scartera ?? 0,
-                  colocacion: response.data[0].ncol ?? 0,
-                  morosidad: +(totalSaldo / totalCartera).toFixed(2),
-                  socios: response.data[0].socios ?? 0,
-                  sociosNuevos: response.data![0].sociosnuevos ?? 0,
-                };
-              }
-            }),
             map((response) => {
               return { state: DataState.LOADED, data: response.data };
             }),
             startWith({ state: DataState.LOADING, data: [] }),
             catchError((error) => {
-              if (!this.isFirstCallAjax) {
-                //Hago esta condicion para que no aparezca el error apenas se carga la página
+              if (!this.isFirstCallAjax){ //Hago esta condicion para que no aparezca el error apenas se carga la página
 
-                this.alertSrv.showAlertError(error.message);
+                this.alertSrv.showAlertError(error.message)
               }
-
               return of({ state: DataState.ERROR, error, data: [] });
             })
           )
@@ -127,31 +90,21 @@ export class CuotasVencidasComponent implements OnInit {
       },
       columns: [
         {
-          title: 'NumCliente',
-          data: 'numero',
-        },
-        {
           title: 'Cliente',
           data: 'nombre',
         },
         {
           title: 'Dirección',
-          data: 'direccion1',
+          data: 'direccion',
         },
         {
-          title: 'Coordenadas',
-          data: 'coordenadas',
-          render: function (data: any, type: any, row: any, meta: any) {
-            data =
-              '<a target="_blank" href="https://maps.google.com/?q=' +
-              data +
-              '">' +
-              data +
-              '</a>';
-            return data;
-          },
+          title: 'Latitud',
+          data: 'latitud',
         },
-
+        {
+          title: 'Longitud',
+          data: 'longitud',
+        },
         {
           title: 'Teléfono',
           data: 'telefono',
@@ -163,22 +116,10 @@ export class CuotasVencidasComponent implements OnInit {
         {
           title: 'SaldoVencido',
           data: 'saldosvencido',
-          width: '5%',
         },
         {
           title: 'Diasmoraactual',
           data: 'diasmoraactual',
-          width: '5%',
-        },
-        {
-          title: 'Provisión',
-          data: 'provision',
-          width: '5%',
-        },
-        {
-          title: '%Provision',
-          data: 'porcentajeprovision',
-          width: '5%',
         },
         {
           title: 'Garantes',
@@ -186,49 +127,12 @@ export class CuotasVencidasComponent implements OnInit {
         },
       ],
       dom: 'Bfrtip',
-      buttons: [
-        { extend: 'copyHtml5', footer: true },
-        { extend: 'excelHtml5', footer: true },
-        { extend: 'csvHtml5', footer: true },
-        { extend: 'pdfHtml5', footer: true },
-      ],
-
-      footerCallback: function (
-        row: any,
-        data: any,
-        start: any,
-        end: any,
-        display: any
-      ) {
-        let api = this.api();
-
-        // Total over all pages
-        let totalSaldos = api
-          .column(5)
-          .data()
-          .reduce((a: number, b: number) => a + b, 0);
-
-        let totalSaldoVencido = api
-          .column(6)
-          .data()
-          .reduce((a: number, b: number) => a + b, 0);
-
-        let totalProvision = api
-          .column(8)
-          .data()
-          .reduce((a: number, b: number) => a + b, 0);
-
-        //Update footer
-        api.column(5).footer().innerHTML = totalSaldos.toFixed(2);
-        api.column(6).footer().innerHTML = totalSaldoVencido.toFixed(2);
-        api.column(8).footer().innerHTML = totalProvision.toFixed(2);
-      },
+      buttons: ['copy', 'print', 'excel', 'pdf'],
     };
   }
 
   async reload() {
     let dt = await this.dtElement?.dtInstance;
-
     dt?.ajax.reload();
   }
 
@@ -257,25 +161,22 @@ export class CuotasVencidasComponent implements OnInit {
     await this.reload();
   }
 
-  obtenerUsuariosPorAgencia(event: any): void {
-    let agencia = event.target.value;
-
-    console.log(event.target.innerHTML);
+  obtenerUsuariosPorAgencia(event:any): void {
+    let agencia = event.target.value
     const rolesId = `${(Role.ASESOR_CAPTACIONES, Role.GESTOR_CREDITO)}`;
-    this.usuarios$ = this.usuarioSerice
-      .getUsersByAgencies$({
-        agencia,
-        rolesId,
+    this.usuarios$ = this.usuarioSerice.getUsersByAgencies$({
+      agencia,
+      rolesId,
+    })
+    .pipe(
+      map((response) => {
+        response.data?.push({
+          nombre: 'TODOS',
+          usuario: null,
+        });
+        return { state: DataState.LOADED, data: response.data };
       })
-      .pipe(
-        map((response) => {
-          response.data?.push({
-            nombre: 'TODOS',
-            usuario: null,
-          });
-          return { state: DataState.LOADED, data: response.data };
-        })
-      );
+    );
   }
 
   // ngAfterViewInit(): void {
@@ -289,4 +190,5 @@ export class CuotasVencidasComponent implements OnInit {
   get isReadyAllParameters() {
     return this.paramsToAPI.asesorId != 0 && this.paramsToAPI.agencia != 0;
   }
+
 }

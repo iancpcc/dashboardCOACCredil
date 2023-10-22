@@ -1,0 +1,12 @@
+th { white-space: nowrap; }
+
+table.display td {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  -o-text-overflow: ellipsis;
+  }
+
+table  a {
+  text-decoration: underline
+}

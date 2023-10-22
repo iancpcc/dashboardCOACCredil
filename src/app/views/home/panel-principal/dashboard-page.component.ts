@@ -20,7 +20,7 @@ import {
 import { AlertService } from 'src/app/utils/alert.service';
 import { DataState } from 'src/2.data/entities/app-state.entity';
 import { HelpersService } from 'src/app/utils/helpers.service';
-import { ITotalUsuariosPanel } from 'src/app/interfaces/IReportes/RTotalUsuariosPanel.interface';
+import { ITotalUsuariosPanel } from 'src/app/interfaces/IReportes/total-usuarios.interface';
 import { ReportService } from 'src/app/services/report.service';
 import { ResponseEntity } from 'src/2.data/entities/response.entity';
 
