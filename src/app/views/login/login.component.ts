@@ -69,8 +69,10 @@ export class LoginComponent implements OnInit, OnDestroy {
       return;
     }
     //Form valid
+    let userNameUpper = username.toUpperCase()
+    debugger
     this.dataSubscription = this.authService
-      .login$({ username, password })
+      .login$({ username: userNameUpper, password })
       .pipe(
         tap((response) => {
           if (response.passwordExpired) {

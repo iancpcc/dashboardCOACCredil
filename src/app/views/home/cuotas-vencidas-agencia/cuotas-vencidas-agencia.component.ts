@@ -63,7 +63,7 @@ export class CuotasVencidasAgenciaComponent {
       responsive: true,
       ajax: ({}, callback: any) => {
         this.reportSrv
-          .getCuotasVencidasByAsesor$(this.paramsToAPI)
+          .getCuotasVencidas$(this.paramsToAPI)
           .pipe(
             map((response) => {
               return { state: DataState.LOADED, data: response.data };

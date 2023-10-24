@@ -135,7 +135,10 @@
     </div>
     <!-- Card Item End -->
     <!-- Card Item Start -->
-    <div class="rounded-sm border  py-4 px-5 text-sm border-stroke shadow-lg">
+    <div
+
+    class="rounded-sm border  py-4 px-5 text-sm border-stroke shadow-lg">
+
       <div
         class="flex h-[30.5px] w-[30.5px] items-center justify-center rounded-full bg-gray-50 p-2"
       >
@@ -152,8 +155,8 @@
 
       <div class="mt-4 flex items-end justify-between">
         <div>
-          <h4 class="text-lg font-bold text-black">{{TotalUsuarios.clientes??0}}</h4>
-          <span class="text-slate-600 text-sm font-[500]">Clientes</span>
+          <h4 class="text-lg font-bold text-black">{{ totalSociosBanca.total }}</h4>
+          <span class="text-slate-600 text-sm font-[500]">Usuarios Banca</span>
         </div>
 
 
@@ -186,10 +189,10 @@
   >
     <!-- ====== Chart One Start -->
     <div
-      class="col-span-12 w-full rounded-sm border border-stroke bg-white px-5 pt-7.5 pb-5 shadow-lg sm:px-7.5 xl:col-span-8"
+      class="col-span-12 w-full  rounded-sm border border-stroke bg-white px-5 pt-7.5 pb-5 shadow-lg sm:px-7.5 xl:col-span-8"
     >
       <div
-        class="w-fit grid grid-cols-2 md:grid-cols-6 gap-y-1 gap-x-1 mx-auto mt-2"
+        class="w-fit  grid grid-cols-2 md:grid-cols-6 gap-y-1 gap-x-1 mx-auto mt-2"
       >
         <ng-container *ngFor="let mes of monthsOfYear; let i = index">
           <button

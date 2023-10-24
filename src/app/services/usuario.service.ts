@@ -6,6 +6,7 @@ import {
 
 import { AuthService } from './auth.service';
 import { GenericCRUDService } from 'src/2.data/helpers/generic-crud.service';
+import { IUserLoggin } from '../interfaces/usuario-login.interface';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ResponseEntity } from 'src/2.data/entities/response.entity';
@@ -46,9 +47,18 @@ export class UsuarioService {
     });
   };
 
-  getAllUsers$ = (page: number = 1): Observable<ResponseEntity<IPaginationModel<IUsuario[]>>> => {
+  getAllUsers$ = (
+    page: number = 1
+  ): Observable<ResponseEntity<IPaginationModel<IUsuario[]>>> => {
     return this.genericService.getApiData<IPaginationModel<IUsuario[]>>(
       `${this.base_url}/getAllUsers?pagina=${page}`
     );
+  };
+
+  saveUser$ = (usuario: string): Observable<ResponseEntity<IUserLoggin>> => {
+    return this.genericService.postApiData<IUserLoggin>({
+      url: `${this.base_url}/createUser`,
+      body: { usuario },
+    });
   };
 }

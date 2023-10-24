@@ -82,6 +82,10 @@ export class SituacionCrediticiaComponent {
       },
       columns: [
         {
+          title: 'Numero',
+          data: 'numerocliente',
+        },
+        {
           title: 'Cliente',
           data: 'nombrecliente',
         },
@@ -90,7 +94,7 @@ export class SituacionCrediticiaComponent {
           data: 'identificacion',
         },
         {
-          title: 'Teléfono',
+          title: 'Teléfonos',
           data: 'telefonos',
         },
         {
@@ -110,8 +114,12 @@ export class SituacionCrediticiaComponent {
           data: 'fechaadjudicacion',
         },
         {
-          title: 'Asesor',
+          title: 'AsesorOriginal',
           data: 'asesororiginal',
+        },
+        {
+          title: 'AsesorActual',
+          data: 'asesorcambio',
         },
 
       ],

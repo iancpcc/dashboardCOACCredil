@@ -28,10 +28,9 @@ export const MENU_OPTIONS = [
     active: true,
     submenu: [
       // { name: 'créditos', route: '/creditos' },
-      { name: 'cuotas vencidas', route: '/cuotas-vencidas' },
-      { name: 'cuotas vencidas por agencia', route: '/cuotas-agencia' },
+
       { name: 'carta preferencial', route: '/carta-preferencial' },
-      { name: 'situación crediticia', route: '/situacion-crediticia' },
+
     ],
   },
 
@@ -41,9 +40,10 @@ export const MENU_OPTIONS = [
     roles: [
       Role.ADMIN,
       Role.ADMINISTRATIVO,
-      Role.GESTOR_CREDITO,
       Role.OFICIAL_CUMPLIMIENTO,
       Role.GESTOR_DPF,
+      Role.JEFE_AGENCIA,
+      Role.JEFE_NEGOCIOS
     ],
     active: true,
     submenu: [
@@ -62,5 +62,27 @@ export const MENU_OPTIONS = [
     ],
     active: true,
     submenu: [{ name: 'cumpleaños', route: '/cumpleanios' }],
+  },
+
+  {
+    name: 'creditos',
+    icon: 'bx bxl-mastercard',
+    roles: [
+      Role.PROMOTOR_PRODUCTOS_SERVICIOS,
+      Role.ADMIN,
+      Role.ADMINISTRATIVO,
+      Role.OFICIAL_CUMPLIMIENTO,
+      Role.GESTOR_DPF,
+      Role.GESTOR_CREDITO,
+      Role.JEFE_NEGOCIOS,
+      Role.ASISTENTE_CREDITO,
+      Role.ASESOR_CAPTACIONES,
+    ],
+    active: true,
+    submenu: [
+    { name: 'cuotas vencidas', route: '/cuotas-vencidas' },
+    { name: 'cuotas vencidas por agencia', route: '/cuotas-agencia' },
+    { name: 'situación crediticia', route: '/situacion-crediticia' },
+  ],
   },
 ];

@@ -48,33 +48,13 @@ const homeRoutes = [
       //MODULO GERENCIA 1
       {
         path: MENU_OPTIONS[1].submenu[0].route.replace('/',''),
-        component: CuotasVencidasComponent,
+        component: CartaPreferencialComponent,
         data: {
           roles: MENU_OPTIONS[1].roles
         },
 
       },
-      {
-        path:  MENU_OPTIONS[1].submenu[1].route.replace('/',''),
-        component: CuotasVencidasAgenciaComponent,
-        data: {
-          roles: MENU_OPTIONS[2].roles
-        },
-      },
-      {
-        path: MENU_OPTIONS[1].submenu[2].route.replace('/',''),
-        component: CartaPreferencialComponent,
-        data: {
-          roles: MENU_OPTIONS[1].roles
-        },
-      },
-      {
-        path: MENU_OPTIONS[1].submenu[3].route.replace('/',''),
-        component: SituacionCrediticiaComponent,
-        data: {
-          roles: MENU_OPTIONS[1].roles
-        },
-      },
+
       //Modulo DPFs 2
       {
         path:  MENU_OPTIONS[2].submenu[0].route.replace('/',''),
@@ -84,14 +64,37 @@ const homeRoutes = [
         },
       },
 
-
-      //Modulo Clientes 3
+      //Modulo Socios 3
       {
 
         path:  MENU_OPTIONS[3].submenu[0].route.replace('/',''),
         component: CumpleaniosClientesComponent,
         data: {
           roles: MENU_OPTIONS[3].roles
+        },
+      },
+
+      //Modulo Creditos 3
+
+      {
+        path:  MENU_OPTIONS[4].submenu[0].route.replace('/',''),
+        component: CuotasVencidasComponent,
+        data: {
+          roles: MENU_OPTIONS[4].roles
+        },
+      },
+      {
+        path: MENU_OPTIONS[4].submenu[1].route.replace('/',''),
+        component: CuotasVencidasAgenciaComponent,
+        data: {
+          roles: MENU_OPTIONS[4].roles
+        },
+      },
+      {
+        path: MENU_OPTIONS[4].submenu[2].route.replace('/',''),
+        component: SituacionCrediticiaComponent,
+        data: {
+          roles: MENU_OPTIONS[4].roles
         },
       },
 

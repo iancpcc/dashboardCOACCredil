@@ -1,6 +1,7 @@
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+
 import { CuotasVencidas } from '../interfaces/IReportes/cuotas-vencidas.interface';
 import { GenericCRUDService } from 'src/2.data/helpers/generic-crud.service';
-import { HttpHeaders } from '@angular/common/http';
 import { ICumpleaniosSocios } from '../interfaces/IReportes/cumpleanios-socios.interface';
 import { IDPFAperturados } from '../interfaces/IReportes/dpf-aperturados.interface';
 import { ISituacioCrediticia } from '../interfaces/IReportes/situacion-crediticia.interface';
@@ -10,6 +11,7 @@ import { Observable } from 'rxjs';
 import { RPlazoFijo } from '../interfaces/IReportes/plazo-fijo.interface';
 import { ResponseEntity } from 'src/2.data/entities/response.entity';
 import { environment } from 'src/environments/environment.development';
+import { map } from 'jquery';
 
 @Injectable({
   providedIn: 'root',
@@ -21,14 +23,18 @@ export class ReportService {
     withCredentials: true,
   };
 
-  constructor(private genericCRUDService: GenericCRUDService) {}
+  constructor(
+    private genericCRUDService: GenericCRUDService,
+    private httpClient: HttpClient
+  ) {}
 
-  getCuotasVencidasByAsesor$ = (params: {
+  getCuotasVencidas$ = (params: {
     fechaCorte: string;
     asesorId: string | null;
+    agenciasId: string | null;
   }): Observable<ResponseEntity<CuotasVencidas[]>> => {
     // debugger
-    if (params.asesorId === 'null') {
+    if (params.asesorId === 'ALL-USERS') {
       params.asesorId = null;
     }
     return this.genericCRUDService.postApiData<CuotasVencidas[]>({
@@ -54,6 +60,14 @@ export class ReportService {
     );
   };
 
+  // Este endpoint es de BLACKLEVEL para obtener el numero de socios en la banca
+  getSociosBanca$ = (): Observable<any> => {
+    return this.httpClient.post<any>(
+      'https://us-central1-credilenlinea.cloudfunctions.net/coopOnLine/app/getUsersExternal',
+       {uid: '7Uuw06pBYVMqwk9RYspKiRcodg42'}
+    );
+  };
+
   getCumpleaniosSocios$ = (params: {
     idAgencia: number;
     dias: number;
@@ -62,6 +76,7 @@ export class ReportService {
       `${this.base_url}/cumpleanios_por_dias?idAgencia=${params.idAgencia}&dias=${params.dias}`
     );
   };
+
 
   getSituacionCrediticia$ = (params: {
     codigoAgencias: string;

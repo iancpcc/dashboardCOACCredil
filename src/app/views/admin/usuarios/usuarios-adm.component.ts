@@ -4,11 +4,14 @@ import {
 } from 'src/2.data/entities/app-state.entity';
 import {
   Component,
+  ElementRef,
   OnDestroy,
   OnInit,
+  ViewChild,
 } from '@angular/core';
-import { Observable, catchError, map, of, startWith, tap } from 'rxjs';
+import { Observable, Subscription, catchError, map, of, shareReplay, startWith, tap } from 'rxjs';
 
+import { AlertService } from 'src/app/utils/alert.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { DataTableDirective } from 'angular-datatables';
 import { IUsuario } from 'src/app/interfaces/usuario-agencia.interface';
@@ -26,19 +29,48 @@ export class UsuariosAdmComponent implements OnInit, OnDestroy {
   usuariosObtenidos: IUsuario[] = [];
   usuariosLimitados: IUsuario[] = [];
   numerosPagina: number[] = [];
+  nuevoUsuario:string=""
+  apiSuscription$!: Subscription
 
   usuarios$!: Observable<AppStateEntity<IUsuario[]>>;
+  isModalOpen = false;
   currentPage = 1;
   readonly DataState = DataState;
   constructor(
     private srvUsuarios: UsuarioService,
-    private srvAuth: AuthService
+    private srvAuth: AuthService,
+    private srvAlert: AlertService
   ) {}
-  ngOnDestroy(): void {}
+  ngOnDestroy(): void {
+    this.apiSuscription$?.unsubscribe()
+
+  }
 
   ngOnInit(): void {
 
     this.obtenerUsuariosPorPagina(this.currentPage);
+  }
+
+  saveUser(){
+    this.apiSuscription$ =  this.srvUsuarios.saveUser$(this.nuevoUsuario)
+    .pipe(
+      map((res) => {
+        if (res.success){
+          this.openModal()
+          this.srvAlert.showAlertSucess("Usuario creado Exitosamente")
+          this.obtenerUsuariosPorPagina(1);
+
+        }
+          return {state: DataState.LOADED, data: res.data}
+      }),
+      startWith({ state: DataState.LOADING}),
+      catchError(err=>{
+        this.srvAlert.showAlertError(err.message)
+        return of()
+      } ),
+      shareReplay(1)
+      ).subscribe()
+    ;
   }
 
   obtenerUsuariosPorPagina(page: number): void {
@@ -59,13 +91,16 @@ export class UsuariosAdmComponent implements OnInit, OnDestroy {
 
   trackByFn( index:number , item:any) {
     // debugger
-    console.log("track by", item.usuario)
     return item.usuario; // Use a unique identifier for efficient tracking.
+  }
+
+  openModal(){
+    this.isModalOpen = !this.isModalOpen
+    this.nuevoUsuario=""
   }
 
   nextPage(numero:number) {
 
-    console.log("click", numero)
     this.obtenerUsuariosPorPagina(numero)
   }
 
