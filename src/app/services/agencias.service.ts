@@ -1,5 +1,5 @@
 import { AuthService } from './auth.service';
-import { GenericCRUDService } from 'src/2.data/helpers/generic-crud.service';
+import { GenericCRUDService } from 'src/data/helpers/generic-crud.service';
 import { HttpHeaders } from '@angular/common/http';
 import { IAgencia } from '../interfaces/agencia.interface';
 import { Injectable } from '@angular/core';

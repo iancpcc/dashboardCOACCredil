@@ -1,7 +1,7 @@
 import {
   AppStateEntity,
   DataState,
-} from 'src/2.data/entities/app-state.entity';
+} from 'src/data/entities/app-state.entity';
 import { Component, ViewChild } from '@angular/core';
 import { Observable, Subject, catchError, map, of, startWith } from 'rxjs';
 
@@ -12,7 +12,7 @@ import { IAgencia } from 'src/app/interfaces/agencia.interface';
 import { ICumpleaniosSocios } from 'src/app/interfaces/IReportes/cumpleanios-socios.interface';
 import { IUsuarioAgencia } from 'src/app/interfaces/usuario-agencia.interface';
 import { ReportService } from 'src/app/services/report.service';
-import { ResponseEntity } from 'src/2.data/entities/response.entity';
+import { ResponseEntity } from 'src/data/entities/response.entity';
 
 @Component({
   selector: 'app-cumpleanios-clientes',

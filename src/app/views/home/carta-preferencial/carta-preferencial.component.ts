@@ -1,4 +1,4 @@
-import { AppStateEntity, DataState } from 'src/2.data/entities/app-state.entity';
+import { AppStateEntity, DataState } from 'src/data/entities/app-state.entity';
 import { Component, ElementRef, OnDestroy, ViewChild } from '@angular/core';
 import { Subscription, catchError, map, of, startWith, tap } from 'rxjs';
 
@@ -68,12 +68,12 @@ export class CartaPreferencialComponent implements OnDestroy {
       .getClient$(this.socioInfo.numero!)
       .pipe(
         tap((response) => {
-          debugger
+
           const {nombre, numero, jefeagencia="SIN-JEFEAGENCIA", asesor="SIN-ASESOR"} = response.data!;
           this.socioInfo = {nombre, numero,jefeagencia,asesor, monto:0};
         }),
         map((response) => {
-          debugger
+
           return { state: DataState.LOADED, data: response.data };
         }),
         startWith({ state: DataState.LOADING }),
@@ -90,9 +90,9 @@ export class CartaPreferencialComponent implements OnDestroy {
 
   validarNumero() {
     // Utiliza una expresión regular para permitir solo números
-  //   // debugger
+  //   //
   //   if(!/^[0-9]+$/.test(this.socioInfo.numero)){
-  //     debugger
+  //
   //       this.socioInfo.numero = this.socioInfo.numero.toString().substring(1,-1)
   //   }
   }

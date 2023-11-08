@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 import { CuotasVencidas } from '../interfaces/IReportes/cuotas-vencidas.interface';
-import { GenericCRUDService } from 'src/2.data/helpers/generic-crud.service';
+import { GenericCRUDService } from 'src/data/helpers/generic-crud.service';
 import { ICumpleaniosSocios } from '../interfaces/IReportes/cumpleanios-socios.interface';
 import { IDPFAperturados } from '../interfaces/IReportes/dpf-aperturados.interface';
 import { ISituacioCrediticia } from '../interfaces/IReportes/situacion-crediticia.interface';
@@ -9,7 +9,7 @@ import { ITotalUsuariosPanel } from '../interfaces/IReportes/total-usuarios.inte
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { RPlazoFijo } from '../interfaces/IReportes/plazo-fijo.interface';
-import { ResponseEntity } from 'src/2.data/entities/response.entity';
+import { ResponseEntity } from 'src/data/entities/response.entity';
 import { environment } from 'src/environments/environment.development';
 import { map } from 'jquery';
 
@@ -33,7 +33,7 @@ export class ReportService {
     asesorId: string | null;
     agenciasId: string | null;
   }): Observable<ResponseEntity<CuotasVencidas[]>> => {
-    // debugger
+    //
     if (params.asesorId === 'ALL-USERS') {
       params.asesorId = null;
     }
@@ -95,7 +95,7 @@ export class ReportService {
     diaInicio: number;
   }): Observable<ResponseEntity<RPlazoFijo[]>> => {
     params.codigoAgencias = params.codigoAgencias.toString();
-    // debugger
+    //
     if (params.codigoAsesores === 'null') {
       params.codigoAsesores = null;
     }

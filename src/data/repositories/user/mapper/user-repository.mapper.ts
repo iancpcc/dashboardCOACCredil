@@ -1,6 +1,6 @@
-import { UserModel } from 'src/1.domain/models/user.model';
-import { UserEntity } from 'src/2.data/entities/user.entity';
-import { Mapper } from 'src/2.data/helpers/mapper/mapper';
+import { UserModel } from 'src/domain/models/user.model';
+import { UserEntity } from 'src/data/entities/user.entity';
+import { Mapper } from 'src/data/helpers/mapper/mapper';
 
 export class UserRepositoryMapper extends Mapper<
   UserEntity,

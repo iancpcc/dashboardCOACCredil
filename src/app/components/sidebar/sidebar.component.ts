@@ -12,6 +12,7 @@ import {
 
 import { AuthService } from 'src/app/services/auth.service';
 import { MENU_OPTIONS } from 'src/base/config/rutas-app';
+import { take } from 'rxjs';
 
 @Component({
   selector: 'app-sidebar',
@@ -21,9 +22,9 @@ import { MENU_OPTIONS } from 'src/base/config/rutas-app';
 export class SidebarComponent implements OnInit {
   OPTIONS_SIDEBAR = MENU_OPTIONS;
   isSubmenuOpen: boolean = false;
-  isSidebarClose!: boolean ;
+  isSidebarClose: boolean = false;
   currentMenu: number = -1;
-  @Output() sidebarClose = new EventEmitter<boolean>();
+  @Output() sidebarClose = new EventEmitter<boolean>(true);
 
   constructor(
     public authService: AuthService,
@@ -35,7 +36,11 @@ export class SidebarComponent implements OnInit {
 
   ngOnInit(): void {
     const rutaActual = this.router.url;
-    this.breakpointObserver.observe([Breakpoints.XSmall]).subscribe(result => {
+    this.breakpointObserver.observe([Breakpoints.XSmall])
+    .pipe(
+      take(1)
+    )
+    .subscribe(result => {
       this.isSidebarClose = result.matches;
       this.sidebarClose.emit(this.isSidebarClose)
     });

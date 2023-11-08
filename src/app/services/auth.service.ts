@@ -2,13 +2,13 @@ import { ACCESS_TOKEN_KEY, USER_LOGGED_KEY } from '../../base/config/rutas-app';
 import { EventEmitter, Injectable } from '@angular/core';
 import { Observable, tap } from 'rxjs';
 
-import { GenericCRUDService } from 'src/2.data/helpers/generic-crud.service';
+import { GenericCRUDService } from 'src/data/helpers/generic-crud.service';
 import { JwtService } from '../utils/jwt-service.service';
-import { ResponseEntity } from 'src/2.data/entities/response.entity';
+import { ResponseEntity } from 'src/data/entities/response.entity';
 import { Role } from '../interfaces/role.enum';
 import { StorageService } from './storage.service';
-import { TokenModel } from 'src/1.domain/models/token.model';
-import { UserLoginUseCase } from 'src/1.domain/usecases/user-login.usecase';
+import { TokenModel } from 'src/domain/models/token.model';
+import { UserLoginUseCase } from 'src/domain/usecases/user-login.usecase';
 import { environment } from 'src/environments/environment.development';
 
 @Injectable({

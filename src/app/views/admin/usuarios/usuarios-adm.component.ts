@@ -1,7 +1,7 @@
 import {
   AppStateEntity,
   DataState,
-} from 'src/2.data/entities/app-state.entity';
+} from 'src/data/entities/app-state.entity';
 import {
   Component,
   ElementRef,
@@ -36,6 +36,7 @@ export class UsuariosAdmComponent implements OnInit, OnDestroy {
   isModalOpen = false;
   currentPage = 1;
   readonly DataState = DataState;
+  currentIndexPagination: number = 0;
   constructor(
     private srvUsuarios: UsuarioService,
     private srvAuth: AuthService,
@@ -77,7 +78,7 @@ export class UsuariosAdmComponent implements OnInit, OnDestroy {
 
     this.usuarios$ = this.srvUsuarios.getAllUsers$(page).pipe(
       map((res) => {
-        // debugger
+        //
         const {registros, totalPaginas, totalRegistros} = res.data!;
         this.usuariosObtenidos = registros!;
         this.usuariosLimitados = this.usuariosObtenidos.slice(0, 10);
@@ -90,7 +91,7 @@ export class UsuariosAdmComponent implements OnInit, OnDestroy {
   }
 
   trackByFn( index:number , item:any) {
-    // debugger
+    //
     return item.usuario; // Use a unique identifier for efficient tracking.
   }
 
@@ -100,7 +101,7 @@ export class UsuariosAdmComponent implements OnInit, OnDestroy {
   }
 
   nextPage(numero:number) {
-
+    this.currentIndexPagination = numero -1;
     this.obtenerUsuariosPorPagina(numero)
   }
 

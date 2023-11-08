@@ -1,19 +1,21 @@
 import {
   AppStateEntity,
   DataState,
-} from 'src/2.data/entities/app-state.entity';
+} from 'src/data/entities/app-state.entity';
 import { Component, Type, ViewChild } from '@angular/core';
 import { Observable, Subject, catchError, map, of, startWith } from 'rxjs';
 
 import { AgenciasService } from 'src/app/services/agencias.service';
 import { AlertService } from 'src/app/utils/alert.service';
+import { AuthService } from '../../../services/auth.service';
 import { DataTableDirective } from 'angular-datatables';
 import { HelpersService } from 'src/app/utils/helpers.service';
 import { IAgencia } from 'src/app/interfaces/agencia.interface';
 import { IUsuarioAgencia } from 'src/app/interfaces/usuario-agencia.interface';
+import { MENU_OPTIONS } from 'src/base/config/rutas-app';
 import { RPlazoFijo } from 'src/app/interfaces/IReportes/plazo-fijo.interface';
 import { ReportService } from 'src/app/services/report.service';
-import { ResponseEntity } from 'src/2.data/entities/response.entity';
+import { ResponseEntity } from 'src/data/entities/response.entity';
 import { Role } from 'src/app/interfaces/role.enum';
 import { UsuarioService } from 'src/app/services/usuario.service';
 
@@ -26,6 +28,9 @@ export class PlazoFijoComponent {
   @ViewChild(DataTableDirective, { static: false })
   dtElement: DataTableDirective | undefined;
 
+  rolesUsuarioLogeado = this.authSrv.roles; //Cargo los roles del usuario
+  rolesPaginaPermitidos:Role[] = [Role.ADMINISTRATIVO, Role.ADMIN, Role.ASISTENTE_TECNOLOGIA];
+
   // usuarios$: IUsuarioAgencia[] = [];
   readonly DataState = DataState;
   // consultaCuotasVencidas: CuotasVencidas[] = []
@@ -35,6 +40,7 @@ export class PlazoFijoComponent {
     diaFin: 7,
     diaInicio: 0,
   };
+
   reportState$: AppStateEntity<RPlazoFijo[]> = {};
   isFirstCallAjax: boolean = true;
   dtOptions: any = {};
@@ -47,10 +53,17 @@ export class PlazoFijoComponent {
     private agenciaService: AgenciasService,
     private usuarioService: UsuarioService,
     private reportSrv: ReportService,
-    private alertSrv:AlertService
+    private alertSrv:AlertService,
+    private authSrv:AuthService
   ) {}
 
   ngOnInit(): void {
+    console.log({roles:this.rolesUsuarioLogeado,vista: this.rolesPaginaPermitidos})
+
+    let permiteDescargarReporte =  this.rolesUsuarioLogeado.some(val=> this.rolesPaginaPermitidos.includes(val))
+
+    console.log("Permite", permiteDescargarReporte)
+
     this.agencias$ = this.obtenerAgencias$();
     this.dtOptions = {
       pagingType: 'full_numbers',
@@ -59,6 +72,7 @@ export class PlazoFijoComponent {
     },
       pageLength: 10,
       processing: true,
+      order: [[ 8, 'asc' ]],
       // serverSide: true,
       responsive: true,
       ajax: ({}, callback: any) => {
@@ -89,17 +103,30 @@ export class PlazoFijoComponent {
       },
       columns: [
         {
-          title: 'Codigo',
-          data: 'codigo',
-        },
-        {
           title: 'Cliente',
           data: 'cliente',
+        },
+        {
+          title: 'Nombre',
+          data: 'persona',
         },
         {
           title: 'Dirección',
           data: 'direccion',
           width:'40%'
+        },
+        {
+          title: 'Coordenadas',
+          data: 'coordenadas',
+          render: function (data: any, type: any, row: any, meta: any) {
+            data =
+              '<a class="underline" target="_blank" href="https://maps.google.com/?q=' +
+              data +
+              '">' +
+              data +
+              '</a>';
+            return data;
+          },
         },
         {
           title: 'Teléfono',
@@ -115,8 +142,8 @@ export class PlazoFijoComponent {
           data: 'plazo',
         },
         {
-          title: 'Fecha Creación',
-          data: 'fechacreacion',
+          title: 'Tasa',
+          data: 'tasa',
         },
         {
           title: 'Fecha Vencimiento',
@@ -137,7 +164,9 @@ export class PlazoFijoComponent {
       ],
       dom: 'Bfrtip',
       buttons: [
-        'copy', 'csv', 'excel', 'pdf', 'print'
+       permiteDescargarReporte
+        ?
+        ['copy', 'csv',  'excel', 'pdf', 'print']:[]
     ]
     };
   }
@@ -196,7 +225,7 @@ ajax: ({}, callback: any) => {
 
   async onSubmit() {
     this.isFirstCallAjax = false;
-    // debugger
+    //
     await this.reload();
   }
 

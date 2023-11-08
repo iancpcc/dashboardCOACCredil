@@ -15,7 +15,7 @@ export class HomeComponent implements OnInit {
 
   OPTIONS_SIDEBAR = MENU_OPTIONS;
 
-  isSidebarClose!: boolean | null;
+  isSidebarClose: boolean | null = false;
   isMdScreen = false;
   ngOnInit(): void {
 

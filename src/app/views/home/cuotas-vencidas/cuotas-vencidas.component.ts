@@ -1,7 +1,7 @@
 import {
   AppStateEntity,
   DataState,
-} from 'src/2.data/entities/app-state.entity';
+} from 'src/data/entities/app-state.entity';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { IUsuario, IUsuarioAgencia } from 'src/app/interfaces/usuario-agencia.interface';
 import { Observable, Subject, catchError, map, of, startWith, tap } from 'rxjs';
@@ -14,7 +14,7 @@ import { ExcelServiceService } from 'src/app/services/excel-service.service';
 import { HelpersService } from 'src/app/utils/helpers.service';
 import { IAgencia } from 'src/app/interfaces/agencia.interface';
 import { ReportService } from 'src/app/services/report.service';
-import { ResponseEntity } from 'src/2.data/entities/response.entity';
+import { ResponseEntity } from 'src/data/entities/response.entity';
 import { Role } from 'src/app/interfaces/role.enum';
 import { UsuarioService } from 'src/app/services/usuario.service';
 import { excelDataCuotasVencidas } from 'src/app/interfaces/excelData.types';
@@ -178,7 +178,7 @@ export class CuotasVencidasComponent implements OnInit {
           data: 'coordenadas',
           render: function (data: any, type: any, row: any, meta: any) {
             data =
-              '<a target="_blank" href="https://maps.google.com/?q=' +
+              '<a class="underline" target="_blank" href="https://maps.google.com/?q=' +
               data +
               '">' +
               data +

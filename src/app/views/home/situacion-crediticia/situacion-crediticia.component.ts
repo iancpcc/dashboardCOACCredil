@@ -1,7 +1,7 @@
 import {
   AppStateEntity,
   DataState,
-} from 'src/2.data/entities/app-state.entity';
+} from 'src/data/entities/app-state.entity';
 import { Component, ViewChild } from '@angular/core';
 import { Observable, Subject, catchError, map, of, startWith } from 'rxjs';
 
@@ -13,7 +13,7 @@ import { IAgencia } from 'src/app/interfaces/agencia.interface';
 import { ISituacioCrediticia } from 'src/app/interfaces/IReportes/situacion-crediticia.interface';
 import { IUsuarioAgencia } from 'src/app/interfaces/usuario-agencia.interface';
 import { ReportService } from 'src/app/services/report.service';
-import { ResponseEntity } from 'src/2.data/entities/response.entity';
+import { ResponseEntity } from 'src/data/entities/response.entity';
 
 @Component({
   selector: 'app-situacion-crediticia',
@@ -89,10 +89,10 @@ export class SituacionCrediticiaComponent {
           title: 'Cliente',
           data: 'nombrecliente',
         },
-        {
-          title: 'Identificacion',
-          data: 'identificacion',
-        },
+        // {
+        //   title: 'Identificacion',
+        //   data: 'identificacion',
+        // },
         {
           title: 'Teléfonos',
           data: 'telefonos',

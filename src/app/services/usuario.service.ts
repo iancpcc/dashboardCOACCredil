@@ -5,14 +5,14 @@ import {
 } from '../interfaces/usuario-agencia.interface';
 
 import { AuthService } from './auth.service';
-import { GenericCRUDService } from 'src/2.data/helpers/generic-crud.service';
+import { GenericCRUDService } from 'src/data/helpers/generic-crud.service';
 import { IUserLoggin } from '../interfaces/usuario-login.interface';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { ResponseEntity } from 'src/2.data/entities/response.entity';
+import { ResponseEntity } from 'src/data/entities/response.entity';
 import { StorageService } from './storage.service';
 import { USER_LOGGED_KEY } from 'src/base/config/rutas-app';
-import { UserCreatePasswordUseCase } from 'src/1.domain/usecases/Users/user-create-password.usecase';
+import { UserCreatePasswordUseCase } from 'src/domain/usecases/Users/user-create-password.usecase';
 import { environment } from 'src/environments/environment.development';
 
 @Injectable({
@@ -40,7 +40,7 @@ export class UsuarioService {
     rolesId: string;
   }) => {
     params.agencia = params.agencia.toString();
-    // debugger
+    //
     return this.genericService.postApiData<IUsuarioAgencia[]>({
       url: `${this.base_url}/usersByAgency`,
       body: params,

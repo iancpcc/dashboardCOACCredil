@@ -5,6 +5,7 @@ import { CumpleaniosClientesComponent } from './cumpleanios-clientes/cumpleanios
 import { CuotasVencidasAgenciaComponent } from './cuotas-vencidas-agencia/cuotas-vencidas-agencia.component';
 import { CuotasVencidasComponent } from './cuotas-vencidas/cuotas-vencidas.component';
 import { DashboardPageComponent } from './panel-principal/dashboard-page.component';
+import { GeoreferenciacionComponent } from './georeferenciacion/georeferenciacion.component';
 import { HomeComponent } from './home.component';
 import { MENU_OPTIONS } from 'src/base/config/rutas-app';
 import { NgModule } from '@angular/core';
@@ -52,8 +53,15 @@ const homeRoutes = [
         data: {
           roles: MENU_OPTIONS[1].roles
         },
-
       },
+
+      // {
+      //   path: MENU_OPTIONS[1].submenu[1].route.replace('/',''),
+      //   component: GeoreferenciacionComponent,
+      //   data: {
+      //     roles: MENU_OPTIONS[1].roles
+      //   },
+      // },
 
       //Modulo DPFs 2
       {
@@ -91,10 +99,10 @@ const homeRoutes = [
         },
       },
       {
-        path: MENU_OPTIONS[4].submenu[2].route.replace('/',''),
+        path: MENU_OPTIONS[5].submenu[0].route.replace('/',''),
         component: SituacionCrediticiaComponent,
         data: {
-          roles: MENU_OPTIONS[4].roles
+          roles: MENU_OPTIONS[5].roles
         },
       },
 

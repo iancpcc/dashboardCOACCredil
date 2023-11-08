@@ -1,7 +1,7 @@
 import {
   AppStateEntity,
   DataState,
-} from 'src/2.data/entities/app-state.entity';
+} from 'src/data/entities/app-state.entity';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Subscription, catchError, map, of, startWith, take, tap } from 'rxjs';
@@ -13,7 +13,7 @@ import {
 import { AuthService } from 'src/app/services/auth.service';
 import { Router } from '@angular/router';
 import { StorageService } from 'src/app/services/storage.service';
-import { UserModel } from 'src/1.domain/models/user.model';
+import { UserModel } from 'src/domain/models/user.model';
 import { error } from 'jquery';
 
 @Component({
@@ -70,7 +70,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     }
     //Form valid
     let userNameUpper = username.toUpperCase()
-    debugger
+
     this.dataSubscription = this.authService
       .login$({ username: userNameUpper, password })
       .pipe(

@@ -1,5 +1,5 @@
-import { DataState } from 'src/2.data/entities/app-state.entity';
-import { GenericCRUDService } from 'src/2.data/helpers/generic-crud.service';
+import { DataState } from 'src/data/entities/app-state.entity';
+import { GenericCRUDService } from 'src/data/helpers/generic-crud.service';
 import { IUsuarioCliente } from '../interfaces/usuario-cliente.interface';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment.development';

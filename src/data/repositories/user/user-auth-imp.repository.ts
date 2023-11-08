@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, map, } from 'rxjs';
-import { UserAuthRepository } from 'src/1.domain/repositories/user-auth.repository';
+import { UserAuthRepository } from 'src/domain/repositories/user-auth.repository';
 import { environment } from 'src/environments/environment.development';
-import { UserModel } from 'src/1.domain/models/user.model';
-import { GenericCRUDService } from 'src/2.data/helpers/generic-crud.service';
-import { TokenModel } from 'src/1.domain/models/token.model';
+import { UserModel } from 'src/domain/models/user.model';
+import { GenericCRUDService } from 'src/data/helpers/generic-crud.service';
+import { TokenModel } from 'src/domain/models/token.model';
 
 @Injectable({
   providedIn: 'root',
@@ -19,12 +19,12 @@ export class UserAuthImplementationRepository implements UserAuthRepository {
     password: string;
   }): Observable<TokenModel> {
 
-    
+
     return this.genericCRUD.postApiData<TokenModel>({url: `${this.base_url}/login`, body: params,
       }).pipe(
         map(resp=>{
             return resp.data!
-        }),    
+        }),
       )
   }
 

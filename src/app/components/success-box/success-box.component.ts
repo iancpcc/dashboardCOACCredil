@@ -1,4 +1,4 @@
-import { AppStateEntity, DataState } from 'src/2.data/entities/app-state.entity';
+import { AppStateEntity, DataState } from 'src/data/entities/app-state.entity';
 import { Component, Input, OnInit } from '@angular/core';
 
 // import { AppState } from 'src/domain/models/app-state.interface';

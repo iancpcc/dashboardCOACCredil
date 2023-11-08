@@ -1,4 +1,4 @@
-import { AppStateEntity, CustomError } from 'src/2.data/entities/app-state.entity';
+import { AppStateEntity, CustomError } from 'src/data/entities/app-state.entity';
 import { FormBuilder, Validators } from '@angular/forms';
 import {
   Observable,
@@ -17,15 +17,15 @@ import {
 
 import { AuthService } from 'src/app/services/auth.service';
 import { Component } from '@angular/core';
-import { DataState } from 'src/2.data/entities/app-state.entity';
-import { ResponseEntity } from 'src/2.data/entities/response.entity';
+import { DataState } from 'src/data/entities/app-state.entity';
+import { ResponseEntity } from 'src/data/entities/response.entity';
 import { Router } from '@angular/router';
 import { StorageService } from 'src/app/services/storage.service';
-import { UserAuthImplementationRepository } from 'src/2.data/repositories/user/user-auth-imp.repository';
-import { UserAuthRepository } from 'src/1.domain/repositories/user-auth.repository';
-import { UserLoginUseCase } from 'src/1.domain/usecases/user-login.usecase';
-import { UserModel } from 'src/1.domain/models/user.model';
-import { UserRegisterUseCase } from 'src/1.domain/usecases/user-register.usecase';
+import { UserAuthImplementationRepository } from 'src/data/repositories/user/user-auth-imp.repository';
+import { UserAuthRepository } from 'src/domain/repositories/user-auth.repository';
+import { UserLoginUseCase } from 'src/domain/usecases/user-login.usecase';
+import { UserModel } from 'src/domain/models/user.model';
+import { UserRegisterUseCase } from 'src/domain/usecases/user-register.usecase';
 
 @Component({
   selector: 'app-register',

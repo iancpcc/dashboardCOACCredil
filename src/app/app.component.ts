@@ -3,7 +3,7 @@ import { ApplicationRef, Component, OnChanges, OnDestroy, OnInit } from '@angula
 import { AuthService } from './services/auth.service';
 import { Router } from '@angular/router';
 import { catchError, map, Observable, of, startWith, tap } from 'rxjs';
-import { AppStateEntity, DataState } from 'src/2.data/entities/app-state.entity';
+import { AppStateEntity, DataState } from 'src/data/entities/app-state.entity';
 
 @Component({
   selector: 'app-root',

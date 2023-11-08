@@ -4,11 +4,13 @@ import { FooterComponent } from './footer/footer.component';
 import { HeaderComponent } from './header/header.component';
 import { InputComponent } from './input/input.component';
 import { LoadingPageComponent } from './loading-page/loading-page.component';
+import { MapaComponent } from './mapa/mapa.component';
 import { NgModule } from '@angular/core';
 import { ProgressBarComponent } from './progress-bar/progress-bar.component';
 import { RoleUserDirective } from '../directives/role-user.directive';
 import { RouterModule } from '@angular/router';
 import { SidebarComponent } from './sidebar/sidebar.component';
+import { SkeletonComponent } from './skeleton/skeleton.component';
 import { SpinnerComponent } from './spinner/spinner.component';
 import { SuccessBoxComponent } from './success-box/success-box.component';
 import { SuccessComponent } from './success/success.component';
@@ -28,6 +30,8 @@ import { UserInfoComponent } from './user-info/user-info.component';
     SidebarComponent,
     RoleUserDirective,
     UserInfoComponent,
+    SkeletonComponent,
+    MapaComponent,
   ],
   imports: [
     CommonModule,
@@ -44,6 +48,8 @@ import { UserInfoComponent } from './user-info/user-info.component';
     HeaderComponent,
     FooterComponent,
     SidebarComponent,
+    SkeletonComponent,
+    MapaComponent
   ]
 })
 export class ComponentsModule { }

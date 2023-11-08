@@ -8,6 +8,8 @@ export interface RPlazoFijo {
   nombre:           string;
   identificacion:   string;
   codigousuario:    string;
+  codigoestadodeposito:    string;
+  coordenadas:    string;
   valor:            number;
   persona:          string;
   direccion:        string;

@@ -1,10 +1,10 @@
 import { Observable, catchError, map } from 'rxjs';
 
-import { GenericCRUDService } from 'src/2.data/helpers/generic-crud.service';
+import { GenericCRUDService } from 'src/data/helpers/generic-crud.service';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { UserModel } from 'src/1.domain/models/user.model';
-import { UserRepository } from 'src/1.domain/repositories/user.repository';
+import { UserModel } from 'src/domain/models/user.model';
+import { UserRepository } from 'src/domain/repositories/user.repository';
 import { environment } from 'src/environments/environment.development';
 
 @Injectable({

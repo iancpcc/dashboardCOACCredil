@@ -22,7 +22,7 @@ export const MENU_OPTIONS = [
       Role.ADMIN,
       Role.ADMINISTRATIVO,
       Role.OFICIAL_CUMPLIMIENTO,
-      Role.GESTOR_DPF,
+      // Role.GESTOR_DPF,
       Role.PROMOTOR_PRODUCTOS_SERVICIOS,
     ],
     active: true,
@@ -30,6 +30,7 @@ export const MENU_OPTIONS = [
       // { name: 'créditos', route: '/creditos' },
 
       { name: 'carta preferencial', route: '/carta-preferencial' },
+      { name: 'georeferencias', route: '/georeferenciacion' },
 
     ],
   },
@@ -82,6 +83,20 @@ export const MENU_OPTIONS = [
     submenu: [
     { name: 'cuotas vencidas', route: '/cuotas-vencidas' },
     { name: 'cuotas vencidas por agencia', route: '/cuotas-agencia' },
+  ],
+  },
+
+  {
+    name: 'Otros',
+    icon: 'bx bxs-color',
+    roles: [
+      Role.PROMOTOR_PRODUCTOS_SERVICIOS,
+      Role.ADMIN,
+      Role.ADMINISTRATIVO,
+      Role.OFICIAL_CUMPLIMIENTO,
+    ],
+    active: true,
+    submenu: [
     { name: 'situación crediticia', route: '/situacion-crediticia' },
   ],
   },

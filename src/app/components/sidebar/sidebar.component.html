@@ -1,19 +1,18 @@
 <!-- Sidebar Header -->
 <div
   class="h-16 w-auto flex items-center relative cursor-pointer justify-center p-2 gap-3"
+  [ngClass]="{ 'elements-hidden': isSidebarClose }"
 >
   <img
     class="h-10 w-auto transition-all ease-in duration-75 icon"
-    [class]="isSidebarClose ? 'opacity-0 hidden' : 'opacity-100 block'"
-    src="../../../assets/img/logopro.png"
+    src="/assets/img/logopro.png"
     alt=""
   />
-  <h1
-    [class]="isSidebarClose ? 'opacity-0 hidden' : 'opacity-100 block'"
+  <span
     class="text-xl text-text_color font-medium transition-all ease-in duration-75"
   >
     {{ "Reporteria" | titlecase }}
-  </h1>
+  </span>
   <i
     class="bx block bx-menu-alt-right icon text-white"
     (click)="toggleSidebar($event)"
@@ -21,26 +20,27 @@
 </div>
 
 <div
-  class="text-white text-center pt-4  cursor-pointer grid gap-y-2 tracking-wider mt-2 overflow-hidden transition-all ease-in-out duration-100"
-  [ngClass]="isSidebarClose ? 'pb-0 mb-0' : 'mb-12'"
+  class="text-white h-40 text-center mb-12 pt-4 cursor-pointer grid gap-y-2 tracking-wider mt-2 overflow-hidden transition-all ease-in-out duration-100"
   routerLink="/home"
 >
   <img
     class="w-6 h-6 md:w-8 md:h-8 m-auto text-slate-700"
-    src="../../../assets/icons/avt.png"
+    src="/assets/icons/avt.png"
     alt=""
   />
-    <span
-      class="text-sm md:text-base"
-      [ngClass]="isSidebarClose ? 'opacity-0 hidden' : 'opacity-100'"
-      >Bienvenido</span
-    >
-    <h1
-      class="text-base md:text-lg"
-      [ngClass]="isSidebarClose ? 'opacity-0 hidden' : 'opacity-100'"
-    >
-      {{ this.authService.userLogged | uppercase}}
-    </h1>
+  <div [ngClass]="{ 'elements-hidden': isSidebarClose }" >
+
+  <span
+    class="text-sm md:text-base"
+    >Bienvenido</span
+  >
+  <span
+    class="text-base md:text-lg"
+  >
+    {{ this.authService.userLogged | uppercase }}
+  </span>
+</div>
+
   <!-- <ng-template *ngIf="false">
   </ng-template> -->
 </div>
@@ -49,27 +49,27 @@
 <ul
   class="h-[calc(100%-4rem)] list-none pt-2 flex flex-col transition ease-in-out duration-500"
 >
-<li
-class="flex flex-col h-auto w-full relative cursor-pointer"
-routerLink="/home"
-(click)="toggleSubMenu($event, -1)"
->
-<a
- [ngClass]="{ menu__link: -1 == currentMenu }"
-  class="p-small inline-flex  text-[#a4b0be] hover:text-white grid-cols-3 w-full items-center text-base gap-x-5 hover:bg-slate-500 transition-all ease-in duration-700"
->
-  <!-- Link Icon -->
-  <i  class="bx bx-home-alt-2 sidebar__icon icon bx-tada-hover"></i>
-  <!-- Name Icon -->
-  <span
-    class="transition-all  ease-in whitespace-nowrap overflow-hidden"
-    [ngClass]="isSidebarClose ? ' opacity-0' : 'opacity-100'"
+  <li
+    class="flex flex-col h-auto w-full relative cursor-pointer"
+    routerLink="/home"
+    (click)="toggleSubMenu($event, -1)"
   >
-    INICIO</span
-  >
-  <!-- Arrow icon -->
-</a>
-</li>
+    <a
+      [ngClass]="{ menu__link: -1 == currentMenu }"
+      class="p-small inline-flex text-[#a4b0be] hover:text-white grid-cols-3 w-full items-center text-base gap-x-5 hover:bg-slate-500 transition-all ease-in duration-700"
+    >
+      <!-- Link Icon -->
+      <i class="bx bx-home-alt-2 sidebar__icon icon bx-tada-hover"></i>
+      <!-- Name Icon -->
+      <span
+        class="transition-all ease-in whitespace-nowrap overflow-hidden"
+        [ngClass]="isSidebarClose ? ' opacity-0' : 'opacity-100'"
+      >
+        INICIO</span
+      >
+      <!-- Arrow icon -->
+    </a>
+  </li>
   <ng-container *ngFor="let menu of OPTIONS_SIDEBAR; let i = index">
     <!-- Item Menu -->
 
@@ -81,13 +81,13 @@ routerLink="/home"
       >
         <a
           [ngClass]="{ menu__link: i == currentMenu }"
-          class="p-small inline-flex  text-[#a4b0be] hover:text-white grid-cols-3 w-full items-center text-base gap-x-5 hover:bg-slate-500 transition-all ease-in duration-700"
+          class="p-small inline-flex text-[#a4b0be] hover:text-white grid-cols-3 w-full items-center text-base gap-x-5 hover:bg-slate-500 transition-all ease-in duration-700"
         >
           <!-- Link Icon -->
           <i [class]="menu.icon" class="sidebar__icon icon bx-tada-hover"></i>
           <!-- Name Icon -->
           <span
-            class="transition-all  ease-in whitespace-nowrap overflow-hidden"
+            class="transition-all ease-in whitespace-nowrap overflow-hidden"
             [ngClass]="isSidebarClose ? ' opacity-0' : 'opacity-100'"
           >
             {{ menu.name | uppercase }}</span
@@ -108,16 +108,16 @@ routerLink="/home"
       <!-- Submenu -->
       <ng-container *ngIf="menu.submenu.length > 0">
         <ul
-          class="w-auto   bg-slate-600 max-h-0  overflow-hidden transition-all ease-in-out duration-1000 "
+          class="w-auto bg-slate-600 max-h-0 overflow-hidden transition-all ease-in-out duration-1000"
           [ngClass]="{ 'show-submenu ': isSubmenuOpen && i == currentMenu }"
         >
           <li
-            class=" text-[#d9e1ea]  m-auto relative pl-14 hover:bg-slate-500 hover:text-slate-50 text-sm cursor-pointer"
+            class="text-[#d9e1ea] m-auto relative pl-14 hover:bg-slate-500 hover:text-slate-50 text-sm cursor-pointer"
             *ngFor="let submenu of menu.submenu"
             routerLinkActive="active-submenu-link"
             [routerLink]="[submenu.route]"
           >
-            <div class="border__lateral"> {{ submenu.name | titlecase }}</div>
+            <div class="border_item-effect">{{ submenu.name | titlecase }}</div>
           </li>
         </ul>
       </ng-container>
@@ -130,7 +130,7 @@ routerLink="/home"
     (click)="logout()"
     class="flex text-white gap-4 items-center justify-center cursor-pointer"
   >
-    <img class="w-7 h-7 " src="../../../assets/icons/check-out.png" alt="" />
+    <img class="w-7 h-7" src="/assets/icons/check-out.png" alt="" />
     <span
       class="text-lg font-normal"
       [ngClass]="{ 'opacity-0 hidden': isSidebarClose }"

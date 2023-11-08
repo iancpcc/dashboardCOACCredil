@@ -32,7 +32,7 @@ export class GenericCRUDService {
 
   // private handleError(error: HttpErrorResponse) {
   //   let errorMessage: CustomError = {};
-  //   // debugger;
+  //   // ;
   //   if (error.error instanceof ErrorEvent) {
   //     // Error de red
   //     errorMessage = {
@@ -58,9 +58,9 @@ export class GenericCRUDService {
   //   }
 
   private handleError(error: HttpErrorResponse) {
-    // debugger
+    //
     let errorMessage: CustomError = { message:"Un error ha ocurrido: ",  code: error.status};
-    // debugger
+    //
 
     if (error.error instanceof ErrorEvent) {
       errorMessage.message =`${error.error.message}`;
@@ -73,7 +73,7 @@ export class GenericCRUDService {
 
       errorMessage.messageDeveloper = error.error;
     }
-    // debugger
+    //
     console.error(errorMessage);
     return throwError(() => errorMessage);
   }

@@ -3,7 +3,7 @@ import { Observable, catchError, of } from 'rxjs';
 
 import { ACCESS_TOKEN_KEY } from 'src/base/config/rutas-app';
 import { Injectable } from '@angular/core';
-import { ResponseEntity } from 'src/2.data/entities/response.entity';
+import { ResponseEntity } from 'src/data/entities/response.entity';
 import { StorageService } from './storage.service';
 import { environment } from 'src/environments/environment';
 
