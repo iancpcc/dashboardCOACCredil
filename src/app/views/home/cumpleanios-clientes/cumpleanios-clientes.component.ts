@@ -1,7 +1,4 @@
-import {
-  AppStateEntity,
-  DataState,
-} from 'src/data/entities/app-state.entity';
+import { AppStateEntity, DataState } from 'src/data/entities/app-state.entity';
 import { Component, ViewChild } from '@angular/core';
 import { Observable, Subject, catchError, map, of, startWith } from 'rxjs';
 
@@ -11,6 +8,7 @@ import { DataTableDirective } from 'angular-datatables';
 import { IAgencia } from 'src/app/interfaces/agencia.interface';
 import { ICumpleaniosSocios } from 'src/app/interfaces/IReportes/cumpleanios-socios.interface';
 import { IUsuarioAgencia } from 'src/app/interfaces/usuario-agencia.interface';
+import { NINGUN_ITEM_SELECCIONADO_CONFIG } from 'src/base/config/rutas-app';
 import { ReportService } from 'src/app/services/report.service';
 import { ResponseEntity } from 'src/data/entities/response.entity';
 
@@ -22,10 +20,10 @@ import { ResponseEntity } from 'src/data/entities/response.entity';
 export class CumpleaniosClientesComponent {
   @ViewChild(DataTableDirective, { static: false })
   dtElement: DataTableDirective | undefined;
-
+  NINGUN_ITEM_SELECCIONADO_ID = NINGUN_ITEM_SELECCIONADO_CONFIG;
   // usuarios$: IUsuarioAgencia[] = [];
   readonly DataState = DataState;
-  paramsToAPI = { idAgencia: 0, dias: 0 };
+  paramsToAPI = { idAgencia: this.NINGUN_ITEM_SELECCIONADO_ID , dias: 0 };
 
   reportState$: AppStateEntity<ICumpleaniosSocios[]> = {};
   isFirstCallAjax: boolean = true;
@@ -35,13 +33,11 @@ export class CumpleaniosClientesComponent {
   agencias$!: Observable<AppStateEntity<IAgencia[]>>;
 
   constructor(
-    private agenciaService: AgenciasService,
     private reportSrv: ReportService,
     private alertSrv: AlertService
   ) {}
 
   ngOnInit(): void {
-    this.agencias$ = this.obtenerAgencias$();
     this.dtOptions = {
       pagingType: 'full_numbers',
       pageLength: 10,
@@ -53,7 +49,7 @@ export class CumpleaniosClientesComponent {
       responsive: true,
       ajax: ({}, callback: any) => {
         this.reportSrv
-          .getCumpleaniosSocios$(this.paramsToAPI)
+          .getCumpleaniosSocios$({ ...this.paramsToAPI })
           .pipe(
             map((response) => {
               return { state: DataState.LOADED, data: response.data };
@@ -62,7 +58,6 @@ export class CumpleaniosClientesComponent {
             catchError((error) => {
               if (!this.isFirstCallAjax) {
                 //Hago esta condicion para que no aparezca el error apenas se carga la página
-
                 this.alertSrv.showAlertError(error.message);
               }
               return of({ state: DataState.ERROR, error, data: [] });
@@ -70,6 +65,9 @@ export class CumpleaniosClientesComponent {
           )
           .subscribe((resp: AppStateEntity<ICumpleaniosSocios[]>) => {
             this.reportState$ = resp;
+            if (this.isFirstCallAjax) {
+              this.reportState$.state = undefined;
+            }
             callback({
               recordsTotal: resp.data?.length,
               recordsFiltered: resp.data?.length,
@@ -83,7 +81,6 @@ export class CumpleaniosClientesComponent {
         {
           title: 'Numero',
           data: 'numero',
-
         },
         {
           title: 'Nombre',
@@ -123,24 +120,8 @@ export class CumpleaniosClientesComponent {
     };
   }
 
-  obtenerAgencias$(): Observable<AppStateEntity<IAgencia[]>> {
-    return this.agenciaService.getAgenciesByUserLogged$().pipe(
-      map((response) => {
-        if (response.data && response.data.length > 1) {
-          let consolidado = response.data.map((ag) => ag.id);
-          response.data?.push({
-            nombre: 'TODOS',
-            id: '1',
-          });
-        }
-        return { state: DataState.LOADED, data: response.data };
-      }),
-      startWith({ state: DataState.LOADING }),
-      catchError((error) => {
-        //
-        return of({ state: DataState.ERROR, error });
-      })
-    );
+  agenciaSeleccionada(event: any) {
+    this.paramsToAPI.idAgencia = event.codigo;
   }
 
   async reload() {
@@ -152,4 +133,7 @@ export class CumpleaniosClientesComponent {
     this.isFirstCallAjax = false;
     await this.reload();
   }
+
+  parametrosOk = (): boolean =>
+    this.paramsToAPI.idAgencia != this.NINGUN_ITEM_SELECCIONADO_ID  && this.paramsToAPI.dias >= 0;
 }

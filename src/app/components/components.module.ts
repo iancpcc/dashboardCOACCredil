@@ -1,3 +1,4 @@
+import { BotonGenerarReporteComponent } from './boton-generar-reporte/boton-generar-reporte.component';
 import { CommonModule } from '@angular/common';
 import { DangerComponent } from './danger/danger.component';
 import { FooterComponent } from './footer/footer.component';
@@ -9,6 +10,8 @@ import { NgModule } from '@angular/core';
 import { ProgressBarComponent } from './progress-bar/progress-bar.component';
 import { RoleUserDirective } from '../directives/role-user.directive';
 import { RouterModule } from '@angular/router';
+import { SelectorAgenciasComponent } from './selector-agencias/selector-agencias.component';
+import { SelectorUsuariosComponent } from './selector-usuarios/selector-usuarios.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { SkeletonComponent } from './skeleton/skeleton.component';
 import { SpinnerComponent } from './spinner/spinner.component';
@@ -32,6 +35,9 @@ import { UserInfoComponent } from './user-info/user-info.component';
     UserInfoComponent,
     SkeletonComponent,
     MapaComponent,
+    SelectorAgenciasComponent,
+    SelectorUsuariosComponent,
+    BotonGenerarReporteComponent,
   ],
   imports: [
     CommonModule,
@@ -49,7 +55,10 @@ import { UserInfoComponent } from './user-info/user-info.component';
     FooterComponent,
     SidebarComponent,
     SkeletonComponent,
-    MapaComponent
+    MapaComponent,
+    SelectorAgenciasComponent,
+    SelectorUsuariosComponent,
+    BotonGenerarReporteComponent
   ]
 })
 export class ComponentsModule { }

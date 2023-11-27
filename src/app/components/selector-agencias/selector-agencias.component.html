@@ -1,0 +1,19 @@
+<label
+  class="uppercase tracking-wide text-gray-700 text-xs mb-2"
+  for="grid-last-name"
+>
+  Oficina
+</label>
+<select
+  (change)="agenciaSeleccionada($event)"
+  name="codigoAgencia"
+  class="w-full font-poppins block appearance-none bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+  id="grid-state"
+>
+  <option value="-1">--Escoja una Agencia--</option>
+  <ng-container *ngIf="agencias$ | async as agencias">
+    <option *ngFor="let agencia of agencias.data" [value]="[agencia.id]">
+      {{ agencia.nombre }}
+    </option>
+  </ng-container>
+</select>

@@ -1,27 +1,25 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable, of } from 'rxjs';
 
 import { CuotasVencidas } from '../interfaces/IReportes/cuotas-vencidas.interface';
 import { GenericCRUDService } from 'src/data/helpers/generic-crud.service';
+import { HttpClient } from '@angular/common/http';
 import { ICumpleaniosSocios } from '../interfaces/IReportes/cumpleanios-socios.interface';
 import { IDPFAperturados } from '../interfaces/IReportes/dpf-aperturados.interface';
 import { ISituacioCrediticia } from '../interfaces/IReportes/situacion-crediticia.interface';
 import { ITotalUsuariosPanel } from '../interfaces/IReportes/total-usuarios.interface';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { NINGUN_ITEM_SELECCIONADO_CONFIG } from 'src/base/config/rutas-app';
 import { RPlazoFijo } from '../interfaces/IReportes/plazo-fijo.interface';
 import { ResponseEntity } from 'src/data/entities/response.entity';
 import { environment } from 'src/environments/environment.development';
-import { map } from 'jquery';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ReportService {
   private readonly base_url = `${environment.url_services}/Report`;
-  private readonly headers = {
-    headers: new HttpHeaders().set('Content-type', 'application/json'),
-    withCredentials: true,
-  };
+
+  public NINGUN_ITEM_SELECCIONADO_ID = NINGUN_ITEM_SELECCIONADO_CONFIG;
 
   constructor(
     private genericCRUDService: GenericCRUDService,
@@ -33,10 +31,15 @@ export class ReportService {
     asesorId: string | null;
     agenciasId: string | null;
   }): Observable<ResponseEntity<CuotasVencidas[]>> => {
-    //
-    if (params.asesorId === 'ALL-USERS') {
-      params.asesorId = null;
+    if (
+      params.asesorId == this.NINGUN_ITEM_SELECCIONADO_ID &&
+      params.agenciasId == this.NINGUN_ITEM_SELECCIONADO_ID
+    ) {
+      return of({ data: [] });
     }
+    //Al enviar un NULL al endpoint de la API me retona todos los usuarios de esa [Agencia]
+    params.asesorId = params.asesorId === 'ALL-USERS' ? null : params.asesorId;
+
     return this.genericCRUDService.postApiData<CuotasVencidas[]>({
       url: `${this.base_url}/cuotas_vencidas?`,
       body: params,
@@ -64,24 +67,31 @@ export class ReportService {
   getSociosBanca$ = (): Observable<any> => {
     return this.httpClient.post<any>(
       'https://us-central1-credilenlinea.cloudfunctions.net/coopOnLine/app/getUsersExternal',
-       {uid: '7Uuw06pBYVMqwk9RYspKiRcodg42'}
+      { uid: '7Uuw06pBYVMqwk9RYspKiRcodg42' }
     );
   };
 
   getCumpleaniosSocios$ = (params: {
-    idAgencia: number;
+    idAgencia: string | null;
     dias: number;
   }): Observable<ResponseEntity<ICumpleaniosSocios[]>> => {
+    if (params.idAgencia == this.NINGUN_ITEM_SELECCIONADO_ID) {
+      return of({ data: [] });
+    }
+
     return this.genericCRUDService.getApiData<ICumpleaniosSocios[]>(
       `${this.base_url}/cumpleanios_por_dias?idAgencia=${params.idAgencia}&dias=${params.dias}`
     );
   };
 
-
   getSituacionCrediticia$ = (params: {
     codigoAgencias: string;
     fechaCorte: string;
   }): Observable<ResponseEntity<ISituacioCrediticia[]>> => {
+    if (params.codigoAgencias == this.NINGUN_ITEM_SELECCIONADO_ID) {
+      return of({ data: [] });
+    }
+
     return this.genericCRUDService.postApiData<ISituacioCrediticia[]>({
       url: `${this.base_url}/situacion_crediticia`,
       body: params,
@@ -95,10 +105,12 @@ export class ReportService {
     diaInicio: number;
   }): Observable<ResponseEntity<RPlazoFijo[]>> => {
     params.codigoAgencias = params.codigoAgencias.toString();
-    //
-    if (params.codigoAsesores === 'null') {
-      params.codigoAsesores = null;
+
+    if (params.codigoAsesores === this.NINGUN_ITEM_SELECCIONADO_ID) {
+      return of({ data: [] });
     }
+    params.codigoAsesores = params.codigoAsesores === 'ALL-USERS' ? null : params.codigoAsesores;
+
     return this.genericCRUDService.postApiData<RPlazoFijo[]>({
       url: `${this.base_url}/proximos_vencimientos`,
       body: params,

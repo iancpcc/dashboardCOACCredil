@@ -4,71 +4,75 @@ import { Observable, Subject, catchError, map, of, startWith } from 'rxjs';
 
 import { AgenciasService } from 'src/app/services/agencias.service';
 import { AlertService } from 'src/app/utils/alert.service';
+import { AuthorizationService } from 'src/app/utils/authorization.service';
 import { DataTableDirective } from 'angular-datatables';
-import { HelpersService } from 'src/app/utils/helpers.service';
 import { IAgencia } from 'src/app/interfaces/agencia.interface';
-import { ISituacioCrediticia } from 'src/app/interfaces/IReportes/situacion-crediticia.interface';
 import { IUsuarioAgencia } from 'src/app/interfaces/usuario-agencia.interface';
 import { NINGUN_ITEM_SELECCIONADO_CONFIG } from 'src/base/config/rutas-app';
+import { RPlazoFijo } from 'src/app/interfaces/IReportes/plazo-fijo.interface';
 import { ReportService } from 'src/app/services/report.service';
 import { ResponseEntity } from 'src/data/entities/response.entity';
+import { UsuarioService } from 'src/app/services/usuario.service';
 
 @Component({
-  selector: 'app-situacion-crediticia',
-  templateUrl: './situacion-crediticia.component.html',
-  styleUrls: ['./situacion-crediticia.component.css'],
+  selector: 'app-proximos-vencimientos',
+  templateUrl: './proximos-vencimientos.html',
+  styleUrls: ['./proximos-vencimientos.css'],
 })
-export class SituacionCrediticiaComponent {
+export class PlazoFijoComponent {
   @ViewChild(DataTableDirective, { static: false })
   dtElement: DataTableDirective | undefined;
 
+  // usuarios$: IUsuarioAgencia[] = [];
+  readonly DataState = DataState;
+  // consultaCuotasVencidas: CuotasVencidas[] = []
   NINGUN_ITEM_SELECCIONADO_ID = NINGUN_ITEM_SELECCIONADO_CONFIG;
 
-  readonly DataState = DataState;
   paramsToAPI = {
-    fechaCorte: this.utilSrv.obtenerFechaActual(),
     codigoAgencias: this.NINGUN_ITEM_SELECCIONADO_ID,
+    codigoAsesores: this.NINGUN_ITEM_SELECCIONADO_ID,
+    diaFin: 7,
+    diaInicio: 0,
   };
 
-  reportState$: AppStateEntity<any[]> = {};
-  // isFirstCallAjax: boolean = true;
+  reportState$: AppStateEntity<RPlazoFijo[]> = {};
   dtOptions: any = {};
   dtTrigger = new Subject<any>();
+
   usuarios$!: Observable<ResponseEntity<IUsuarioAgencia[]>>;
   agencias$!: Observable<AppStateEntity<IAgencia[]>>;
 
   constructor(
     private reportSrv: ReportService,
-    private utilSrv: HelpersService,
-    private alertSrv: AlertService
+    private alertSrv: AlertService,
+    private authorizationSrv: AuthorizationService
   ) {}
 
   ngOnInit(): void {
     this.dtOptions = {
       pagingType: 'full_numbers',
-      pageLength: 10,
-      processing: true,
       language: {
         url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json',
       },
+      pageLength: 10,
+      processing: true,
+      order: [[8, 'asc']],
       // serverSide: true,
       responsive: true,
       ajax: ({}, callback: any) => {
         this.reportSrv
-          .getSituacionCrediticia$(this.paramsToAPI)
+          .obtenerPlazoFijoPorAsesor$({ ...this.paramsToAPI })
           .pipe(
             map((response) => {
               return { state: DataState.LOADED, data: response.data };
             }),
             startWith({ state: DataState.LOADING, data: [] }),
             catchError((error) => {
-              // if (!this.isFirstCallAjax){ //Hago esta condicion para que no aparezca el error apenas se carga la página
               this.alertSrv.showAlertError(error.message);
-              // }
-              return of({ state: DataState.ERROR, error, data: [] });
+              return of({ state: DataState.ERROR, error });
             })
           )
-          .subscribe((resp: AppStateEntity<ISituacioCrediticia[]>) => {
+          .subscribe(async (resp: AppStateEntity<RPlazoFijo[]>) => {
             this.reportState$ = resp;
             callback({
               recordsTotal: resp.data?.length,
@@ -76,58 +80,75 @@ export class SituacionCrediticiaComponent {
               data: resp.data,
             });
           });
-
-        // })
       },
       columns: [
         {
-          title: 'Numero',
-          data: 'numerocliente',
-        },
-        {
           title: 'Cliente',
-          data: 'nombrecliente',
+          data: 'cliente',
         },
         {
-          title: 'Identificacion',
-          data: 'identificacion',
+          title: 'Nombre',
+          data: 'persona',
         },
         {
-          title: 'Teléfonos',
+          title: 'Dirección',
+          data: 'direccion',
+          width: '40%',
+        },
+        {
+          title: 'Coordenadas',
+          data: 'coordenadas',
+          render: function (data: any, type: any, row: any, meta: any) {
+            data =
+              '<a class="underline" target="_blank" href="https://maps.google.com/?q=' +
+              data +
+              '">' +
+              data +
+              '</a>';
+            return data;
+          },
+        },
+        {
+          title: 'Teléfono',
           data: 'telefonos',
         },
+
         {
-          title: 'Operación',
-          data: 'operacion',
+          title: 'Monto',
+          data: 'monto',
         },
         {
-          title: 'Tipo Prestamo',
-          data: 'tipoprestamo',
+          title: 'Plazo',
+          data: 'plazo',
+        },
+        {
+          title: 'Tasa',
+          data: 'tasa',
+        },
+        {
+          title: 'Fecha Vencimiento',
+          data: 'fechavencimiento',
+        },
+        {
+          title: 'Vence en(Días)',
+          data: 'diasfaltantes',
+        },
+        {
+          title: 'Asesor',
+          data: 'nombre',
         },
         {
           title: 'Agencia',
-          data: 'nombreagencia',
-        },
-        {
-          title: 'Fecha Adjudicación',
-          data: 'fechaadjudicacion',
-        },
-        {
-          title: 'AsesorOriginal',
-          data: 'asesororiginal',
-        },
-        {
-          title: 'AsesorActual',
-          data: 'asesorcambio',
+          data: 'agencia',
         },
       ],
       dom: 'Bfrtip',
-      buttons: ['copy', 'print', 'excel', 'pdf'],
+      buttons: [
+        this.authorizationSrv.puedeDescargarReportes()
+          ? ['copy', 'csv', 'excel', 'pdf', 'print']
+          : [],
+      ],
     };
-  }
-
-  agenciaSeleccionada(event: any) {
-    this.paramsToAPI.codigoAgencias = event.codigo;
   }
 
   async reload() {
@@ -136,11 +157,25 @@ export class SituacionCrediticiaComponent {
   }
 
   async onSubmit() {
-    // this.isFirstCallAjax = false;
     await this.reload();
+  }
+
+  // ngAfterViewInit(): void {
+  //   this.dtTrigger.next(null);
+  // }
+  asesorSeleccionado(event: any) {
+    this.paramsToAPI.codigoAsesores = event.codigo;
+  }
+
+  agenciaSeleccionada(event: any) {
+    this.paramsToAPI.codigoAgencias = event.codigo;
+  }
+
+  ngOnDestroy(): void {
+    this.dtTrigger.unsubscribe();
   }
 
   parametrosOk = (): boolean =>
     this.paramsToAPI.codigoAgencias != this.NINGUN_ITEM_SELECCIONADO_ID &&
-    this.paramsToAPI.fechaCorte != null;
+    this.paramsToAPI.codigoAsesores != this.NINGUN_ITEM_SELECCIONADO_ID;
 }

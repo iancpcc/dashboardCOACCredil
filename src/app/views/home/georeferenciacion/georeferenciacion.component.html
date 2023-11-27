@@ -1,1 +1,46 @@
-<p>georeferenciacion works!</p>
+<div class="flex h-full w-full">
+  <div class="bg-slate-50 w-1/6 absolute z-50 bg-transparent">
+  <!-- Form -->
+  <form class="md:w-64 flex flex-col space-y-5 p-2 mt-5 m-auto">
+      <select
+        name="codigoAgencia"
+        [(ngModel)]="paramsToAPI.agenciasId"
+        (change)="cambiaEntreOficinas($event)"
+        class="w-full border-2   font-poppins block appearance-none   text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+        id="grid-state"
+      >
+        <option [value]="0">--Escoja una Agencia--</option>
+        <ng-container *ngIf="agencias$ | async as agencias" >
+          <option
+            *ngFor="let agencia of agencias.data"
+            [value]="[agencia.id]"
+          >
+            {{ agencia.nombre }}
+          </option>
+        </ng-container>
+      </select>
+    <!-- Boton Generar Reporte -->
+    <div class="flex justify-center ">
+      <ng-container  [ngSwitch]="estadoReporte">
+        <button
+          [disabled]="
+            paramsToAPI.agenciasId =='0' || estadoReporte == DataState.LOADING
+          "
+          type="submit"
+          (click)="onSubmit()"
+          class="disabled:bg-blue-500 truncate w-40 flex justify-center bg-blue-700 text-white py-2 px-4 rounded-md disabled:cursor-not-allowed"
+        >
+        {{ estadoReporte == DataState.LOADING ?'Cargando..':'Visualizar'}}
+        </button>
+      </ng-container>
+    </div>
+  </form>
+  </div>
+
+
+<!-- </ng-container> -->
+<div class="h-full w-full z-10">
+  <div id="map" ></div>
+</div>
+</div>
+

@@ -37,7 +37,6 @@ await Swal.fire({
 }
 
 async showAlertError(message:string){
-
   await Swal.fire({
     icon: 'error',
     title: 'Oops...',

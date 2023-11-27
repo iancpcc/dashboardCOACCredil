@@ -2,6 +2,7 @@ import { Role } from 'src/app/interfaces/role.enum';
 
 export const ACCESS_TOKEN_KEY = 'access_token';
 export const USER_LOGGED_KEY = 'user_logged';
+export const NINGUN_ITEM_SELECCIONADO_CONFIG = "-1"
 
 export const MENU_OPTIONS = [
   {
@@ -16,8 +17,8 @@ export const MENU_OPTIONS = [
     ],
   },
   {
-    name: 'gerencia',
-    icon: 'bx bxs-user',
+    name: 'Georeferencia',
+    icon: 'bx bxs-map-pin',
     roles: [
       Role.ADMIN,
       Role.ADMINISTRATIVO,
@@ -28,10 +29,7 @@ export const MENU_OPTIONS = [
     active: true,
     submenu: [
       // { name: 'créditos', route: '/creditos' },
-
-      { name: 'carta preferencial', route: '/carta-preferencial' },
-      { name: 'georeferencias', route: '/georeferenciacion' },
-
+      { name: 'Morosidad', route: '/georeferenciacion' },
     ],
   },
 
@@ -82,7 +80,9 @@ export const MENU_OPTIONS = [
     active: true,
     submenu: [
     { name: 'cuotas vencidas', route: '/cuotas-vencidas' },
-    { name: 'cuotas vencidas por agencia', route: '/cuotas-agencia' },
+    { name: 'carta preferencial', route: '/carta-preferencial' },
+
+    // { name: 'cuotas vencidas por agencia', route: '/cuotas-agencia' },
   ],
   },
 

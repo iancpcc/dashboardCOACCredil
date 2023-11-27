@@ -10,7 +10,7 @@ import { DashboardPageComponent } from './panel-principal/dashboard-page.compone
 import { DataTablesModule } from 'angular-datatables';
 import { HomeRoutingModule } from './home.routes';
 import { NgModule } from '@angular/core';
-import { PlazoFijoComponent } from './proximos-vencimientos/plazo-fijo.component';
+import { PlazoFijoComponent } from './vencimientos/proximos-vencimientos';
 import { SituacionCrediticiaComponent } from './situacion-crediticia/situacion-crediticia.component';
 
 @NgModule({

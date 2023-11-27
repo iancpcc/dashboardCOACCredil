@@ -1,0 +1,21 @@
+<label
+  class="uppercase tracking-wide text-gray-700 text-xs mb-2"
+  for="grid-password"
+>
+  Usuario
+</label>
+<!-- [(ngModel)]="paramsToAPI.asesorId" -->
+<select
+  name="asesor"
+  (change)="asesorSeleccionado($event)"
+  [disabled]="codAgenciaInput == '-1'"
+  class="font-poppins block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500 disabled:cursor-not-allowed"
+  id="grid-state"
+>
+  <option value="-1">--Escoja una Asesor--</option>
+  <ng-container *ngIf="usuarios$ | async as asesores">
+    <option *ngFor="let asesor of asesores.data" [value]="asesor.usuario">
+      {{ asesor.nombre }}
+    </option>
+  </ng-container>
+</select>

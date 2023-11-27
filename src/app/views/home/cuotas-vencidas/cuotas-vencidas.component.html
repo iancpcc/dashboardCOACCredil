@@ -1,108 +1,41 @@
 <div
   class="relative flex flex-col justify-start h-full items-center overflow-hidden space-y-5 py-1"
 >
-  <ng-container
-    *ngIf="agencias$ | async as agencias"
-    [ngSwitch]="agencias.state"
-  >
+
     <!-- Alert Error -->
-    <div
+    <!-- <div
       class="md:absolute top-5 right-0 bg-orange-100 border-l-4 max-w-xs border-orange-500 text-orange-700 p-4"
       role="alert"
       *ngSwitchCase="DataState.ERROR"
     >
       <p class="font-bold">Algo ocurrio</p>
       <p>No se pudo conectar al servidor</p>
-    </div>
+    </div> -->
     <!-- Form -->
     <form class="md:w-64 flex flex-col space-y-5 p-2">
-      <div>
-        <label
-          class="uppercase tracking-wide text-gray-700 text-xs mb-2"
-          for="grid-last-name"
-        >
-          Oficina
-        </label>
-        <select
-          name="codigoAgencia"
-          [(ngModel)]="paramsToAPI.agenciasId"
-          (change)="obtenerUsuariosPorAgencia($event)"
-          class="w-full font-poppins block appearance-none bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-          id="grid-state"
-        >
-          <option [value]="0">--Escoja una Agencia--</option>
-          <ng-container *ngSwitchCase="DataState.LOADED">
-            <option
-              *ngFor="let agencia of agencias.data"
-              [value]="[agencia.id]"
-            >
-              {{ agencia.nombre }}
-            </option>
-          </ng-container>
-        </select>
-      </div>
-      <div>
-        <label
-          class=" uppercase tracking-wide text-gray-700 text-xs mb-2"
-          for="grid-password"
-        >
-          Usuario
-        </label>
-        <select
-          name="asesor"
-          [(ngModel)]="paramsToAPI.asesorId"
-          (change)="asesorSeleccionado($event)"
-          [disabled]="!paramsToAPI.agenciasId || paramsToAPI.agenciasId == '0'"
-          class="font-poppins block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500 disabled:cursor-not-allowed"
-          id="grid-state"
-        >
-          <option [value]="0">--Escoja una Asesor--</option>
-          <ng-container *ngIf="usuarios$ | async as asesores">
-            <option
-              *ngFor="let asesor of asesores.data"
-              [value]="asesor.usuario"
-            >
-              {{ asesor.nombre }}
-            </option>
-          </ng-container>
-        </select>
-      </div>
-
+      <section>
+        <app-selector-agencias (agenciasOutput)="agenciaSeleccionada($event)" />
+      </section>
+      <section>
+       <app-selector-usuarios (asesorOutput)="asesorSeleccionado($event)" [codAgenciaInput]="paramsToAPI.agenciasId"  />
+      </section>
       <!-- Boton Generar Reporte -->
       <div class="flex justify-center">
-        <ng-container *ngIf="reportState$" [ngSwitch]="reportState$.state">
-          <button
-            [disabled]="
-              !isReadyAllParameters || reportState$.state == DataState.LOADING
-            "
-            type="submit"
-            (click)="onSubmit()"
-            class="disabled:bg-blue-500 truncate w-40 flex justify-center bg-blue-700 text-white py-2 px-4 rounded-md disabled:cursor-not-allowed"
-          >
-            <app-spinner
-              *ngIf="
-                !isFirstCallAjax && reportState$.state == DataState.LOADING
-              "
-            ></app-spinner>
-            {{
-              reportState$.state == DataState.LOADING && !isFirstCallAjax
-                ? "Generando .. "
-                : "Generar Reporte"
-            }}
-          </button>
-        </ng-container>
+        <app-boton-generar-reporte (click)="onSubmit()"
+        [seValidaronCampos] = "parametrosOk()"
+        [estadoReporte]="reportState$.state!"
+        />
       </div>
     </form>
-  </ng-container>
 
-  <!-- VIEW PDF -->
+  <!-- Contenedor PDF -->
   <div class="w-full h-full p-5 overflow-scroll bg-slate-100">
     <div class="font-normal m-auto border w-full h-auto bg-white px-5 pt-5">
       <div
         class="overflow-x-auto w-full overflow-y-auto px-10 pt-2 sm:-mx-6 lg:-mx-8 mt-5"
       >
         <!-- Header -->
-        <div #headerTable class="w-full relative">
+        <!-- <div #headerTable class="w-full relative">
           <div class="w-full flex justify-center items-center space-x-10">
             <img
               class="h-10 w-auto"
@@ -129,7 +62,7 @@
               <span>{{ paramsToAPI.fechaCorte }}</span>
             </div>
           </div>
-        </div>
+        </div> -->
 
         <!-- Table -->
         <table
@@ -146,7 +79,7 @@
               [disabled]="reportState$.data && reportState$.data.length == 0"
               (click)="exportToExcel()"
             >
-              Excel
+              Exportar
               <i class="bx bxs-file-export text-lg"></i>
             </button>
           </thead>
@@ -170,7 +103,7 @@
         <!-- Footer -->
         <div
           #footerTable
-          *ngIf="reportState$.state === DataState.LOADED && !isFirstCallAjax"
+          *ngIf="reportState$.state === DataState.LOADED && !esPrimeraCarga"
           class="ml-5 text-primary grid gap-2 w-52 pb-10"
         >
           <div class="space-x-2">

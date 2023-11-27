@@ -1,18 +1,20 @@
-import {
-  AppStateEntity,
-  DataState,
-} from 'src/data/entities/app-state.entity';
+import { AppStateEntity, DataState } from 'src/data/entities/app-state.entity';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { IUsuario, IUsuarioAgencia } from 'src/app/interfaces/usuario-agencia.interface';
+import {
+  IUsuario,
+  IUsuarioAgencia,
+} from 'src/app/interfaces/usuario-agencia.interface';
 import { Observable, Subject, catchError, map, of, startWith, tap } from 'rxjs';
 
 import { AgenciasService } from 'src/app/services/agencias.service';
 import { AlertService } from 'src/app/utils/alert.service';
+import { AuthService } from 'src/app/services/auth.service';
 import { CuotasVencidas } from 'src/app/interfaces/IReportes/cuotas-vencidas.interface';
 import { DataTableDirective } from 'angular-datatables';
 import { ExcelServiceService } from 'src/app/services/excel-service.service';
 import { HelpersService } from 'src/app/utils/helpers.service';
 import { IAgencia } from 'src/app/interfaces/agencia.interface';
+import { NINGUN_ITEM_SELECCIONADO_CONFIG } from 'src/base/config/rutas-app';
 import { ReportService } from 'src/app/services/report.service';
 import { ResponseEntity } from 'src/data/entities/response.entity';
 import { Role } from 'src/app/interfaces/role.enum';
@@ -29,25 +31,22 @@ export class CuotasVencidasComponent implements OnInit {
   dtElement: DataTableDirective | undefined;
 
   readonly DataState = DataState;
+  NINGUN_ITEM_SELECCIONADO_ID = NINGUN_ITEM_SELECCIONADO_CONFIG;
 
-  paramsToAPI: {
-    fechaCorte: string;
-    asesorId: string | null;
-    agenciasId: string | null;
-  } = {
+  paramsToAPI = {
     fechaCorte: this.utils.obtenerFechaActual(),
-    asesorId: '0',
-    agenciasId: '0',
+    asesorId: this.NINGUN_ITEM_SELECCIONADO_ID,
+    agenciasId: this.NINGUN_ITEM_SELECCIONADO_ID,
   };
 
-  nombreAsesorSeleccionado="NINGUNO/A"
-  nombreAgenciaSeleccionada="NINGUNA"
+  nombreAsesorSeleccionado = 'NINGUNO/A';
+  nombreAgenciaSeleccionada = 'NINGUNA';
 
-  listadoAgencias :IAgencia[]=[]
-  listadoAsesores :IUsuario[]=[]
+  listadoAgencias: IAgencia[] = [];
+  listadoAsesores: IUsuario[] = [];
 
   reportState$: AppStateEntity<CuotasVencidas[]> = {};
-  isFirstCallAjax: boolean = true; //Para que no afecte al iniciar el Datatable en el ngOnInit, hasta encontrar una forma de incializar el Datatable fuera del ngOnInit
+  esPrimeraCarga: boolean = true; //Como se inicializa el DTable en el OnInit necesito hacer algunos controles visuales y me ayudo de esta variable
   dtOptions: any = {};
   dtTrigger = new Subject<any>();
   // Columnas para el Datatable y para exportar a Excel
@@ -91,16 +90,14 @@ export class CuotasVencidasComponent implements OnInit {
   agencias$!: Observable<AppStateEntity<IAgencia[]>>;
 
   constructor(
-    private agenciaService: AgenciasService,
-    private usuarioSerice: UsuarioService,
     private reportSrv: ReportService,
     private alertSrv: AlertService,
     private excelSrv: ExcelServiceService,
-    private utils: HelpersService
+    private utils: HelpersService,
+    private authSrv: AuthService
   ) {}
 
   ngOnInit(): void {
-    this.agencias$ = this.obtenerAgencias$();
     this.dtOptions = {
       pagingType: 'full_numbers',
       info: false,
@@ -114,9 +111,9 @@ export class CuotasVencidasComponent implements OnInit {
       responsive: true,
       ajax: ({}, callback: any) => {
         this.reportSrv
-          .getCuotasVencidas$({...this.paramsToAPI})
+          .getCuotasVencidas$({ ...this.paramsToAPI })
           .pipe(
-            tap((response) => {
+            map((response) => {
               if (response.data && response.data.length > 0) {
                 let totalSaldo =
                   response.data
@@ -134,13 +131,11 @@ export class CuotasVencidasComponent implements OnInit {
                   ).toFixed(2),
                 };
               }
-            }),
-            map((response) => {
               return { state: DataState.LOADED, data: response.data };
             }),
             startWith({ state: DataState.LOADING, data: [] }),
             catchError((error) => {
-              if (!this.isFirstCallAjax) {
+              if (!this.esPrimeraCarga) {
                 //Hago esta condicion para que no aparezca el error apenas se carga la página
                 this.alertSrv.showAlertError(error.message);
               }
@@ -155,7 +150,6 @@ export class CuotasVencidasComponent implements OnInit {
               recordsFiltered: resp.data?.length,
               data: resp.data,
             });
-
           });
 
         // })
@@ -247,7 +241,7 @@ export class CuotasVencidasComponent implements OnInit {
       },
     };
   }
-
+  // TODO: Mapear desde que obtenemos los datos en la api para optimizar recursos
   exportToExcel() {
     let newTable: CuotasVencidas[] = this.reportState$.data!.map(
       ({
@@ -332,71 +326,25 @@ export class CuotasVencidasComponent implements OnInit {
     dt?.ajax.reload();
   }
 
-  obtenerAgencias$(): Observable<AppStateEntity<IAgencia[]>> {
-    return this.agenciaService.getAgenciesByUserLogged$().pipe(
-      map((response) => {
-        if (response.data && response.data.length > 1) {
-          let consolidado = response.data.map((ag) => ag.id);
-          response.data.push({
-            nombre: 'TODOS',
-            id: consolidado.toString(),
-          });
-        }
-        this.listadoAgencias = response.data!;
-        return { state: DataState.LOADED, data: response.data };
-      }),
-      startWith({ state: DataState.LOADING }),
-      catchError((error) => {
-        //
-        return of({ state: DataState.ERROR, error });
-      })
-    );
-  }
-
   async onSubmit() {
-    this.isFirstCallAjax = false;
+    this.esPrimeraCarga = false;
     await this.reload();
   }
 
-  obtenerUsuariosPorAgencia(event: any): void {
-    let agencia = event.target.value;
-    this.nombreAgenciaSeleccionada = this.listadoAgencias.find(val=> val.id  == agencia)?.nombre!
-    // this.nombreAgenciaSeleccionada = this.agencias$
-    this.paramsToAPI.asesorId = '0';
-    this.nombreAsesorSeleccionado ="NINGUNO/A"
-    // Aqui van los roles de los usuarios que quiero que aparezcan en el combobox
-    const rolesId = `${(Role.ASESOR_CAPTACIONES, Role.GESTOR_CREDITO)}`;
-    this.usuarios$ = this.usuarioSerice
-      .getUsersByAgencies$({
-        agencia,
-        rolesId,
-      })
-      .pipe(
-        map((response) => {
-          response.data?.push({
-            nombre: 'TODOS',
-            usuario: 'ALL-USERS',
-          });
-          this.listadoAsesores = response.data!
-          return { state: DataState.LOADED, data: response.data };
-        })
-      );
+  asesorSeleccionado(event: any) {
+    this.paramsToAPI.asesorId = event.codigo;
+    this.nombreAsesorSeleccionado = event.nombre;
   }
 
-
-  asesorSeleccionado(event: any){
-    let usuarioId = event.target.value;
-    this.nombreAsesorSeleccionado = this.listadoAsesores.find(val=> val.usuario  == usuarioId)?.nombre!
+  agenciaSeleccionada(event: any) {
+    this.paramsToAPI.agenciasId = event.codigo;
+    this.nombreAgenciaSeleccionada = event.nombre;
   }
-
 
   ngOnDestroy(): void {
     this.dtTrigger.unsubscribe();
   }
 
-  get isReadyAllParameters() {
-    return (
-      this.paramsToAPI.asesorId != '0' && this.paramsToAPI.agenciasId != '0'
-    );
-  }
+  parametrosOk = (): boolean =>
+    this.paramsToAPI.agenciasId != this.NINGUN_ITEM_SELECCIONADO_ID && this.paramsToAPI.asesorId != this.NINGUN_ITEM_SELECCIONADO_ID;
 }

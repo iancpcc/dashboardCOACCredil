@@ -1,9 +1,10 @@
+import { AppStateEntity, DataState } from 'src/data/entities/app-state.entity';
 import { ApplicationRef, Component, OnChanges, OnDestroy, OnInit } from '@angular/core';
+import { Observable, catchError, debounceTime, fromEvent, map, merge, of, startWith, tap } from 'rxjs';
 
+import { AlertService } from './utils/alert.service';
 import { AuthService } from './services/auth.service';
 import { Router } from '@angular/router';
-import { catchError, map, Observable, of, startWith, tap } from 'rxjs';
-import { AppStateEntity, DataState } from 'src/data/entities/app-state.entity';
 
 @Component({
   selector: 'app-root',
@@ -13,15 +14,21 @@ import { AppStateEntity, DataState } from 'src/data/entities/app-state.entity';
 export default class AppComponent implements OnInit {
   title = 'frontend';
   isAuthenticated: boolean = false;
-  constructor(private _authService: AuthService, private _router: Router) {
+  constructor(
+    private _authService: AuthService,
+    ) {
   }
+
   appState: AppStateEntity<any> = { state: DataState.LOADING }
   DataState = DataState
   ngOnInit(): void {
+
     this._authService.isAuthenticated$.subscribe((value: boolean) => {
       this.isAuthenticated = value;
       this.appState.state = DataState.LOADED;
     })
   }
+
+
 
 }

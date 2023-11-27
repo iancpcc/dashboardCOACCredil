@@ -10,7 +10,7 @@ import { HomeComponent } from './home.component';
 import { MENU_OPTIONS } from 'src/base/config/rutas-app';
 import { NgModule } from '@angular/core';
 import { PageNotFoundComponentComponent } from '../page-not-found-component/page-not-found-component.component';
-import { PlazoFijoComponent } from './proximos-vencimientos/plazo-fijo.component';
+import { PlazoFijoComponent } from './vencimientos/proximos-vencimientos';
 import { Role } from 'src/app/interfaces/role.enum';
 import { SituacionCrediticiaComponent } from './situacion-crediticia/situacion-crediticia.component';
 import { UsuariosAdmComponent } from '../admin/usuarios/usuarios-adm.component';
@@ -49,7 +49,7 @@ const homeRoutes = [
       //MODULO GERENCIA 1
       {
         path: MENU_OPTIONS[1].submenu[0].route.replace('/',''),
-        component: CartaPreferencialComponent,
+        component: GeoreferenciacionComponent,
         data: {
           roles: MENU_OPTIONS[1].roles
         },
@@ -81,9 +81,7 @@ const homeRoutes = [
           roles: MENU_OPTIONS[3].roles
         },
       },
-
       //Modulo Creditos 3
-
       {
         path:  MENU_OPTIONS[4].submenu[0].route.replace('/',''),
         component: CuotasVencidasComponent,
@@ -93,11 +91,12 @@ const homeRoutes = [
       },
       {
         path: MENU_OPTIONS[4].submenu[1].route.replace('/',''),
-        component: CuotasVencidasAgenciaComponent,
+        component: CartaPreferencialComponent,
         data: {
           roles: MENU_OPTIONS[4].roles
         },
       },
+      // Otros 5
       {
         path: MENU_OPTIONS[5].submenu[0].route.replace('/',''),
         component: SituacionCrediticiaComponent,
@@ -105,8 +104,6 @@ const homeRoutes = [
           roles: MENU_OPTIONS[5].roles
         },
       },
-
-
     ],
 
   },

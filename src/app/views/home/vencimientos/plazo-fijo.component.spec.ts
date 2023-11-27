@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PlazoFijoComponent } from './plazo-fijo.component';
+import { PlazoFijoComponent } from './proximos-vencimientos';
 
 describe('PlazoFijoComponent', () => {
   let component: PlazoFijoComponent;

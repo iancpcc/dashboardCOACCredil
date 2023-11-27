@@ -8,7 +8,7 @@ export enum Role {
     JEFE_NEGOCIOS = "036",
     ASESOR_NEGOCIOS = "014",
     ASESOR_CAPTACIONES = "022",
-    JEFE_AGENCIA = "51",
+    JEFE_AGENCIA = "051",
     GESTOR_DPF = "062",
     GESTOR_CREDITO = "016",
     OFICIAL_CUMPLIMIENTO = "025",
