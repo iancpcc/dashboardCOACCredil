@@ -1,10 +1,8 @@
 import { Chart, registerables } from 'chart.js';
 import {
   Component,
-  ElementRef,
   OnDestroy,
   OnInit,
-  ViewChild,
 } from '@angular/core';
 import {
   Observable,
@@ -14,16 +12,13 @@ import {
   of,
   shareReplay,
   startWith,
-  tap,
 } from 'rxjs';
 
-import { AlertService } from 'src/app/utils/alert.service';
 import { DataState } from 'src/data/entities/app-state.entity';
 import { HelpersService } from 'src/app/utils/helpers.service';
 import { ITotalUsuariosPanel } from 'src/app/interfaces/IReportes/total-usuarios.interface';
 import { ReportService } from 'src/app/services/report.service';
 import { ResponseEntity } from 'src/data/entities/response.entity';
-import { error } from 'jquery';
 
 @Component({
   selector: 'app-home-page',
@@ -37,7 +32,6 @@ export class DashboardPageComponent implements OnInit, OnDestroy {
   constructor(
     private reportSrv: ReportService,
     private utilsSrv: HelpersService,
-    private alertSrv: AlertService
   ) {
     Chart.register(...registerables);
   }
@@ -169,7 +163,7 @@ export class DashboardPageComponent implements OnInit, OnDestroy {
         startWith({ state: DataState.LOADING, data: [] }),
         catchError((error) => {
           // this.alertSrv.showAlertError(error.message)
-          return of({ state: DataState.ERROR, error, data: [] });
+          return of({ state: DataState.ERROR, error, data: null });
         }),
         shareReplay(1)
       )
@@ -185,14 +179,15 @@ export class DashboardPageComponent implements OnInit, OnDestroy {
         }
       });
   }
+  
   obtenerDatosParaCards() {
     this.apiResponseUsuarios$ = this.reportSrv.getTotalClientesSocios$().pipe(
       map((response) => {
         return { state: DataState.LOADED, data: response.data };
       }),
       startWith({ state: DataState.LOADING, data: {} }),
-      catchError((error) => of({ state: DataState.ERROR, error }))
-    );
+      catchError((error) => of({ state: DataState.ERROR, error })),
+      );
   }
 
   reloadBarChart(monthIndex: number = 1) {

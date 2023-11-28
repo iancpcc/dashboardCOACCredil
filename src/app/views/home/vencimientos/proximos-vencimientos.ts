@@ -156,18 +156,18 @@ export class PlazoFijoComponent {
     dt?.ajax.reload();
   }
 
-  async onSubmit() {
+  async onSubmit(){
     await this.reload();
   }
 
   // ngAfterViewInit(): void {
   //   this.dtTrigger.next(null);
   // }
-  asesorSeleccionado(event: any) {
+  asesorSeleccionado(event: any): void {
     this.paramsToAPI.codigoAsesores = event.codigo;
   }
 
-  agenciaSeleccionada(event: any) {
+  agenciaSeleccionada(event: any): void {
     this.paramsToAPI.codigoAgencias = event.codigo;
   }
 
