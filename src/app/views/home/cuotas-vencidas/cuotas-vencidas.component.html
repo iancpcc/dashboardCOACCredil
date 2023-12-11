@@ -29,10 +29,10 @@
     </form>
 
   <!-- Contenedor PDF -->
-  <div class="w-full h-full p-5 overflow-scroll bg-slate-100">
+  <div class="w-full h-full p-5 overflow-auto bg-slate-100">
     <div class="font-normal m-auto border w-full h-auto bg-white px-5 pt-5">
       <div
-        class="overflow-x-auto w-full overflow-y-auto px-10 pt-2 sm:-mx-6 lg:-mx-8 mt-5"
+        class="overflow-x-auto w-full overflow-y-auto px-10  sm:-mx-6 lg:-mx-8 "
       >
         <!-- Header -->
         <!-- <div #headerTable class="w-full relative">
@@ -65,23 +65,24 @@
         </div> -->
 
         <!-- Table -->
+        <button
+        class="flex select-none items-center m-auto md:m-0 gap-3 border border-green-600 py-1 px-4 text-center align-middle font-sans text-sm font-bold uppercase text-green-500 transition-all hover:bg-green-600 rounded-sm disabled:bg-none hover:text-white hover:opacity-75 focus:ring focus:ring-green-200 active:opacity-[0.85] disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+        type="button"
+        [disabled]="reportState$.data && reportState$.data.length == 0"
+        (click)="exportToExcel()"
+      >
+        Exportar
+        <i class="bx bxs-file-export text-lg"></i>
+      </button>
         <table
           datatable
           [dtOptions]="dtOptions"
-          class="font-light row-border hover cell-border stripe mt-20!"
+          class="font-light row-border hover cell-border stripe "
           #tableCuotas
         >
           <thead>
             <!-- Boton Excel-->
-            <button
-              class="flex select-none items-center gap-3 border border-green-600 py-1 px-4 text-center align-middle font-sans text-sm font-bold uppercase text-green-500 transition-all hover:bg-green-600 rounded-sm disabled:bg-none hover:text-white hover:opacity-75 focus:ring focus:ring-green-200 active:opacity-[0.85] disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
-              type="button"
-              [disabled]="reportState$.data && reportState$.data.length == 0"
-              (click)="exportToExcel()"
-            >
-              Exportar
-              <i class="bx bxs-file-export text-lg"></i>
-            </button>
+
           </thead>
           <tbody></tbody>
           <tfoot class="text-primary">

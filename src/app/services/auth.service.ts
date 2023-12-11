@@ -2,6 +2,7 @@ import { ACCESS_TOKEN_KEY, USER_LOGGED_KEY } from '../../base/config/rutas-app';
 import { EventEmitter, Injectable } from '@angular/core';
 import { Observable, tap } from 'rxjs';
 
+import { CacheResolverService } from './cache-resolver.service';
 import { GenericCRUDService } from 'src/data/helpers/generic-crud.service';
 import { JwtService } from '../utils/jwt-service.service';
 import { ResponseEntity } from 'src/data/entities/response.entity';
@@ -26,7 +27,8 @@ export class AuthService {
     private _localStorage: StorageService,
     private _userLoginUseCase: UserLoginUseCase,
     private jwtService: JwtService,
-    private genericService: GenericCRUDService
+    private genericService: GenericCRUDService,
+    private _cache:CacheResolverService
   ) {
     this.loadUserDataFromStorage();
   }
@@ -101,5 +103,6 @@ export class AuthService {
     this.isAuthenticated$.emit(false);
     this._localStorage.removeData(ACCESS_TOKEN_KEY);
     this._localStorage.removeData(USER_LOGGED_KEY);
+    this._cache.clearCache();
   }
 }

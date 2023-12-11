@@ -61,10 +61,10 @@ export class DashboardPageComponent implements OnInit, OnDestroy {
   ];
 
   ngOnInit(): void {
-    this.cargarParametrosIniciales();
-    this.obtenerDatosParaBarChart();
     this.buildBarChart();
     this.createPieChart();
+    this.cargarParametrosIniciales();
+    this.obtenerDatosParaBarChart();
     this.obtenerDatosParaCards();
     this.obtenerSociosBanca();
   }
@@ -148,7 +148,7 @@ export class DashboardPageComponent implements OnInit, OnDestroy {
       },
       options: {
         responsive: true,
-        aspectRatio: 2.75,
+        aspectRatio: 2,
       },
     });
   }
@@ -164,22 +164,22 @@ export class DashboardPageComponent implements OnInit, OnDestroy {
         catchError((error) => {
           // this.alertSrv.showAlertError(error.message)
           return of({ state: DataState.ERROR, error, data: null });
-        }),
-        shareReplay(1)
+        })
       )
       .subscribe((response) => {
+        console.log(response)
         if (response.state === DataState.LOADED) {
           this.etiquetas = response.data?.map((res: any) => res.agencia)!;
           this.datos = response.data?.map((res: any) => res.monto)!;
           this.barChart.data.labels = this.etiquetas;
-          this.barChart.data.datasets.forEach((dt: any) => {
+          this.barChart?.data.datasets.forEach((dt: any) => {
             dt.data = this.datos;
           });
-          this.barChart.update();
+          this.barChart?.update();
         }
       });
   }
-  
+
   obtenerDatosParaCards() {
     this.apiResponseUsuarios$ = this.reportSrv.getTotalClientesSocios$().pipe(
       map((response) => {
@@ -216,6 +216,7 @@ export class DashboardPageComponent implements OnInit, OnDestroy {
       },
       options: {
         responsive: true,
+        aspectRatio:1,
         plugins: {
           legend: {
             display: true,

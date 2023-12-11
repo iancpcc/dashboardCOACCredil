@@ -12,7 +12,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./app.component.css']
 })
 export default class AppComponent implements OnInit {
-  title = 'frontend';
+  title = 'reporteria';
   isAuthenticated: boolean = false;
   constructor(
     private _authService: AuthService,

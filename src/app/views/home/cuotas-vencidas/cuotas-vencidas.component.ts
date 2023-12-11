@@ -94,7 +94,6 @@ export class CuotasVencidasComponent implements OnInit {
     private alertSrv: AlertService,
     private excelSrv: ExcelServiceService,
     private utils: HelpersService,
-    private authSrv: AuthService
   ) {}
 
   ngOnInit(): void {

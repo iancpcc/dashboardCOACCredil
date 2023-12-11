@@ -75,6 +75,7 @@ export class ReportService {
     idAgencia: string | null;
     dias: number;
   }): Observable<ResponseEntity<ICumpleaniosSocios[]>> => {
+
     if (params.idAgencia == this.NINGUN_ITEM_SELECCIONADO_ID) {
       return of({ data: [] });
     }

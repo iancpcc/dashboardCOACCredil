@@ -1,4 +1,5 @@
 import { BotonGenerarReporteComponent } from './boton-generar-reporte/boton-generar-reporte.component';
+import { CardsDashboardComponent } from './cards-dashboard/cards-dashboard.component';
 import { CommonModule } from '@angular/common';
 import { DangerComponent } from './danger/danger.component';
 import { FooterComponent } from './footer/footer.component';
@@ -38,6 +39,7 @@ import { UserInfoComponent } from './user-info/user-info.component';
     SelectorAgenciasComponent,
     SelectorUsuariosComponent,
     BotonGenerarReporteComponent,
+    CardsDashboardComponent,
   ],
   imports: [
     CommonModule,
@@ -58,7 +60,8 @@ import { UserInfoComponent } from './user-info/user-info.component';
     MapaComponent,
     SelectorAgenciasComponent,
     SelectorUsuariosComponent,
-    BotonGenerarReporteComponent
+    BotonGenerarReporteComponent,
+    CardsDashboardComponent
   ]
 })
 export class ComponentsModule { }

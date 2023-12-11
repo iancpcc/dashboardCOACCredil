@@ -17,14 +17,14 @@ export const MENU_OPTIONS = [
     ],
   },
   {
-    name: 'Georeferencia',
+    name: 'georeferencia',
     icon: 'bx bxs-map-pin',
     roles: [
       Role.ADMIN,
       Role.ADMINISTRATIVO,
+      Role.GERENTE,
       Role.OFICIAL_CUMPLIMIENTO,
       // Role.GESTOR_DPF,
-      Role.PROMOTOR_PRODUCTOS_SERVICIOS,
     ],
     active: true,
     submenu: [
@@ -32,7 +32,6 @@ export const MENU_OPTIONS = [
       { name: 'Morosidad', route: '/georeferenciacion' },
     ],
   },
-
   {
     name: 'dpf',
     icon: 'bx bx-line-chart',
@@ -62,7 +61,6 @@ export const MENU_OPTIONS = [
     active: true,
     submenu: [{ name: 'cumpleaños', route: '/cumpleanios' }],
   },
-
   {
     name: 'creditos',
     icon: 'bx bxl-mastercard',

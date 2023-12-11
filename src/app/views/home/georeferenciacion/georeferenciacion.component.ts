@@ -48,9 +48,9 @@ export class GeoreferenciacionComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
+    this.inicializarMapa();
     this.agencias$ = this.obtenerAgencias$();
     this.obtenerCuotasVencidas();
-    this.inicializarMapa();
     // this.renderMapa()
 
   }
