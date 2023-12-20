@@ -46,7 +46,6 @@ export class CuotasVencidasComponent implements OnInit {
   listadoAsesores: IUsuario[] = [];
 
   reportState$: AppStateEntity<CuotasVencidas[]> = {};
-  esPrimeraCarga: boolean = true; //Como se inicializa el DTable en el OnInit necesito hacer algunos controles visuales y me ayudo de esta variable
   dtOptions: any = {};
   dtTrigger = new Subject<any>();
   // Columnas para el Datatable y para exportar a Excel
@@ -62,6 +61,7 @@ export class CuotasVencidasComponent implements OnInit {
     'Provisión',
     'Porcentaje Provisión',
     'Garantes',
+    'Asesor',
   ];
 
   calculosReporte: {
@@ -134,10 +134,10 @@ export class CuotasVencidasComponent implements OnInit {
             }),
             startWith({ state: DataState.LOADING, data: [] }),
             catchError((error) => {
-              if (!this.esPrimeraCarga) {
+              // if (!this.esPrimeraCarga) {
                 //Hago esta condicion para que no aparezca el error apenas se carga la página
                 this.alertSrv.showAlertError(error.message);
-              }
+              // }
               return of({ state: DataState.ERROR, error, data: [] });
             })
           )
@@ -212,6 +212,10 @@ export class CuotasVencidasComponent implements OnInit {
           title: this.titleColumns[10],
           data: 'garantes',
         },
+        {
+          title: this.titleColumns[11],
+          data: 'nombreusuario',
+        },
       ],
 
       footerCallback: function () {
@@ -255,6 +259,7 @@ export class CuotasVencidasComponent implements OnInit {
         provision,
         porcentajeprovision,
         garantes,
+        nombreusuario
       }) => ({
         numero,
         nombre,
@@ -267,6 +272,7 @@ export class CuotasVencidasComponent implements OnInit {
         provision,
         porcentajeprovision,
         garantes,
+        nombreusuario
       })
     );
 
@@ -284,7 +290,7 @@ export class CuotasVencidasComponent implements OnInit {
     newTable?.forEach((row: any) => {
       dataForExcel.push(Object.values(row));
     });
-
+    //Agregro los calculos en la ultima fila
     dataForExcel.push([
       '',
       '',
@@ -297,7 +303,6 @@ export class CuotasVencidasComponent implements OnInit {
       provision,
       '',
     ]);
-    console.log({ EXCEL: dataForExcel });
 
     let reportData: excelDataCuotasVencidas = {
       header: {
@@ -326,7 +331,6 @@ export class CuotasVencidasComponent implements OnInit {
   }
 
   async onSubmit() {
-    this.esPrimeraCarga = false;
     await this.reload();
   }
 

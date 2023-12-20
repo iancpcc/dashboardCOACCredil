@@ -12,6 +12,7 @@ import { HomeRoutingModule } from './home.routes';
 import { NgModule } from '@angular/core';
 import { PlazoFijoComponent } from './vencimientos/proximos-vencimientos';
 import { SituacionCrediticiaComponent } from './situacion-crediticia/situacion-crediticia.component';
+import { MensajesTextoComponent } from '../mensajes-texto/mensajes-texto.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { SituacionCrediticiaComponent } from './situacion-crediticia/situacion-c
     DashboardPageComponent,
     CumpleaniosClientesComponent,
     CuotasVencidasAgenciaComponent,
-    PlazoFijoComponent
+    PlazoFijoComponent,
+    MensajesTextoComponent
   ],
   imports: [
     ComponentsModule,

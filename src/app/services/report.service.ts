@@ -6,6 +6,7 @@ import { HttpClient } from '@angular/common/http';
 import { ICumpleaniosSocios } from '../interfaces/IReportes/cumpleanios-socios.interface';
 import { IDPFAperturados } from '../interfaces/IReportes/dpf-aperturados.interface';
 import { ISituacioCrediticia } from '../interfaces/IReportes/situacion-crediticia.interface';
+import { ISociosMora } from '../interfaces/IReportes/socios-mora.interface';
 import { ITotalUsuariosPanel } from '../interfaces/IReportes/total-usuarios.interface';
 import { Injectable } from '@angular/core';
 import { NINGUN_ITEM_SELECCIONADO_CONFIG } from 'src/base/config/rutas-app';
@@ -45,6 +46,20 @@ export class ReportService {
       body: params,
     });
   };
+
+  getSociosMora$ = (params: {
+    fechaCorte: string | null;
+    diasMora: number | null;
+  }): Observable<ResponseEntity<ISociosMora[]>> => {
+    const {fechaCorte, diasMora} = params;
+    if (fechaCorte == null || diasMora == null)
+      return of({ data: [] });
+
+    //Al enviar un NULL al endpoint de la API me retona todos los usuarios de esa [Agencia]
+    // params.asesorId = params.asesorId === 'ALL-USERS' ? null : params.asesorId;
+
+    return this.genericCRUDService.getApiData<ISociosMora[]>(`${this.base_url}//socios_mora_para_envio_de_sms?fechaCorte=${fechaCorte}&diasMora=${diasMora}`)};
+
 
   getDPFAperturadosPorAgencia$ = (params: {
     monthIndex: number;

@@ -7,13 +7,13 @@ import { AppRoutingModule } from './app-routing.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BrowserModule } from '@angular/platform-browser';
 import { CacheInterceptor } from './interceptors/cache.interceptor';
-import { CacheResolverService } from './services/cache-resolver.service';
 import { ComponentsModule } from './components/components.module';
 import { DataModule } from 'src/data/data.module';
 import { GeoreferenciacionComponent } from './views/home/georeferenciacion/georeferenciacion.component';
 import { HomeComponent } from './views/home/home.component';
 import { HomeModule } from './views/home/home.module';
 import { LoginComponent } from './views/login/login.component';
+import { MensajesTextoComponent } from './views/mensajes-texto/mensajes-texto.component';
 import { NgModule } from '@angular/core';
 import { PageNotFoundComponentComponent } from './views/page-not-found-component/page-not-found-component.component';
 import { RegisterComponent } from './views/register/register.component';
@@ -31,7 +31,7 @@ import { UserLoginUseCase } from 'src/domain/usecases/user-login.usecase';
     RegisterComponent,
     ResetPasswordComponent,
     HomeComponent,
-    GeoreferenciacionComponent
+    GeoreferenciacionComponent,
   ],
   providers: [UserLoginUseCase, UserCreatePasswordUseCase,
   {

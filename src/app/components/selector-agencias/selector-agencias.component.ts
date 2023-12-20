@@ -39,15 +39,16 @@ export class SelectorAgenciasComponent implements OnInit {
     return this.agenciaService.getAgenciesByUserLogged$().pipe(
       map((response) => {
         if (response.success) {
+            debugger
           if (response.data && response.data.length > 1) {
-            let consolidado = response.data.map((ag) => ag.id);
-            response.data.push({
-              nombre: 'TODOS',
+            this.agencias = [...response.data!];
+            let consolidado = this.agencias.map((ag) => ag.id);
+            this.agencias.push({
               id: consolidado.toString(),
+              nombre: 'TODOS',
             });
           }
-          this.agencias = [...response.data!];
-          return { state: DataState.LOADED, data: response.data };
+          return { state: DataState.LOADED, data: this.agencias };
         }
         return { state: DataState.LOADED, data: [] };
       }),

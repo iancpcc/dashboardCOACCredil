@@ -105,6 +105,13 @@ export class UsuariosAdmComponent implements OnInit, OnDestroy {
     this.obtenerUsuariosPorPagina(numero)
   }
 
+  movePage(direccion:string) {
+    // this.currentIndexPagination = numero -1;
+    this.currentIndexPagination = direccion ==='siguiente'? this.currentIndexPagination + 1: this.currentIndexPagination -1;
+    console.log(this.currentIndexPagination)
+    this.obtenerUsuariosPorPagina(this.currentIndexPagination)
+  }
+
   modalRestablecerClave(usuario: string) {
     Swal.fire({
       title: 'Estas Seguro?',

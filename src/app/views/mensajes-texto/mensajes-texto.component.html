@@ -1,0 +1,79 @@
+<div
+  class="relative flex flex-col justify-start h-full items-center overflow-hidden space-y-5 py-1 "
+>
+
+    <!-- Form -->
+    <form class="md:w-64 flex flex-col space-y-5 p-2">
+
+      <div>
+        <label
+          class="block uppercase tracking-wide text-gray-700 text-xs mb-2"
+          for="grid-password"
+        >
+          Fecha
+        </label>
+        <input  class="text-sm font-poppins block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" [(ngModel)]="paramsToAPI.fechaCorte" type="date" name="fechaCorte" id="">
+
+      </div>
+      <div>
+        <label
+          class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+          for="grid-first-name"
+        >
+          Dias Mora
+        </label>
+        <div class="flex">
+          <input
+            [(ngModel)]="paramsToAPI.diasMora"
+            name="monto"
+            class="rounded-lg bg-gray-50 border border-gray-300 text-gray-900 block flex-1 min-w-0 w-full text-sm p-2.5 outline-none"
+            id="grid-first-name"
+            type="text"
+            placeholder="500"
+          />
+
+          <!-- <p class="text-red-500 text-xs italic">Please fill out this field.</p> -->
+        </div>
+      </div>
+
+
+      <!-- <p class="text-gray-600 text-xs italic">Make it as long and as crazy as you'd like</p> -->
+
+      <div class="flex justify-center w-full">
+        <ng-container *ngIf="reportState$" [ngSwitch]="reportState$.state">
+          <button
+            [disabled]="
+              !isReadyAllParameters || reportState$.state == DataState.LOADING
+            "
+            type="submit"
+            (click)="onSubmit()"
+            class="disabled:bg-blue-500 truncate w-40 flex justify-center bg-blue-700 text-white py-2 px-4 rounded-md disabled:cursor-not-allowed"
+          >
+            <app-spinner
+              *ngIf=" reportState$.state == DataState.LOADING"
+            ></app-spinner>
+            {{
+              reportState$.state == DataState.LOADING
+                ? "Generando .. "
+                : "Generar Reporte"
+            }}
+          </button>
+        </ng-container>
+      </div>
+    </form>
+
+    <div
+      class="overflow-x-auto w-full overflow-y-auto px-10 pt-2 sm:-mx-6 lg:-mx-8 mt-5  "
+    >
+      <table
+        #tablaCuotas
+        id="tablaCuotas"
+        datatable
+        [dtOptions]="dtOptions"
+        class="text-left text-sm font-light   row-border hover cell-border stripe "
+      ></table>
+    </div>
+
+
+
+</div>

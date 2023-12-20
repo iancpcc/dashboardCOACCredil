@@ -34,7 +34,7 @@
     </div>
   </div>
   <!-- CUERPO (LISTADO USUARIOS) -->
-  <div class="overflow-y-auto md:overflow-y-hidden w-full   mt-32">
+  <div class="overflow-y-auto md:overflow-y-hidden w-full mt-32">
     <ng-container
       *ngIf="usuarios$ | async as usuarios"
       [ngSwitch]="usuarios.state"
@@ -44,13 +44,13 @@
         [title]="usuarios?.error?.message ?? 'Error'"
       ></app-danger>
       <!-- Skeleton -->
-      <ng-container *ngSwitchCase="DataState.LOADING  ">
-      <app-skeleton></app-skeleton>
+      <ng-container *ngSwitchCase="DataState.LOADING">
+        <app-skeleton></app-skeleton>
       </ng-container>
       <!-- Tabla de usuarios -->
       <ng-container *ngSwitchCase="DataState.LOADED">
         <table
-          class="h-min-[500px] min-w-full text-left text-xs md:text-sm font-light border border-stoke"
+          class="h-min-[500px] mt-10 md:mt-0 min-w-full text-left text-xs md:text-sm font-light border border-stoke"
         >
           <thead class="border-b bg-white font-medium">
             <tr>
@@ -116,16 +116,20 @@
         class="flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3 sm:px-6"
       >
         <div class="flex flex-1 justify-between sm:hidden">
-          <a
-            href="#"
+          <button
+            (click)="movePage('anterior')"
+            [disabled]="currentIndexPagination <= 0"
             class="relative inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
-            >Previous</a
           >
-          <a
-            href="#"
+            Anterior
+          </button>
+          <button
+            (click)="movePage('siguiente')"
+            [disabled]="currentIndexPagination >= numerosPagina.length"
             class="relative ml-3 inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
-            >Next</a
           >
+            Siguiente
+          </button>
         </div>
         <div
           class="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between"

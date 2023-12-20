@@ -1,8 +1,10 @@
 export interface IUsuarioCliente{
-  numero?: string
-  nombre?: string
-  asesor?: string
+  numero?: number | null
+  nombre?: string | null
+  asesor?: string | null
+  identificacion?: string | null
   jefeagencia?: string
-  monto?:number
-  telefono?:number
+  monto?:number | null
+  telefonoJefe?:string | null
+  telefonoAsesor?:string | null
 }

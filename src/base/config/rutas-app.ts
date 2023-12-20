@@ -24,6 +24,8 @@ export const MENU_OPTIONS = [
       Role.ADMINISTRATIVO,
       Role.GERENTE,
       Role.OFICIAL_CUMPLIMIENTO,
+      Role.COORDINADOR_TECNOLOGIA,
+      Role.ASISTENTE_TECNOLOGIA
       // Role.GESTOR_DPF,
     ],
     active: true,
@@ -59,7 +61,10 @@ export const MENU_OPTIONS = [
       Role.GESTOR_DPF,
     ],
     active: true,
-    submenu: [{ name: 'cumpleaños', route: '/cumpleanios' }],
+    submenu: [
+      { name: 'cumpleaños', route: '/cumpleanios' },
+      { name: 'depositos', route: '/depositos' }
+  ],
   },
   {
     name: 'creditos',
