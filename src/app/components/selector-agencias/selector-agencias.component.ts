@@ -39,9 +39,11 @@ export class SelectorAgenciasComponent implements OnInit {
     return this.agenciaService.getAgenciesByUserLogged$().pipe(
       map((response) => {
         if (response.success) {
-            debugger
-          if (response.data && response.data.length > 1) {
+
+
             this.agencias = [...response.data!];
+
+          if (response.data && response.data.length > 1) {
             let consolidado = this.agencias.map((ag) => ag.id);
             this.agencias.push({
               id: consolidado.toString(),

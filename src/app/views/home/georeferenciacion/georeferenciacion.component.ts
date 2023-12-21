@@ -52,7 +52,6 @@ export class GeoreferenciacionComponent implements OnInit, OnDestroy {
     this.agencias$ = this.obtenerAgencias$();
     this.obtenerCuotasVencidas();
     // this.renderMapa()
-
   }
   ngOnDestroy(): void {
     this.suscripcion.unsubscribe();

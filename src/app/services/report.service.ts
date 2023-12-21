@@ -52,13 +52,13 @@ export class ReportService {
     diasMora: number | null;
   }): Observable<ResponseEntity<ISociosMora[]>> => {
     const {fechaCorte, diasMora} = params;
-    if (fechaCorte == null || diasMora == null)
+    if (fechaCorte == null || diasMora == 0)
       return of({ data: [] });
 
     //Al enviar un NULL al endpoint de la API me retona todos los usuarios de esa [Agencia]
     // params.asesorId = params.asesorId === 'ALL-USERS' ? null : params.asesorId;
 
-    return this.genericCRUDService.getApiData<ISociosMora[]>(`${this.base_url}//socios_mora_para_envio_de_sms?fechaCorte=${fechaCorte}&diasMora=${diasMora}`)};
+    return this.genericCRUDService.getApiData<ISociosMora[]>(`${this.base_url}/socios_mora_para_envio_de_sms?fechaCorte=${fechaCorte}&diasMora=${diasMora}`)};
 
 
   getDPFAperturadosPorAgencia$ = (params: {

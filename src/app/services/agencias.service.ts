@@ -4,7 +4,6 @@ import { HttpHeaders } from '@angular/common/http';
 import { IAgencia } from '../interfaces/agencia.interface';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment.development';
-import { of } from "rxjs";
 
 @Injectable({
   providedIn: 'root'

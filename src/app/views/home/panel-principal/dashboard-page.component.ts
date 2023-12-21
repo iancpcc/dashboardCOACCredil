@@ -167,7 +167,7 @@ export class DashboardPageComponent implements OnInit, OnDestroy {
         })
       )
       .subscribe((response) => {
-        console.log(response)
+        // console.log(response)
         if (response.state === DataState.LOADED) {
           this.etiquetas = response.data?.map((res: any) => res.agencia)!;
           this.datos = response.data?.map((res: any) => res.monto)!;

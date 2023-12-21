@@ -36,7 +36,7 @@ export class HelpersService {
     const mes = this.months[fechaActual.getMonth()];
     const año = fechaActual.getFullYear();
 
-    const fechaEnFormato = `${ciudad}, ${dia} de ${mes} del ${año}`;
+    const fechaEnFormato = `${ciudad}, ${dia} de ${mes.toLocaleLowerCase()} del ${año}`;
 
     return fechaEnFormato;
   }

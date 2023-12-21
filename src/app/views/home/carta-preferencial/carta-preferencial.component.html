@@ -550,36 +550,36 @@
       />
       <h1 class="text-right mt-44">{{ utilSrv.obtenerFechaInforme() }}</h1>
 
-      <h2 class="mt-10">Señor(a)</h2>
+      <h2 class="mt-10">Estimado Soci@</h2>
       <h3 class="mt-7">{{ socioInfo.nombre ?? clienteInfo.cliente }}</h3>
       <h3 class="mt-5">
         Socio(a) N° {{ socioInfo.numero ?? clienteInfo.numeroCliente }}
       </h3>
 
-      <h2 class="my-10">Estimado Soci@</h2>
-      <p class="text-justify leading-7">
+
+      <p class="mt-16 text-justify leading-8">
         Es muy grato para la Cooperativa de Ahorro y Crédito "CREDIL" Ltda.
         comunicarle que por su excelente historial de pago en su crédito con
         nuestra institución, ha sido calificado como
         <span>CLIENTE PREFERENCIAL</span>, por esta razón le premiamos con un
         crédito <span>PRE-APROBADO</span> de
-        <span>${{ socioInfo.monto ? socioInfo.monto : clienteInfo.monto }}</span
-        >. <br />
+        <span>${{ socioInfo.monto ? socioInfo.monto : clienteInfo.monto?? 0 }}</span
+        > para que incremente su negocio o cualquier necesidad. <br />
         Para el trámite del crédito con su asesor, solicitamos su firma de
-        aceptación
+        aceptación.
       </p>
       <br />
       <h1 class="mt-5">Atentamente:</h1>
 
-      <div class="flex w-full min-h-[150px] mt-24 text-center relative">
-        <div class="w-min-[150px] w-full">
+      <div class="flex w-full min-h-[150px] mt-24 text-center relative m-auto">
+        <div class="w-min-[150px] m-auto w-full  flex flex-col justify-center items-center">
           <h1
             class="w-60 border-t font-bold border-t-black text-base border-dotted"
           >
             {{
               socioInfo.jefeagencia ??
                 clienteInfo.jefeAgencia ??
-                "NO ESTABLECIDO"
+                "N/A"
             }}
           </h1>
           <h2
@@ -588,11 +588,11 @@
           </h2>
           <h2 class="mt-2 text-center">Jefe de Agencia</h2>
         </div>
-        <div class="w-min-[150px] w-full">
+        <div class="w-min-[150px] m-auto w-full  flex flex-col justify-center items-center">
           <h1
             class="w-60 border-t font-bold border-t-black text-base border-dotted"
           >
-            {{ socioInfo.asesor ?? clienteInfo.asesor ?? "NO ESTABLECIDO" }}
+            {{ socioInfo.asesor ?? clienteInfo.asesor ?? "N/A" }}
           </h1>
           <h2
           >
@@ -600,11 +600,11 @@
           </h2>
           <h2 class="mt-2">Asesor de Negocios</h2>
         </div>
-        <div class="w-min-[150px] w-full">
+        <!-- <div class="w-min-[150px] w-full">
           <h1
             class="w-60 border-t font-bold border-t-black text-base border-dotted"
           >
-            {{ socioInfo.nombre ?? clienteInfo.cliente ?? "NO ESTABLECIDO" }}
+            {{ socioInfo.nombre ?? clienteInfo.cliente ?? "N/A" }}
           </h1>
           <h2
             class="block"
@@ -612,9 +612,9 @@
             C.I {{ socioInfo.identificacion ?? clienteInfo.identificacion}}
           </h2>
           <h2 class="mt-2">Beneficiario/a</h2>
-        </div>
+        </div> -->
       </div>
-
+      <p class=" mt-20 font-bold">*Válido hasta el 15/02/2024</p>
     </div>
     <!-- Hoja 2 -->
     <div
@@ -634,11 +634,22 @@
         Socio(a) N° {{ socioInfo.numero ?? clienteInfo.numeroCliente }}
       </h3> -->
 
-      <h2 class="mt-20 text-center font-bold">AUTORIZACIÓN DE CONSULTA DE BURÓ DE CRÉDITO</h2>
+      <!-- <h2 class="mt-20 text-center font-bold">AUTORIZACIÓN DE CONSULTA DE BURÓ DE CRÉDITO</h2> -->
+      <p class="mt-28 text-justify leading-7">
+        Es muy grato para la Cooperativa de Ahorro y Crédito "CREDIL" Ltda.
+        comunicarle que por su excelente historial de pago en su crédito con
+        nuestra institución, ha sido calificado como
+        <span>CLIENTE PREFERENCIAL</span>, por esta razón le premiamos con un
+        crédito <span>PRE-APROBADO</span> de
+        <span>${{ socioInfo.monto ? socioInfo.monto : clienteInfo.monto }}</span
+        >. <br />
+        Para el trámite del crédito con su asesor, solicitamos su firma de
+        aceptación.
+      </p>
       <p class="text-justify leading-7 mt-10">
         Mediante el presente en calidad de titular de mis datos Autorizo y/o
         consiento de forma expresa libre, voluntaria, previa, explícita,
-        informada e inequívocamente, conforme al marco jurídico vigente a la
+        informada e inequívocamente, conforme al marco jurídico válido a la
         Cooperativa de Ahorro y Crédito Credil Ltda., para que realice el
         tratamiento de mis datos personales, crediticios y/o datos no públicos,
         incluyendo aquellos que entrego, haya entregado o pueda entregar
@@ -667,7 +678,7 @@
           <h1
             class="w-60 m-auto border-t font-bold border-t-black text-base border-dotted"
           >
-            {{ socioInfo.nombre ?? clienteInfo.cliente ?? "NO ESTABLECIDO" }}
+            {{ socioInfo.nombre ?? clienteInfo.cliente ?? "N/A" }}
           </h1>
           <h2
             class="block"
@@ -676,7 +687,7 @@
           </h2>
         </div>
       </div>
-
+      <p class=" mt-2 font-bold">*Válido hasta el 15/02/2024</p>
     </div>
   </div>
 </div>

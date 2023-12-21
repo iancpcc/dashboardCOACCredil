@@ -8,6 +8,7 @@ import { DashboardPageComponent } from './panel-principal/dashboard-page.compone
 import { GeoreferenciacionComponent } from './georeferenciacion/georeferenciacion.component';
 import { HomeComponent } from './home.component';
 import { MENU_OPTIONS } from 'src/base/config/rutas-app';
+import { MensajesTextoComponent } from '../mensajes-texto/mensajes-texto.component';
 import { NgModule } from '@angular/core';
 import { PageNotFoundComponentComponent } from '../page-not-found-component/page-not-found-component.component';
 import { PlazoFijoComponent } from './vencimientos/proximos-vencimientos';
@@ -98,8 +99,15 @@ const homeRoutes = [
       },
       // Otros 5
       {
-        path: MENU_OPTIONS[5].submenu[0].route.replace('/',''),
+        path: MENU_OPTIONS[5].submenu[0].route.replace('/',''),//SITUACION CREDITICIA
         component: SituacionCrediticiaComponent,
+        data: {
+          roles: MENU_OPTIONS[5].roles
+        },
+      },
+      {
+        path: MENU_OPTIONS[5].submenu[1].route.replace('/',''), //ENVIO DE MENSAJES
+        component: MensajesTextoComponent,
         data: {
           roles: MENU_OPTIONS[5].roles
         },

@@ -8,7 +8,7 @@ export const MENU_OPTIONS = [
   {
     name: 'administración',
     icon: 'bx bxs-cog',
-    roles: [Role.ADMIN],
+    roles: [Role.ADMIN,Role.ADMINISTRATIVO, Role.ASISTENTE_TECNOLOGIA, Role.COORDINADOR_TECNOLOGIA],
     active: true,
     submenu: [
       // { name: 'usuarios', route: '/usuarios' },
@@ -58,12 +58,14 @@ export const MENU_OPTIONS = [
       Role.ADMIN,
       Role.ADMINISTRATIVO,
       Role.OFICIAL_CUMPLIMIENTO,
+      Role.JEFE_OPERATIVO,
+      Role.ASISTENTE_OPERACIONES,
       Role.GESTOR_DPF,
     ],
     active: true,
     submenu: [
       { name: 'cumpleaños', route: '/cumpleanios' },
-      { name: 'depositos', route: '/depositos' }
+      // { name: 'depositos', route: '/depositos' }
   ],
   },
   {
@@ -74,6 +76,7 @@ export const MENU_OPTIONS = [
       Role.ADMIN,
       Role.ADMINISTRATIVO,
       Role.OFICIAL_CUMPLIMIENTO,
+      Role.JEFE_OPERATIVO,
       Role.GESTOR_DPF,
       Role.GESTOR_CREDITO,
       Role.JEFE_NEGOCIOS,
@@ -97,10 +100,14 @@ export const MENU_OPTIONS = [
       Role.ADMIN,
       Role.ADMINISTRATIVO,
       Role.OFICIAL_CUMPLIMIENTO,
+      Role.JEFE_OPERATIVO,
+      Role.ASISTENTE_OPERACIONES,
+      Role.ASISTENTE_DE_SERVICIO_AL_SOCIO
     ],
     active: true,
     submenu: [
     { name: 'situación crediticia', route: '/situacion-crediticia' },
+    { name: 'morosos envio de sms', route: '/morosos-mensajes' },
   ],
   },
 ];

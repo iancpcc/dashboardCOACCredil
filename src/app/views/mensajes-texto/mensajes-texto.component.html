@@ -17,7 +17,7 @@
       </div>
       <div>
         <label
-          class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+          class="block uppercase tracking-wide text-gray-700 text-xs  mb-2"
           for="grid-first-name"
         >
           Dias Mora
@@ -28,7 +28,7 @@
             name="monto"
             class="rounded-lg bg-gray-50 border border-gray-300 text-gray-900 block flex-1 min-w-0 w-full text-sm p-2.5 outline-none"
             id="grid-first-name"
-            type="text"
+            type="number"
             placeholder="500"
           />
 
@@ -41,13 +41,13 @@
 
       <div class="flex justify-center w-full">
         <ng-container *ngIf="reportState$" [ngSwitch]="reportState$.state">
-          <button
+          <!-- <button
             [disabled]="
-              !isReadyAllParameters || reportState$.state == DataState.LOADING
+              !parametrosOk || reportState$.state == DataState.LOADING
             "
             type="submit"
             (click)="onSubmit()"
-            class="disabled:bg-blue-500 truncate w-40 flex justify-center bg-blue-700 text-white py-2 px-4 rounded-md disabled:cursor-not-allowed"
+            class="disabled:bg-blue-500 truncate disabled:pointer-events-none disabled:opacity-50 w-40 flex justify-center bg-blue-700 text-white py-2 px-4 rounded-md disabled:cursor-not-allowed"
           >
             <app-spinner
               *ngIf=" reportState$.state == DataState.LOADING"
@@ -57,7 +57,11 @@
                 ? "Generando .. "
                 : "Generar Reporte"
             }}
-          </button>
+          </button> -->
+          <app-boton-generar-reporte (click)="onSubmit()"
+      [seValidaronCampos] = "parametrosOk()"
+      [estadoReporte]="reportState$.state!"
+      />
         </ng-container>
       </div>
     </form>

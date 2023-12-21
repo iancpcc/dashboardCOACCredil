@@ -1,7 +1,4 @@
-import {
-  AppStateEntity,
-  DataState,
-} from 'src/data/entities/app-state.entity';
+import { AppStateEntity, DataState } from 'src/data/entities/app-state.entity';
 import { Component, ViewChild } from '@angular/core';
 import { Observable, Subject, catchError, map, of, startWith, tap } from 'rxjs';
 
@@ -21,7 +18,7 @@ import { UsuarioService } from 'src/app/services/usuario.service';
 @Component({
   selector: 'app-mensajes-texto',
   templateUrl: './mensajes-texto.component.html',
-  styleUrls: ['./mensajes-texto.component.css']
+  styleUrls: ['./mensajes-texto.component.css'],
 })
 export class MensajesTextoComponent {
   @ViewChild(DataTableDirective, { static: false })
@@ -30,9 +27,9 @@ export class MensajesTextoComponent {
   // usuarios$: IUsuarioAgencia[] = [];
   readonly DataState = DataState;
   // consultaCuotasVencidas: CuotasVencidas[] = []
-  paramsToAPI :{fechaCorte:string|null,diasMora:number|null }= {
-    fechaCorte: null,
-    diasMora: null
+  paramsToAPI: { fechaCorte: string | null; diasMora: number | null } = {
+    fechaCorte: this.utils.obtenerFechaActual(),
+    diasMora: 0,
   };
 
   reportState$: AppStateEntity<ISociosMora[]> = {};
@@ -44,8 +41,8 @@ export class MensajesTextoComponent {
 
   constructor(
     private reportSrv: ReportService,
-    private alertSrv:AlertService,
-    private utils: HelpersService,
+    private alertSrv: AlertService,
+    private utils: HelpersService
   ) {}
 
   ngOnInit(): void {
@@ -56,7 +53,7 @@ export class MensajesTextoComponent {
       processing: true,
       language: {
         url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json',
-    },
+      },
       // serverSide: true,
       responsive: true,
       ajax: ({}, callback: any) => {
@@ -68,8 +65,7 @@ export class MensajesTextoComponent {
             }),
             startWith({ state: DataState.LOADING, data: [] }),
             catchError((error) => {
-
-              this.alertSrv.showAlertError(error.message)
+              this.alertSrv.showAlertError(error.message);
               return of({ state: DataState.ERROR, error, data: [] });
             })
           )
@@ -87,7 +83,7 @@ export class MensajesTextoComponent {
       columns: [
         {
           title: 'Fecha Corte',
-          data: 'nombre',
+          data: 'fechacorte',
         },
         {
           title: 'Nombre',
@@ -98,7 +94,7 @@ export class MensajesTextoComponent {
           data: 'apellido',
         },
         {
-          title: 'Teléfono',
+          title: 'Teléfonos',
           data: 'telefono',
         },
         {
@@ -117,14 +113,12 @@ export class MensajesTextoComponent {
         //   title: 'Saldo',
         //   data: 'saldo',
         // },
-
       ],
       dom: 'Bfrtip',
       buttons: ['copy', 'print', 'excel', 'pdf'],
     };
 
-    this.paramsToAPI.fechaCorte = this.utils.obtenerFechaActual()
-    this.paramsToAPI.diasMora = 1097
+
   }
 
   async reload() {
@@ -182,8 +176,7 @@ export class MensajesTextoComponent {
     this.dtTrigger.unsubscribe();
   }
 
-  get isReadyAllParameters() {
-    return !this.paramsToAPI.fechaCorte  && !this.paramsToAPI;
+   parametrosOk() {
+    return this.paramsToAPI.fechaCorte!=null && this.paramsToAPI.diasMora!=0;
   }
-
 }

@@ -20,7 +20,7 @@ export class CacheInterceptor implements HttpInterceptor {
     request: HttpRequest<unknown>,
     next: HttpHandler
   ): Observable<HttpEvent<unknown>> {
-    console.log(request)
+    // console.log(request)
     if(request.method !='GET'){
 
       return next.handle(request);

@@ -108,7 +108,7 @@ export class UsuariosAdmComponent implements OnInit, OnDestroy {
   movePage(direccion:string) {
     // this.currentIndexPagination = numero -1;
     this.currentIndexPagination = direccion ==='siguiente'? this.currentIndexPagination + 1: this.currentIndexPagination -1;
-    console.log(this.currentIndexPagination)
+    // console.log(this.currentIndexPagination)
     this.obtenerUsuariosPorPagina(this.currentIndexPagination)
   }
 
