@@ -9,10 +9,11 @@ import { CuotasVencidasComponent } from './cuotas-vencidas/cuotas-vencidas.compo
 import { DashboardPageComponent } from './panel-principal/dashboard-page.component';
 import { DataTablesModule } from 'angular-datatables';
 import { HomeRoutingModule } from './home.routes';
+import { MensajesTextoComponent } from '../mensajes-texto/mensajes-texto.component';
 import { NgModule } from '@angular/core';
+import { PageNoAuthorizedComponent } from './page-no-authorized/page-no-authorized.component';
 import { PlazoFijoComponent } from './vencimientos/proximos-vencimientos';
 import { SituacionCrediticiaComponent } from './situacion-crediticia/situacion-crediticia.component';
-import { MensajesTextoComponent } from '../mensajes-texto/mensajes-texto.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { MensajesTextoComponent } from '../mensajes-texto/mensajes-texto.compone
     CumpleaniosClientesComponent,
     CuotasVencidasAgenciaComponent,
     PlazoFijoComponent,
-    MensajesTextoComponent
+    MensajesTextoComponent,
+    PageNoAuthorizedComponent
   ],
   imports: [
     ComponentsModule,

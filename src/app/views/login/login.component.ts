@@ -46,6 +46,8 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   login!: AppStateEntity<UserModel>;
 
+  isPasswordVisible = false ;
+
   readonly DataState = DataState;
   dataSubscription!: Subscription;
 
@@ -56,6 +58,13 @@ export class LoginComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {}
+
+  onChangePassword (){
+    this.isPasswordVisible =  !this.isPasswordVisible;
+  }
+
+
+
 
   async onSubmit() {
     // return  this.router.navigateByUrl('/');

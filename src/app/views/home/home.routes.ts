@@ -1,5 +1,6 @@
-import { RouterModule, Routes } from '@angular/router';
+import { CanActivate, RouterModule, Routes } from '@angular/router';
 
+import { AuthorizationPagesGuard } from 'src/app/guards/authorization-pages.guard';
 import { CartaPreferencialComponent } from './carta-preferencial/carta-preferencial.component';
 import { CumpleaniosClientesComponent } from './cumpleanios-clientes/cumpleanios-clientes.component';
 import { CuotasVencidasAgenciaComponent } from './cuotas-vencidas-agencia/cuotas-vencidas-agencia.component';
@@ -10,9 +11,11 @@ import { HomeComponent } from './home.component';
 import { MENU_OPTIONS } from 'src/base/config/rutas-app';
 import { MensajesTextoComponent } from '../mensajes-texto/mensajes-texto.component';
 import { NgModule } from '@angular/core';
+import { PageNoAuthorizedComponent } from './page-no-authorized/page-no-authorized.component';
 import { PageNotFoundComponentComponent } from '../page-not-found-component/page-not-found-component.component';
 import { PlazoFijoComponent } from './vencimientos/proximos-vencimientos';
 import { Role } from 'src/app/interfaces/role.enum';
+import { SatisfaccionClienteComponent } from './satisfaccion-cliente/satisfaccion-cliente.component';
 import { SituacionCrediticiaComponent } from './situacion-crediticia/situacion-crediticia.component';
 import { UsuariosAdmComponent } from '../admin/usuarios/usuarios-adm.component';
 
@@ -29,19 +32,12 @@ const homeRoutes = [
       {
         path: 'home',
         component: DashboardPageComponent,
-        data: {
-          roles: [
-            Role.ADMIN,
-            Role.ADMINISTRATIVO,
-            Role.JEFE_NEGOCIOS,
-            Role.ASESOR_CAPTACIONES,
-          ],
-        },
       },
       //Modulo de Adminitracion
       {
         path: MENU_OPTIONS[0].submenu[0].route.replace("/",""),
         component: UsuariosAdmComponent,
+        canActivate:[AuthorizationPagesGuard],
         data: {
           roles: MENU_OPTIONS[0].roles
         },
@@ -51,6 +47,15 @@ const homeRoutes = [
       {
         path: MENU_OPTIONS[1].submenu[0].route.replace('/',''),
         component: GeoreferenciacionComponent,
+        canActivate:[AuthorizationPagesGuard],
+        data: {
+          roles: MENU_OPTIONS[1].roles
+        },
+      },
+      {
+        path: MENU_OPTIONS[1].submenu[1].route.replace('/',''),
+        component: SatisfaccionClienteComponent,
+        canActivate:[AuthorizationPagesGuard],
         data: {
           roles: MENU_OPTIONS[1].roles
         },
@@ -59,7 +64,8 @@ const homeRoutes = [
       // {
       //   path: MENU_OPTIONS[1].submenu[1].route.replace('/',''),
       //   component: GeoreferenciacionComponent,
-      //   data: {
+      // canActivate:[AuthorizationPagesGuard],//
+      // data: {
       //     roles: MENU_OPTIONS[1].roles
       //   },
       // },
@@ -68,6 +74,7 @@ const homeRoutes = [
       {
         path:  MENU_OPTIONS[2].submenu[0].route.replace('/',''),
         component: PlazoFijoComponent,
+        canActivate:[AuthorizationPagesGuard],
         data: {
           roles: MENU_OPTIONS[2].roles
         },
@@ -78,6 +85,7 @@ const homeRoutes = [
 
         path:  MENU_OPTIONS[3].submenu[0].route.replace('/',''),
         component: CumpleaniosClientesComponent,
+        canActivate:[AuthorizationPagesGuard],
         data: {
           roles: MENU_OPTIONS[3].roles
         },
@@ -86,6 +94,7 @@ const homeRoutes = [
       {
         path:  MENU_OPTIONS[4].submenu[0].route.replace('/',''),
         component: CuotasVencidasComponent,
+        canActivate:[AuthorizationPagesGuard],
         data: {
           roles: MENU_OPTIONS[4].roles
         },
@@ -93,6 +102,7 @@ const homeRoutes = [
       {
         path: MENU_OPTIONS[4].submenu[1].route.replace('/',''),
         component: CartaPreferencialComponent,
+        canActivate:[AuthorizationPagesGuard],
         data: {
           roles: MENU_OPTIONS[4].roles
         },
@@ -101,6 +111,7 @@ const homeRoutes = [
       {
         path: MENU_OPTIONS[5].submenu[0].route.replace('/',''),//SITUACION CREDITICIA
         component: SituacionCrediticiaComponent,
+        canActivate:[AuthorizationPagesGuard],
         data: {
           roles: MENU_OPTIONS[5].roles
         },
@@ -108,9 +119,14 @@ const homeRoutes = [
       {
         path: MENU_OPTIONS[5].submenu[1].route.replace('/',''), //ENVIO DE MENSAJES
         component: MensajesTextoComponent,
+        canActivate:[AuthorizationPagesGuard],
         data: {
           roles: MENU_OPTIONS[5].roles
         },
+      },
+      {
+        path: 'accesso-no-autorizado', //ENVIO DE MENSAJES
+        component: PageNoAuthorizedComponent,
       },
     ],
 

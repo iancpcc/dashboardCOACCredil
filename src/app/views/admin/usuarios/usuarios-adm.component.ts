@@ -1,20 +1,24 @@
+import { AppStateEntity, DataState } from 'src/data/entities/app-state.entity';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import {
-  AppStateEntity,
-  DataState,
-} from 'src/data/entities/app-state.entity';
-import {
-  Component,
-  ElementRef,
-  OnDestroy,
-  OnInit,
-  ViewChild,
-} from '@angular/core';
-import { Observable, Subscription, catchError, map, of, shareReplay, startWith, tap } from 'rxjs';
+  Subject,
+  Subscription,
+  catchError,
+  debounceTime,
+  distinctUntilChanged,
+  map,
+  of,
+  shareReplay,
+  startWith,
+  switchMap,
+  tap,
+} from 'rxjs';
 
 import { AlertService } from 'src/app/utils/alert.service';
 import { AuthService } from 'src/app/services/auth.service';
-import { DataTableDirective } from 'angular-datatables';
+import { IUserLoggin } from '../../../interfaces/usuario-login.interface';
 import { IUsuario } from 'src/app/interfaces/usuario-agencia.interface';
+import { ResponseEntity } from 'src/data/entities/response.entity';
 import Swal from 'sweetalert2';
 import { UsuarioService } from 'src/app/services/usuario.service';
 
@@ -24,92 +28,113 @@ import { UsuarioService } from 'src/app/services/usuario.service';
   styleUrls: ['./usuarios-adm.component.css'],
 })
 export class UsuariosAdmComponent implements OnInit, OnDestroy {
-  dtElement: DataTableDirective | undefined;
-  dtOptions: any = {};
-  usuariosObtenidos: IUsuario[] = [];
-  usuariosLimitados: IUsuario[] = [];
   numerosPagina: number[] = [];
-  nuevoUsuario:string=""
-  apiSuscription$!: Subscription
-
-  usuarios$!: Observable<AppStateEntity<IUsuario[]>>;
+  nuevoUsuario: string = '';
+  guardarUsuarioSuscription$!: Subscription;
+  restablecerContraseniaSuscription$!: Subscription;
+  usuariosState!: AppStateEntity<IUsuario[]>;
   isModalOpen = false;
-  currentPage = 1;
+  isPaginationInvisible = false;
+  // currentPage = 0;
   readonly DataState = DataState;
-  currentIndexPagination: number = 0;
+  currentPageIndex: number = 0;
+  searchTerms: Subject<string> = new Subject<string>();
+
   constructor(
     private srvUsuarios: UsuarioService,
     private srvAuth: AuthService,
     private srvAlert: AlertService
   ) {}
-  ngOnDestroy(): void {
-    this.apiSuscription$?.unsubscribe()
 
+  ngOnDestroy(): void {
+    this.guardarUsuarioSuscription$?.unsubscribe();
+    this.searchTerms.unsubscribe();
+    this.restablecerContraseniaSuscription$?.unsubscribe();
   }
 
   ngOnInit(): void {
-
-    this.obtenerUsuariosPorPagina(this.currentPage);
+    this.obtenerUsuariosPorPagina(this.currentPageIndex);
+    this.onSearchUser();
   }
 
-  saveUser(){
-    this.apiSuscription$ =  this.srvUsuarios.saveUser$(this.nuevoUsuario)
-    .pipe(
-      map((res) => {
-        if (res.success){
-          this.openModal()
-          this.srvAlert.showAlertSucess("Usuario creado Exitosamente")
-          this.obtenerUsuariosPorPagina(1);
+  onSearchUser(): void {
+    this.searchTerms
+      .pipe(
+        debounceTime(1300), // Establece un retraso de 1300 ms
+        distinctUntilChanged(), // Evita llamadas duplicadas para términos idénticos consecutivos
+        tap(termino => this.isPaginationInvisible =  termino.length > 0  ),
+        switchMap((term: string) => this.srvUsuarios.searchUsers$(term)),
+        map((res) => ({ state: DataState.LOADED, data: res.data! })),
+        startWith({ state: DataState.LOADING }),
+        catchError((err) => of({ state: DataState.ERROR, error: err }))
+      )
+      .subscribe((responseMapped: AppStateEntity<IUsuario[]>) => {
+        this.usuariosState = responseMapped;
+      });
+  }
 
-        }
-          return {state: DataState.LOADED, data: res.data}
-      }),
-      startWith({ state: DataState.LOADING}),
-      catchError(err=>{
-        this.srvAlert.showAlertError(err.message)
-        return of()
-      } ),
-      shareReplay(1)
-      ).subscribe()
-    ;
+  crearNuevoUsuario() {
+    this.guardarUsuarioSuscription$ = this.srvUsuarios
+      .saveUser$(this.nuevoUsuario)
+      .pipe(
+        tap((_) => {
+          this.handleModal(); //Cierro el modal
+          this.srvAlert.showAlertSucess('Usuario creado Exitosamente');
+          this.obtenerUsuariosPorPagina(this.currentPageIndex); //Actualizo la tabla
+        }),
+        catchError((err: ResponseEntity<IUserLoggin>) => {
+          return this.srvAlert.showAlertError(err?.message!);
+        })
+      )
+      .subscribe();
   }
 
   obtenerUsuariosPorPagina(page: number): void {
+    page = page + 1; //le sumo +1 ya que le nuestro index de paginación empieza en 0
 
-    this.usuarios$ = this.srvUsuarios.getAllUsers$(page).pipe(
-      map((res) => {
-        //
-        const {registros, totalPaginas, totalRegistros} = res.data!;
-        this.usuariosObtenidos = registros!;
-        this.usuariosLimitados = this.usuariosObtenidos.slice(0, 10);
-        this.numerosPagina = Array.from({ length: totalPaginas }, (_, index) => index + 1);
-        return { state: DataState.LOADED, data: res.data?.registros };
-      }),
-      startWith({ state: DataState.LOADING, data: [] }),
-      catchError((err) => of({ state: DataState.ERROR, error: err }))
-    );
+    this.srvUsuarios
+      .getAllUsers$(page)
+      .pipe(
+        map((res) => {
+          const { registros, totalPaginas } = res.data!;
+          this.numerosPagina = Array(totalPaginas).fill(0);
+          return { state: DataState.LOADED, data: registros };
+        }),
+        startWith({ state: DataState.LOADING }),
+        catchError((err) => of({ state: DataState.ERROR, error: err }))
+      )
+      .subscribe((response: AppStateEntity<IUsuario[]>) => {
+        this.usuariosState = response;
+        if (response.state == DataState.ERROR) {
+          this.srvAlert.showAlertError(response.error?.message!);
+        }
+      });
   }
 
-  trackByFn( index:number , item:any) {
-    //
-    return item.usuario; // Use a unique identifier for efficient tracking.
+  handleUsersData(event: any): void {
+    let terminoBusqueda = event.target.value as string;
+    // debugger
+    if (terminoBusqueda.trim().length <= 0) {
+      this.obtenerUsuariosPorPagina(this.currentPageIndex);
+      this.isPaginationInvisible = false;
+    } else {
+      this.searchTerms.next(terminoBusqueda);
+    }
   }
 
-  openModal(){
-    this.isModalOpen = !this.isModalOpen
-    this.nuevoUsuario=""
+  handleModal() {
+    this.isModalOpen = !this.isModalOpen;
+    this.nuevoUsuario = '';
   }
 
-  nextPage(numero:number) {
-    this.currentIndexPagination = numero -1;
-    this.obtenerUsuariosPorPagina(numero)
+  nextPage(numero: number) {
+    this.currentPageIndex = numero;
+    this.obtenerUsuariosPorPagina(numero);
   }
 
-  movePage(direccion:string) {
-    // this.currentIndexPagination = numero -1;
-    this.currentIndexPagination = direccion ==='siguiente'? this.currentIndexPagination + 1: this.currentIndexPagination -1;
-    // console.log(this.currentIndexPagination)
-    this.obtenerUsuariosPorPagina(this.currentIndexPagination)
+  movePage(direccion: string) {
+    this.currentPageIndex += direccion === 'siguiente' ? 1 : -1;
+    this.obtenerUsuariosPorPagina(this.currentPageIndex);
   }
 
   modalRestablecerClave(usuario: string) {
@@ -124,7 +149,7 @@ export class UsuariosAdmComponent implements OnInit, OnDestroy {
       cancelButtonText: 'Cancelar',
     }).then((result) => {
       if (result.isConfirmed) {
-        this.srvAuth
+        this.restablecerContraseniaSuscription$ = this.srvAuth
           .resetPassword$(usuario)
           .pipe(
             tap((res) => {
@@ -134,6 +159,7 @@ export class UsuariosAdmComponent implements OnInit, OnDestroy {
                 'success'
               );
             }),
+            shareReplay(1),
             catchError((err) => {
               return Swal.fire(
                 'Ocurrio un error!',

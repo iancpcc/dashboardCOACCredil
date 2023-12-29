@@ -18,6 +18,7 @@ import { NgModule } from '@angular/core';
 import { PageNotFoundComponentComponent } from './views/page-not-found-component/page-not-found-component.component';
 import { RegisterComponent } from './views/register/register.component';
 import { ResetPasswordComponent } from './views/reset-password/reset-password.component';
+import { SatisfaccionClienteComponent } from './views/home/satisfaccion-cliente/satisfaccion-cliente.component';
 import { UserCreatePasswordUseCase } from 'src/domain/usecases/Users/user-create-password.usecase';
 import { UserLoginUseCase } from 'src/domain/usecases/user-login.usecase';
 
@@ -32,6 +33,7 @@ import { UserLoginUseCase } from 'src/domain/usecases/user-login.usecase';
     ResetPasswordComponent,
     HomeComponent,
     GeoreferenciacionComponent,
+    SatisfaccionClienteComponent,
   ],
   providers: [UserLoginUseCase, UserCreatePasswordUseCase,
   {

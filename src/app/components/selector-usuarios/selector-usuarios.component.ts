@@ -65,7 +65,7 @@ export class SelectorUsuariosComponent implements OnChanges {
 
   obtenerUsuariosPorAgencia(codAgencia: string) {
     // Aqui van los roles de los usuarios que quiero llamar desde la api
-    const rolesId = `${(Role.ASESOR_CAPTACIONES, Role.GESTOR_CREDITO)}`;
+    const rolesId = `${(Role.ASESOR_CAPTACIONES, Role.GESTOR_CREDITO,Role.GESTOR_DPF,Role.GESTOR_CAPTACIONES )}`;
     this.usuarios$ = this.usuarioSrv
       .getUsersByAgencies$({
         agencia: codAgencia,

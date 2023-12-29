@@ -8,7 +8,7 @@ export const MENU_OPTIONS = [
   {
     name: 'administración',
     icon: 'bx bxs-cog',
-    roles: [Role.ADMIN,Role.ADMINISTRATIVO, Role.ASISTENTE_TECNOLOGIA, Role.COORDINADOR_TECNOLOGIA],
+    roles: [Role.ADMIN,Role.JEFE_FINANCIERO, Role.ASISTENTE_TECNOLOGIA, Role.COORDINADOR_TECNOLOGIA],
     active: true,
     submenu: [
       // { name: 'usuarios', route: '/usuarios' },
@@ -17,21 +17,23 @@ export const MENU_OPTIONS = [
     ],
   },
   {
-    name: 'georeferencia',
+    name: 'gerencia',
     icon: 'bx bxs-map-pin',
     roles: [
       Role.ADMIN,
       Role.ADMINISTRATIVO,
+      Role.COORDINADOR_MARKETING,
       Role.GERENTE,
       Role.OFICIAL_CUMPLIMIENTO,
       Role.COORDINADOR_TECNOLOGIA,
-      Role.ASISTENTE_TECNOLOGIA
+      Role.ASISTENTE_TECNOLOGIA,
+      Role.PROMOTOR_PRODUCTOS_SERVICIOS
       // Role.GESTOR_DPF,
     ],
     active: true,
     submenu: [
-      // { name: 'créditos', route: '/creditos' },
       { name: 'Morosidad', route: '/georeferenciacion' },
+      { name: 'Satisfacción Cliente', route: '/satisfaccion-cliente' },
     ],
   },
   {
@@ -56,6 +58,7 @@ export const MENU_OPTIONS = [
     roles: [
       Role.PROMOTOR_PRODUCTOS_SERVICIOS,
       Role.ADMIN,
+      Role.GERENTE,
       Role.ADMINISTRATIVO,
       Role.OFICIAL_CUMPLIMIENTO,
       Role.JEFE_OPERATIVO,
@@ -74,6 +77,7 @@ export const MENU_OPTIONS = [
     roles: [
       Role.PROMOTOR_PRODUCTOS_SERVICIOS,
       Role.ADMIN,
+      Role.GERENTE,
       Role.ADMINISTRATIVO,
       Role.OFICIAL_CUMPLIMIENTO,
       Role.JEFE_OPERATIVO,
@@ -98,6 +102,7 @@ export const MENU_OPTIONS = [
     roles: [
       Role.PROMOTOR_PRODUCTOS_SERVICIOS,
       Role.ADMIN,
+      Role.GERENTE,
       Role.ADMINISTRATIVO,
       Role.OFICIAL_CUMPLIMIENTO,
       Role.JEFE_OPERATIVO,
@@ -107,7 +112,7 @@ export const MENU_OPTIONS = [
     active: true,
     submenu: [
     { name: 'situación crediticia', route: '/situacion-crediticia' },
-    { name: 'morosos envio de sms', route: '/morosos-mensajes' },
+    { name: 'socios morosos (sms de texto)', route: '/morosos-mensajes' },
   ],
   },
 ];

@@ -1,6 +1,6 @@
 export interface AppStateEntity<T> {
     state?: DataState
-    data?: T
+    data?: T | never []| null
     error?: CustomError
   }
 

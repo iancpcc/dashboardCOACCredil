@@ -69,11 +69,13 @@ export class ResetPasswordComponent implements OnInit {
     }
   );
 
-  MESSAGE_SUCCESS = 'Contraseña cambiada exitosamente';
+  MESSAGE_CAMBIO_CONTRASENIA_EXITOSO = 'Contraseña cambiada exitosamente';
 
   resetPassword$!: AppStateEntity<ResponseEntity<any>>;
 
+
   readonly DataState = DataState;
+  isPasswordVisible: boolean = false;
 
   constructor(
     private _formBuilder: FormBuilder,
@@ -84,6 +86,9 @@ export class ResetPasswordComponent implements OnInit {
   ngOnInit(): void {
     this._alertSrv.showAlertAnimated("Actualice su contraseña para acceder")
 
+  }
+  onChangePassword (){
+    this.isPasswordVisible =  !this.isPasswordVisible;
   }
 
   async onSubmit() {
@@ -102,12 +107,12 @@ export class ResetPasswordComponent implements OnInit {
         map((response) => {
           return {
             state: DataState.LOADED,
-            data: { message: this.MESSAGE_SUCCESS },
+            data: { message: this.MESSAGE_CAMBIO_CONTRASENIA_EXITOSO },
           };
         }),
         tap(async() => {
             this.router.navigateByUrl('/login');
-            await this._alertSrv.showAlertSucess(this.MESSAGE_SUCCESS)
+            await this._alertSrv.showAlertSucess(this.MESSAGE_CAMBIO_CONTRASENIA_EXITOSO)
 
         }),
         startWith({ state: DataState.LOADING }),

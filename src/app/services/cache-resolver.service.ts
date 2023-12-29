@@ -31,11 +31,9 @@ export class CacheResolverService {
       this.cache.delete(key);
       return null;
     }
-
-    return httpResponse;
+  return httpResponse;
   }
-  clearCache(){
-    this.cache.clear()
+  clearCache() {
+    this.cache.clear();
   }
-
 }

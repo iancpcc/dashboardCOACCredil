@@ -9,7 +9,7 @@
       class="bg-blue-500 max-w-52 h-10 hover:bg-blue-700 text-white py-2 px-4 rounded-ss-md rounded-e-md"
       data-modal-toggle="user-modal"
       type="button"
-      (click)="openModal()"
+      (click)="handleModal()"
     >
       <i class="bx bx-message-square-add"></i>
       Nuevo Usuario
@@ -18,10 +18,11 @@
     <div>
       <div class="flex">
         <input
+          autocomplete="off"
           type="search"
-          name="search"
+          (search)="handleUsersData($event)"
+          (keyup)="handleUsersData($event)"
           class="rounded-none rounded-l-lg border-r-0 bg-gray-50 border border-gray-300 text-gray-900 block flex-1 w-full text-sm p-2.5 outline-none"
-          id="grid-first-name"
           placeholder="Ej: JuanSoto"
         />
         <div
@@ -34,27 +35,23 @@
     </div>
   </div>
   <!-- CUERPO (LISTADO USUARIOS) -->
-  <div class="overflow-y-auto md:overflow-y-hidden w-full mt-32">
-    <ng-container
-      *ngIf="usuarios$ | async as usuarios"
-      [ngSwitch]="usuarios.state"
-    >
+  <div class="overflow-y-auto w-full mt-32">
+    <ng-container *ngIf="usuariosState" [ngSwitch]="usuariosState.state">
       <app-danger
         *ngSwitchCase="DataState.ERROR"
-        [title]="usuarios?.error?.message ?? 'Error'"
+        [title]="usuariosState.error?.message ?? 'Error Informe a Sistemas'"
       ></app-danger>
       <!-- Skeleton -->
       <ng-container *ngSwitchCase="DataState.LOADING">
         <app-skeleton></app-skeleton>
       </ng-container>
-      <!-- Tabla de usuarios -->
+      <!-- Tabla de usuariosState -->
       <ng-container *ngSwitchCase="DataState.LOADED">
         <table
           class="h-min-[500px] mt-10 md:mt-0 min-w-full text-left text-xs md:text-sm font-light border border-stoke"
         >
           <thead class="border-b bg-white font-medium">
             <tr>
-              <th scope="col" class="px-6 py-4">#</th>
               <th scope="col" class="px-6 py-4">Usuario</th>
               <th scope="col" class="px-6 py-4 text-center">
                 Cambió Contraseña
@@ -66,17 +63,13 @@
           <tbody>
             <tr
               *ngFor="
-                let usuario of usuariosLimitados;
+                let usuario of usuariosState.data;
                 let i = index;
-                even as impar;
-                trackBy: trackByFn
+                even as impar
               "
               class="border-b bg-neutral-100"
               [ngClass]="{ '!bg-white': impar }"
             >
-              <td class="whitespace-nowrap px-6 py-4 border font-medium">
-                {{ i + 1 }}
-              </td>
               <td class="whitespace-nowrap px-6 py-4 border font-medium">
                 {{ usuario.usuario }}
               </td>
@@ -113,59 +106,45 @@
       </ng-container>
 
       <div
+        *ngIf="usuariosState.data?.length"
         class="flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3 sm:px-6"
       >
         <div class="flex flex-1 justify-between sm:hidden">
           <button
             (click)="movePage('anterior')"
-            [disabled]="currentIndexPagination <= 0"
+            [disabled]="currentPageIndex <= 0"
             class="relative inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
           >
             Anterior
           </button>
           <button
             (click)="movePage('siguiente')"
-            [disabled]="currentIndexPagination >= numerosPagina.length"
+            [disabled]="currentPageIndex >= numerosPagina.length"
             class="relative ml-3 inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
           >
             Siguiente
           </button>
         </div>
         <div
+        *ngIf="!isPaginationInvisible"
           class="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between"
         >
           <div>
-            <!-- <p class="text-sm text-gray-700">
-        Mostrando
-        <span class="font-medium">1</span>
-        al
-        <span class="font-medium">10</span>
-        de
-        <span class="font-medium">{{this.usuariosObtenidos.length}}</span>
-        resultados
-      </p> -->
           </div>
           <div>
             <nav
               class="isolate inline-flex -space-x-px rounded-md shadow-sm"
               aria-label="Pagination"
             >
-              <!-- <a class="relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0">
-          <span class="sr-only">Anterior</span>
-          <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-            <path fill-rule="evenodd" d="M12.79 5.23a.75.75 0 01-.02 1.06L8.832 10l3.938 3.71a.75.75 0 11-1.04 1.08l-4.5-4.25a.75.75 0 010-1.08l4.5-4.25a.75.75 0 011.06.02z" clip-rule="evenodd" />
-          </svg>
-        </a> -->
-              <!-- Current: "z-10 bg-indigo-600 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600", Default: "text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:outline-offset-0" -->
               <a
                 *ngFor="let item of numerosPagina; let i = index"
-                (click)="nextPage(item)"
+                (click)="nextPage(i)"
                 class="relative inline-flex cursor-pointer items-center px-4 py-2 text-sm hover:bg-blue-500 hover:text-white text-gray-900 ring-1 ring-inset ring-gray-300 focus:z-20 focus:outline-offset-0"
                 [ngClass]="{
-                  'bg-blue-500 text-white': i == currentIndexPagination
+                  'bg-blue-500 text-white': i == currentPageIndex
                 }"
               >
-                {{ item }}
+                {{ i + 1 }}
               </a>
               <!-- <span class="relative inline-flex items-center px-4 py-2 text-sm hover:bg-blue-500  text-gray-700 ring-1 ring-inset ring-gray-300 focus:outline-offset-0">...</span> -->
               <!-- <a
@@ -192,12 +171,13 @@
     <div
       class="absolute top-1/4 left-[15%] md:top-1/2 md:left-1/2 md:transform md:-translate-x-1/2 md:-translate-y-1/2 w-92 px-4"
     >
+
       <!-- Modal content -->
       <div class="pb-10 rounded-lg shadow relative bg-gray-700">
         <div class="flex justify-end p-2">
           <button
             type="button"
-            (click)="openModal()"
+            (click)="handleModal()"
             class="text-gray-400 bg-transparent rounded-lg text-sm p-1.5 ml-auto inline-flex items-center hover:bg-gray-800 hover:text-white"
             data-modal-toggle="authentication-modal"
           >
@@ -238,7 +218,7 @@
 
           <button
             [disabled]="nuevoUsuario.length < 5"
-            (click)="saveUser()"
+            (click)="crearNuevoUsuario()"
             class="w-full disabled:pointer-events-none disabled:opacity-50 text-white focus:ring-4 font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-blue-600 hover:bg-blue-700 focus:ring-blue-800"
           >
             Guardar
@@ -248,6 +228,7 @@
           *Contraseña por defecto es : <span class="underline">Credil*123</span>
         </h2>
       </div>
+
     </div>
   </div>
 </div>

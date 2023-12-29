@@ -40,15 +40,23 @@ export class UsuarioService {
   getUsersByAgencies$ = (params: {
     agencia: number | string;
     rolesId: string;
-  }):Observable<ResponseEntity<IUsuarioAgencia[]>> => {
+  }): Observable<ResponseEntity<IUsuarioAgencia[]>> => {
     // params.agencia = params.agencia.toString();
-    if (params.agencia == '-1'){
-      return of({data:[]})
+    if (params.agencia == '-1') {
+      return of({ data: [] });
     }
     return this.genericService.postApiData<IUsuarioAgencia[]>({
       url: `${this.base_url}/usersByAgency`,
       body: params,
     });
+  };
+
+  searchUsers$ = (
+    codigoUsuario: string=""
+  ): Observable<ResponseEntity<IUsuario[]>> => {
+    return this.genericService.getApiData<IUsuario[]>(
+      `${this.base_url}/searchUsers?username=${codigoUsuario}`
+    );
   };
 
   getAllUsers$ = (
