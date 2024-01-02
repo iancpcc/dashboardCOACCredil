@@ -18,7 +18,7 @@ export const MENU_OPTIONS = [
   },
   {
     name: 'gerencia',
-    icon: 'bx bxs-map-pin',
+    icon: 'bx bxs-briefcase',
     roles: [
       Role.ADMIN,
       Role.ADMINISTRATIVO,

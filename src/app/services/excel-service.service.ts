@@ -10,7 +10,6 @@ import { imgBase64 } from '../shared/imgBase64.shared';
   providedIn: 'root',
 })
 export class ExcelServiceService {
-  constructor(private utils: HelpersService) {}
 
 
   exportExcel(infoData: excelDataCuotasVencidas) {
@@ -39,7 +38,7 @@ export class ExcelServiceService {
     worksheet.addRow([]);
     // Date
     worksheet.mergeCells('A5:B5');
-    let date = this.utils.obtenerFechaActual();
+    let date = infoData.header.date;
     let dateCell = worksheet.getCell('B5');
     dateCell.value = `Fecha: ${date}`;
     dateCell.font = {

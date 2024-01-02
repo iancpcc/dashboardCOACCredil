@@ -308,7 +308,7 @@ export class CuotasVencidasComponent implements OnInit {
       header: {
         title: 'CUOTAS VENCIDAS',
         agencia: this.nombreAgenciaSeleccionada,
-        date: this.utils.obtenerFechaActual(),
+        date: this.paramsToAPI.fechaCorte,
         asesor: this.nombreAsesorSeleccionado,
       },
       data: dataForExcel,

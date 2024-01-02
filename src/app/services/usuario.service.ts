@@ -45,6 +45,7 @@ export class UsuarioService {
     if (params.agencia == '-1') {
       return of({ data: [] });
     }
+    debugger
     return this.genericService.postApiData<IUsuarioAgencia[]>({
       url: `${this.base_url}/usersByAgency`,
       body: params,

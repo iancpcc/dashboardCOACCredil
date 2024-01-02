@@ -30,16 +30,13 @@
 
 }
 
-/* .dt-buttons {
-  @apply my-1 absolute;
-} */
-.dt-button {
-  @apply  font-medium border bg-gray-100 border-gray-400 w-[60px] h-[30px] hover:bg-gray-200 p-1 rounded-sm;
-}
 .show_alert-bg {
  @apply !bg-secondary
 }
 
+.dt-button {
+  @apply  font-medium border bg-gray-100 border-gray-400 w-[60px] h-[30px] hover:bg-gray-200 p-1 rounded-sm;
+}
 
 /* DATATABLES */
 table thead th {
