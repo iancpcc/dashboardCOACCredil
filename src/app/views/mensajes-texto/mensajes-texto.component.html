@@ -41,23 +41,7 @@
 
       <div class="flex justify-center w-full">
         <ng-container *ngIf="reportState$" [ngSwitch]="reportState$.state">
-          <!-- <button
-            [disabled]="
-              !parametrosOk || reportState$.state == DataState.LOADING
-            "
-            type="submit"
-            (click)="onSubmit()"
-            class="disabled:bg-blue-500 truncate disabled:pointer-events-none disabled:opacity-50 w-40 flex justify-center bg-blue-700 text-white py-2 px-4 rounded-md disabled:cursor-not-allowed"
-          >
-            <app-spinner
-              *ngIf=" reportState$.state == DataState.LOADING"
-            ></app-spinner>
-            {{
-              reportState$.state == DataState.LOADING
-                ? "Generando .. "
-                : "Generar Reporte"
-            }}
-          </button> -->
+
           <app-boton-generar-reporte (click)="onSubmit()"
       [seValidaronCampos] = "parametrosOk()"
       [estadoReporte]="reportState$.state!"

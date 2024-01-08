@@ -2,6 +2,8 @@ import { CanActivate, RouterModule, Routes } from '@angular/router';
 
 import { AuthorizationPagesGuard } from 'src/app/guards/authorization-pages.guard';
 import { CartaPreferencialComponent } from './carta-preferencial/carta-preferencial.component';
+import { CreditosAdjudicadosComponent } from './creditos-adjudicados/creditos-adjudicados.component';
+import { CreditosAprobadosComponent } from './creditos-aprobados/creditos-aprobados.component';
 import { CumpleaniosClientesComponent } from './cumpleanios-clientes/cumpleanios-clientes.component';
 import { CuotasVencidasAgenciaComponent } from './cuotas-vencidas-agencia/cuotas-vencidas-agencia.component';
 import { CuotasVencidasComponent } from './cuotas-vencidas/cuotas-vencidas.component';
@@ -122,6 +124,27 @@ const homeRoutes = [
         canActivate:[AuthorizationPagesGuard],
         data: {
           roles: MENU_OPTIONS[5].roles
+        },
+      },
+      {
+        path: 'accesso-no-autorizado', //ENVIO DE MENSAJES
+        component: PageNoAuthorizedComponent,
+      },
+      // Administrativos 6
+      {
+        path: MENU_OPTIONS[6].submenu[0].route.replace('/',''),//SITUACION CREDITICIA
+        component: CreditosAdjudicadosComponent,
+        canActivate:[AuthorizationPagesGuard],
+        data: {
+          roles: MENU_OPTIONS[6].roles
+        },
+      },
+      {
+        path: MENU_OPTIONS[6].submenu[1].route.replace('/',''), //ENVIO DE MENSAJES
+        component: CreditosAprobadosComponent,
+        canActivate:[AuthorizationPagesGuard],
+        data: {
+          roles: MENU_OPTIONS[6].roles
         },
       },
       {

@@ -40,7 +40,6 @@ export class SelectorAgenciasComponent implements OnInit {
       map((response) => {
         if (response.success) {
 
-
             this.agencias = [...response.data!];
 
           if (response.data && response.data.length > 1) {

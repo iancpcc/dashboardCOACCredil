@@ -1,14 +1,12 @@
 import { AppStateEntity, DataState } from 'src/data/entities/app-state.entity';
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import {
   IUsuario,
   IUsuarioAgencia,
 } from 'src/app/interfaces/usuario-agencia.interface';
 import { Observable, Subject, catchError, map, of, startWith, tap } from 'rxjs';
 
-import { AgenciasService } from 'src/app/services/agencias.service';
 import { AlertService } from 'src/app/utils/alert.service';
-import { AuthService } from 'src/app/services/auth.service';
 import { CuotasVencidas } from 'src/app/interfaces/IReportes/cuotas-vencidas.interface';
 import { DataTableDirective } from 'angular-datatables';
 import { ExcelServiceService } from 'src/app/services/excel-service.service';
@@ -17,8 +15,6 @@ import { IAgencia } from 'src/app/interfaces/agencia.interface';
 import { NINGUN_ITEM_SELECCIONADO_CONFIG } from 'src/base/config/rutas-app';
 import { ReportService } from 'src/app/services/report.service';
 import { ResponseEntity } from 'src/data/entities/response.entity';
-import { Role } from 'src/app/interfaces/role.enum';
-import { UsuarioService } from 'src/app/services/usuario.service';
 import { excelDataCuotasVencidas } from 'src/app/interfaces/excelData.types';
 
 @Component({
@@ -134,10 +130,9 @@ export class CuotasVencidasComponent implements OnInit {
             }),
             startWith({ state: DataState.LOADING, data: [] }),
             catchError((error) => {
-              // if (!this.esPrimeraCarga) {
-                //Hago esta condicion para que no aparezca el error apenas se carga la página
+
                 this.alertSrv.showAlertError(error.message);
-              // }
+
               return of({ state: DataState.ERROR, error, data: [] });
             })
           )
@@ -170,6 +165,7 @@ export class CuotasVencidasComponent implements OnInit {
           title: this.titleColumns[3],
           data: 'coordenadas',
           render: function (data: any, type: any, row: any, meta: any) {
+            //Estoy creando un hipervinculo hacia googlemaps con las ubicaciones
             data =
               '<a class="underline" target="_blank" href="https://maps.google.com/?q=' +
               data +
@@ -292,18 +288,18 @@ export class CuotasVencidasComponent implements OnInit {
     });
     //Agregro los calculos en la ultima fila
     dataForExcel.push([
+      '', //1ra columna
       '',
       '',
       '',
-      '',
-      'Total',
+      'Total', //a partir de la 5ta columna muestro los calculos
       saldoTotal,
       saldoVencido,
       '',
       provision,
       '',
     ]);
-
+    //Cargo todos los parametros para enviar a contruir mi archivo en excel.
     let reportData: excelDataCuotasVencidas = {
       header: {
         title: 'CUOTAS VENCIDAS',
@@ -327,7 +323,7 @@ export class CuotasVencidasComponent implements OnInit {
 
   async reload() {
     let dt = await this.dtElement?.dtInstance;
-    dt?.ajax.reload();
+    dt?.ajax.reload(); //Actualizo el datatable
   }
 
   async onSubmit() {

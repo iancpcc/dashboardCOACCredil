@@ -115,4 +115,23 @@ export const MENU_OPTIONS = [
     { name: 'socios morosos (sms de texto)', route: '/morosos-mensajes' },
   ],
   },
+  {
+    name: 'administrativos',
+    icon: 'bx bxs-user-detail',
+    roles: [
+      Role.PROMOTOR_PRODUCTOS_SERVICIOS,
+      Role.ADMIN,
+      Role.GERENTE,
+      Role.ADMINISTRATIVO,
+      Role.OFICIAL_CUMPLIMIENTO,
+      Role.JEFE_OPERATIVO,
+      Role.ASISTENTE_OPERACIONES,
+      Role.ASISTENTE_DE_SERVICIO_AL_SOCIO
+    ],
+    active: true,
+    submenu: [
+    { name: 'créditos adjudicados', route: '/creditos-adjudicados' },
+    { name: 'créditos aprobados', route: '/creditos-aprobados' },
+  ],
+  },
 ];

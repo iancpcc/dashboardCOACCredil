@@ -14,6 +14,8 @@ import { NgModule } from '@angular/core';
 import { PageNoAuthorizedComponent } from './page-no-authorized/page-no-authorized.component';
 import { PlazoFijoComponent } from './vencimientos/proximos-vencimientos';
 import { SituacionCrediticiaComponent } from './situacion-crediticia/situacion-crediticia.component';
+import { CreditosAdjudicadosComponent } from './creditos-adjudicados/creditos-adjudicados.component';
+import { CreditosAprobadosComponent } from './creditos-aprobados/creditos-aprobados.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +27,9 @@ import { SituacionCrediticiaComponent } from './situacion-crediticia/situacion-c
     CuotasVencidasAgenciaComponent,
     PlazoFijoComponent,
     MensajesTextoComponent,
-    PageNoAuthorizedComponent
+    PageNoAuthorizedComponent,
+    CreditosAdjudicadosComponent,
+    CreditosAprobadosComponent
   ],
   imports: [
     ComponentsModule,

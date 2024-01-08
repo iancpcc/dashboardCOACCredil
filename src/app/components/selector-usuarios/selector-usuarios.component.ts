@@ -64,7 +64,7 @@ export class SelectorUsuariosComponent implements OnChanges {
   }
 
   obtenerUsuariosPorAgencia(codAgencia: string) {
-    // Aqui van los roles de los usuarios que quiero llamar desde la api
+    // Aqui van los roles de los usuarios que qquiero mostrar en el menu
     const roles = [Role.ASESOR_CAPTACIONES, Role.GESTOR_CREDITO,Role.GESTOR_DPF,Role.GESTOR_CAPTACIONES, Role.ASISTENTE_CREDITO, Role.JEFE_AGENCIA];
     const rolesId = roles.join(",");
     this.usuarios$ = this.usuarioSrv
@@ -97,9 +97,9 @@ export class SelectorUsuariosComponent implements OnChanges {
     );
 
     if (tienePermisos) {
-      return asesores;
+      return asesores; //Retorno todos los asesores
     }
-
+    //Caso contrario retorno solo su usuario
     return asesores.filter((user) => user.usuario == codigoUsuarioLogueado);
   }
 }

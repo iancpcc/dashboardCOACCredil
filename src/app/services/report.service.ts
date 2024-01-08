@@ -3,6 +3,8 @@ import { Observable, of } from 'rxjs';
 import { CuotasVencidas } from '../interfaces/IReportes/cuotas-vencidas.interface';
 import { GenericCRUDService } from 'src/data/helpers/generic-crud.service';
 import { HttpClient } from '@angular/common/http';
+import { ICreditosAdjudicados } from '../interfaces/IReportes/creditos-adjudicados';
+import { ICreditosAprobados } from '../interfaces/IReportes/creditos-aprobados';
 import { ICumpleaniosSocios } from '../interfaces/IReportes/cumpleanios-socios.interface';
 import { IDPFAperturados } from '../interfaces/IReportes/dpf-aperturados.interface';
 import { ISituacioCrediticia } from '../interfaces/IReportes/situacion-crediticia.interface';
@@ -78,11 +80,11 @@ export class ReportService {
     );
   };
 
-  // Este endpoint es de BLACKLEVEL para obtener el numero de socios en la banca
+  // Este endpoint es de BLACKLEVEL para obtener el numero de socios en la banca movil
   getSociosBanca$ = (): Observable<any> => {
     return this.httpClient.post<any>(
       'https://us-central1-credilenlinea.cloudfunctions.net/coopOnLine/app/getUsersExternal',
-      { uid: '7Uuw06pBYVMqwk9RYspKiRcodg42' }
+      { uid: '7Uuw06pBYVMqwk9RYspKiRcodg42' } //Este uuid es del Ing. Vinicio Lagua
     );
   };
 
@@ -97,6 +99,38 @@ export class ReportService {
 
     return this.genericCRUDService.getApiData<ICumpleaniosSocios[]>(
       `${this.base_url}/cumpleanios_por_dias?idAgencia=${params.idAgencia}&dias=${params.dias}`
+    );
+  };
+
+  getCreditosAdjudicados$ = (params: {
+    fechaInicio: string | null;
+    fechaFin: string | null;
+  }): Observable<ResponseEntity<ICreditosAdjudicados[]>> => {
+
+    const {fechaInicio, fechaFin} = params;
+
+    if (fechaInicio == null || fechaFin == null) {
+      return of({ data: [] });
+    }
+
+    return this.genericCRUDService.getApiData<ICreditosAdjudicados[]>(
+      `${this.base_url}/creditos_adjudicados?fechaInicio=${fechaInicio}&fechaFin=${fechaFin}`
+    );
+  };
+
+  getCreditosAprobados$ = (params: {
+    fechaInicio: string | null;
+    fechaFin: string | null;
+  }): Observable<ResponseEntity<ICreditosAprobados[]>> => {
+
+    const {fechaInicio, fechaFin} = params;
+
+    if (fechaInicio == null || fechaFin == null) {
+      return of({ data: [] });
+    }
+
+    return this.genericCRUDService.getApiData<ICreditosAprobados[]>(
+      `${this.base_url}/creditos_aprobados?fechaInicio=${fechaInicio}&fechaFin=${fechaFin}`
     );
   };
 

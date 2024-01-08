@@ -4,7 +4,6 @@ import {
   ElementRef,
   OnDestroy,
   ViewChild,
-  ViewChildren,
 } from '@angular/core';
 import { Subscription, catchError, map, of, startWith, tap } from 'rxjs';
 
@@ -38,7 +37,8 @@ export class CartaPreferencialComponent implements OnDestroy {
     telefonoJefe: null,
     telefonoAsesor: null,
   };
-  tabActual = 'tab1';
+
+  tabActual = 'tab1'; //muestra el tab de ingreso por numero de cliente
 
   clienteInfo = {
     cliente: null,
@@ -55,7 +55,6 @@ export class CartaPreferencialComponent implements OnDestroy {
   dataSubscription!: Subscription;
   readonly DataState = DataState;
   generatePDF() {
-    // const content = this.bodyPDF.nativeElement;
 
     const pdf = new jsPDF({
       orientation: 'portrait',
@@ -70,28 +69,10 @@ export class CartaPreferencialComponent implements OnDestroy {
       this.addPageToPDF(pdf, content2),
     ]).then(() => {
       // Guardar el PDF en un archivo
-      pdf.deletePage(3);
+      pdf.deletePage(3); //Borro la tercera pagina ya que se creaba en blanco
       pdf.save('carta-preferencial.pdf');
     });
 
-    // html2canvas(content, { scale: 2 }).then((canvas) => {
-    //   // Configurar el tamaño del PDF
-    //   console.log(canvas)
-    //   const imgData = canvas.toDataURL('image/png', 1.0);
-
-    //   // Añadir la imagen al PDF
-    //   pdf.addImage(
-    //     imgData,
-    //     'PNG',
-    //     0,
-    //     0,
-    //     pdf.internal.pageSize.getWidth(),
-    //     pdf.internal.pageSize.getHeight()
-    //   );
-    //   pdf.addFont('Arial', 'Helvetica', 'normal');
-    //   // Guardar el PDF en un archivo
-    //   pdf.save('carta-preferencial.pdf');
-    // });
   }
 
   addPageToPDF(pdf: jsPDF, content: any): Promise<void> {
@@ -159,13 +140,7 @@ export class CartaPreferencialComponent implements OnDestroy {
             asesor = 'SIN-ASESOR',
             identificacion,
           } = response.data!;
-          // this.socioInfo = {
-          //   nombre,
-          //   numero,
-          //   jefeagencia,
-          //   asesor,
-          //   identificacion,
-          // };
+
           this.socioInfo.nombre = nombre;
           this.socioInfo.numero = numero;
           this.socioInfo.jefeagencia = jefeagencia;

@@ -163,17 +163,23 @@ export class GeoreferenciacionComponent implements OnInit, OnDestroy {
   obtenerAgencias$(): Observable<AppStateEntity<IAgencia[]>> {
     return this.agenciaService.getAgenciesByUserLogged$().pipe(
       map((response) => {
+        if (response.success){
+          let agencias = [...response.data!];
+
         if (response.data && response.data.length > 1) {
-          let consolidado = response.data.map((ag) => ag.id);
+          let consolidado = agencias.map((ag) => ag.id);
           this.paramsToAPI.agenciasId = consolidado.toString()
 
-          response.data.push({
+          agencias.push({
             nombre: 'TODOS',
             id: consolidado.toString(),
           });
         }
+        return { state: DataState.LOADED, data: agencias };
+      }
+
         // this.listadoAgencias = response.data!;
-        return { state: DataState.LOADED, data: response.data };
+        return { state: DataState.LOADED, data: [] };
       }),
       startWith({ state: DataState.LOADING }),
       catchError((error) => {

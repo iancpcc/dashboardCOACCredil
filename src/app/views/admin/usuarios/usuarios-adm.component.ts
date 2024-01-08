@@ -21,6 +21,7 @@ import { IUsuario } from 'src/app/interfaces/usuario-agencia.interface';
 import { ResponseEntity } from 'src/data/entities/response.entity';
 import Swal from 'sweetalert2';
 import { UsuarioService } from 'src/app/services/usuario.service';
+import { data } from 'jquery';
 
 @Component({
   selector: 'app-usuarios-adm',
@@ -53,8 +54,8 @@ export class UsuariosAdmComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.obtenerUsuariosPorPagina(this.currentPageIndex);
     this.onSearchUser();
+    this.obtenerUsuariosPorPagina(this.currentPageIndex);
   }
 
   onSearchUser(): void {
@@ -62,10 +63,15 @@ export class UsuariosAdmComponent implements OnInit, OnDestroy {
       .pipe(
         debounceTime(1300), // Establece un retraso de 1300 ms
         distinctUntilChanged(), // Evita llamadas duplicadas para términos idénticos consecutivos
-        tap(termino => this.isPaginationInvisible =  termino.length > 0  ),
-        switchMap((term: string) => this.srvUsuarios.searchUsers$(term)),
-        map((res) => ({ state: DataState.LOADED, data: res.data! })),
-        startWith({ state: DataState.LOADING }),
+        tap((termino) => (this.isPaginationInvisible = termino.length > 0)),
+        switchMap((term: string) => {
+          console.log("entro")
+         return this.srvUsuarios.searchUsers$(term);
+        }),
+        map((res) => {
+          return { state: DataState.LOADED, data: res.data! };
+        }),
+        startWith({ state: DataState.LOADING}),
         catchError((err) => of({ state: DataState.ERROR, error: err }))
       )
       .subscribe((responseMapped: AppStateEntity<IUsuario[]>) => {
@@ -105,6 +111,7 @@ export class UsuariosAdmComponent implements OnInit, OnDestroy {
       )
       .subscribe((response: AppStateEntity<IUsuario[]>) => {
         this.usuariosState = response;
+        // console.log("Entro..", this.usuariosState)
         if (response.state == DataState.ERROR) {
           this.srvAlert.showAlertError(response.error?.message!);
         }

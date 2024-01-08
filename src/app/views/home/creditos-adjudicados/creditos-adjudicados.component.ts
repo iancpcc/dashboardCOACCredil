@@ -5,27 +5,34 @@ import { Observable, Subject, catchError, map, of, startWith } from 'rxjs';
 import { AgenciasService } from 'src/app/services/agencias.service';
 import { AlertService } from 'src/app/utils/alert.service';
 import { DataTableDirective } from 'angular-datatables';
+import { HelpersService } from 'src/app/utils/helpers.service';
 import { IAgencia } from 'src/app/interfaces/agencia.interface';
-import { ICumpleaniosSocios } from 'src/app/interfaces/IReportes/cumpleanios-socios.interface';
+import { ICreditosAdjudicados } from 'src/app/interfaces/IReportes/creditos-adjudicados';
+import { ISituacioCrediticia } from 'src/app/interfaces/IReportes/situacion-crediticia.interface';
 import { IUsuarioAgencia } from 'src/app/interfaces/usuario-agencia.interface';
 import { NINGUN_ITEM_SELECCIONADO_CONFIG } from 'src/base/config/rutas-app';
 import { ReportService } from 'src/app/services/report.service';
 import { ResponseEntity } from 'src/data/entities/response.entity';
 
 @Component({
-  selector: 'app-cumpleanios-clientes',
-  templateUrl: './cumpleanios-clientes.component.html',
-  styleUrls: ['./cumpleanios-clientes.component.css'],
+  selector: 'app-creditos-adjudicados',
+  templateUrl: './creditos-adjudicados.component.html',
+  styleUrls: ['./creditos-adjudicados.component.css']
 })
-export class CumpleaniosClientesComponent {
+export class CreditosAdjudicadosComponent {
   @ViewChild(DataTableDirective, { static: false })
   dtElement: DataTableDirective | undefined;
-  NINGUN_ITEM_SELECCIONADO_ID = NINGUN_ITEM_SELECCIONADO_CONFIG;
-  // usuarios$: IUsuarioAgencia[] = [];
-  readonly DataState = DataState;
-  paramsToAPI = { idAgencia: this.NINGUN_ITEM_SELECCIONADO_ID , dias: 0 };
 
-  reportState$: AppStateEntity<ICumpleaniosSocios[]> = {};
+  NINGUN_ITEM_SELECCIONADO_ID = NINGUN_ITEM_SELECCIONADO_CONFIG;
+
+  readonly DataState = DataState;
+  paramsToAPI = {
+    fechaInicio: null,
+    fechaFin: null,
+  };
+
+  reportState$: AppStateEntity<any[]> = {};
+  // isFirstCallAjax: boolean = true;
   dtOptions: any = {};
   dtTrigger = new Subject<any>();
   usuarios$!: Observable<ResponseEntity<IUsuarioAgencia[]>>;
@@ -33,6 +40,7 @@ export class CumpleaniosClientesComponent {
 
   constructor(
     private reportSrv: ReportService,
+    private utilSrv: HelpersService,
     private alertSrv: AlertService
   ) {}
 
@@ -48,21 +56,21 @@ export class CumpleaniosClientesComponent {
       responsive: true,
       ajax: ({}, callback: any) => {
         this.reportSrv
-          .getCumpleaniosSocios$({ ...this.paramsToAPI })
+          .getCreditosAdjudicados$(this.paramsToAPI)
           .pipe(
             map((response) => {
               return { state: DataState.LOADED, data: response.data };
             }),
             startWith({ state: DataState.LOADING, data: [] }),
             catchError((error) => {
-                //Hago esta condicion para que no aparezca el error apenas se carga la página
+              // if (!this.isFirstCallAjax){ //Hago esta condicion para que no aparezca el error apenas se carga la página
               this.alertSrv.showAlertError(error.message);
+              // }
               return of({ state: DataState.ERROR, error, data: [] });
             })
           )
-          .subscribe((resp: AppStateEntity<ICumpleaniosSocios[]>) => {
+          .subscribe((resp: AppStateEntity<ICreditosAdjudicados[]>) => {
             this.reportState$ = resp;
-              // this.reportState$.state = undefined;
             callback({
               recordsTotal: resp.data?.length,
               recordsFiltered: resp.data?.length,
@@ -74,50 +82,45 @@ export class CumpleaniosClientesComponent {
       },
       columns: [
         {
-          title: 'Numero',
-          data: 'numero',
+          title: 'Agencia',
+          data: 'agencia',
         },
         {
-          title: 'Nombre',
-          data: 'nombre',
+          title: 'Identificación',
+          data: 'identificacion',
+        },
+        {
+          title: 'Cliente',
+          data: 'cliente',
+        },
+        {
+          title: 'Fecha Adjudicación',
+          data: 'fechaadjudicacion',
+        },
+        {
+          title: 'Cuotas',
+          data: 'cuotas',
+        },
+        {
+          title: 'Fecha Vencimiento',
+          data: 'fechavencimiento',
         },
         {
           title: 'Fecha Nacimiento',
           data: 'fechanacimiento',
         },
         {
-          title: 'Dirección',
-          data: 'direccion',
-        },
-        {
-          title: 'Telefonos',
+          title: 'Teléfonos',
           data: 'telefonos',
         },
-        {
-          title: 'Agencia',
-          data: 'agencia',
-        },
-        {
-          title: 'Asesor',
-          data: 'asesor',
-        },
-        {
-          title: 'Edad',
-          data: 'edad',
-        },
-        {
-          title: 'Dias',
-          data: 'dias',
-        },
+
       ],
       dom: 'Bfrtip',
       buttons: ['copy', 'print', 'excel', 'pdf'],
     };
   }
 
-  agenciaSeleccionada(event: any) {
-    this.paramsToAPI.idAgencia = event.codigo;
-  }
+
 
   async reload() {
     let dt = await this.dtElement?.dtInstance;
@@ -125,9 +128,11 @@ export class CumpleaniosClientesComponent {
   }
 
   async onSubmit() {
+    // this.isFirstCallAjax = false;
     await this.reload();
   }
 
   parametrosOk = (): boolean =>
-    this.paramsToAPI.idAgencia != this.NINGUN_ITEM_SELECCIONADO_ID  && this.paramsToAPI.dias >= 0;
+    this.paramsToAPI.fechaInicio !=null && this.paramsToAPI.fechaFin!= null;
+
 }
