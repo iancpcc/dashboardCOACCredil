@@ -63,9 +63,7 @@ export class CreditosAprobadosComponent {
             }),
             startWith({ state: DataState.LOADING, data: [] }),
             catchError((error) => {
-              // if (!this.isFirstCallAjax){ //Hago esta condicion para que no aparezca el error apenas se carga la página
               this.alertSrv.showAlertError(error.message);
-              // }
               return of({ state: DataState.ERROR, error, data: [] });
             })
           )

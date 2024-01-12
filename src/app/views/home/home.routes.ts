@@ -1,22 +1,20 @@
-import { CanActivate, RouterModule, Routes } from '@angular/router';
-
 import { AuthorizationPagesGuard } from 'src/app/guards/authorization-pages.guard';
 import { CartaPreferencialComponent } from './carta-preferencial/carta-preferencial.component';
 import { CreditosAdjudicadosComponent } from './creditos-adjudicados/creditos-adjudicados.component';
 import { CreditosAprobadosComponent } from './creditos-aprobados/creditos-aprobados.component';
 import { CumpleaniosClientesComponent } from './cumpleanios-clientes/cumpleanios-clientes.component';
-import { CuotasVencidasAgenciaComponent } from './cuotas-vencidas-agencia/cuotas-vencidas-agencia.component';
 import { CuotasVencidasComponent } from './cuotas-vencidas/cuotas-vencidas.component';
 import { DashboardPageComponent } from './panel-principal/dashboard-page.component';
 import { GeoreferenciacionComponent } from './georeferenciacion/georeferenciacion.component';
 import { HomeComponent } from './home.component';
 import { MENU_OPTIONS } from 'src/base/config/rutas-app';
 import { MensajesTextoComponent } from '../mensajes-texto/mensajes-texto.component';
+import { ModulosAccesoComponent } from '../admin/modulos-acceso/modulos-acceso.component';
 import { NgModule } from '@angular/core';
 import { PageNoAuthorizedComponent } from './page-no-authorized/page-no-authorized.component';
 import { PageNotFoundComponentComponent } from '../page-not-found-component/page-not-found-component.component';
 import { PlazoFijoComponent } from './vencimientos/proximos-vencimientos';
-import { Role } from 'src/app/interfaces/role.enum';
+import { RouterModule } from '@angular/router';
 import { SatisfaccionClienteComponent } from './satisfaccion-cliente/satisfaccion-cliente.component';
 import { SituacionCrediticiaComponent } from './situacion-crediticia/situacion-crediticia.component';
 import { UsuariosAdmComponent } from '../admin/usuarios/usuarios-adm.component';
@@ -37,8 +35,16 @@ const homeRoutes = [
       },
       //Modulo de Adminitracion
       {
-        path: MENU_OPTIONS[0].submenu[0].route.replace("/",""),
+        path: MENU_OPTIONS[0].submenu[0].route.replace("/",""), // USUARIOS
         component: UsuariosAdmComponent,
+        canActivate:[AuthorizationPagesGuard],
+        data: {
+          roles: MENU_OPTIONS[0].roles
+        },
+      },
+      {
+        path: MENU_OPTIONS[0].submenu[1].route.replace("/",""), //MODULOS ACCESO
+        component: ModulosAccesoComponent,
         canActivate:[AuthorizationPagesGuard],
         data: {
           roles: MENU_OPTIONS[0].roles
@@ -47,7 +53,7 @@ const homeRoutes = [
 
       //MODULO GERENCIA 1
       {
-        path: MENU_OPTIONS[1].submenu[0].route.replace('/',''),
+        path: MENU_OPTIONS[1].submenu[0].route.replace('/',''), //MOROSIDAD
         component: GeoreferenciacionComponent,
         canActivate:[AuthorizationPagesGuard],
         data: {
@@ -55,7 +61,7 @@ const homeRoutes = [
         },
       },
       {
-        path: MENU_OPTIONS[1].submenu[1].route.replace('/',''),
+        path: MENU_OPTIONS[1].submenu[1].route.replace('/',''), //SATISFACCION CLIENTE
         component: SatisfaccionClienteComponent,
         canActivate:[AuthorizationPagesGuard],
         data: {

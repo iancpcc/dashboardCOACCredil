@@ -13,7 +13,7 @@ export const MENU_OPTIONS = [
     submenu: [
       // { name: 'usuarios', route: '/usuarios' },
       { name: 'usuarios', route: '/usuarios-adm' },
-      // { name: 'permisos', route: '/permisos' },
+      { name: 'modulos acceso', route: '/modulos-adm' },
     ],
   },
   {
@@ -43,6 +43,8 @@ export const MENU_OPTIONS = [
       Role.ADMIN,
       Role.ADMINISTRATIVO,
       Role.OFICIAL_CUMPLIMIENTO,
+      Role.COORDINADOR_TECNOLOGIA,
+      Role.ASISTENTE_TECNOLOGIA,
       Role.GESTOR_DPF,
       Role.JEFE_AGENCIA,
       Role.JEFE_NEGOCIOS
@@ -64,6 +66,8 @@ export const MENU_OPTIONS = [
       Role.JEFE_OPERATIVO,
       Role.ASISTENTE_OPERACIONES,
       Role.GESTOR_DPF,
+      Role.COORDINADOR_TECNOLOGIA,
+      Role.ASISTENTE_TECNOLOGIA
     ],
     active: true,
     submenu: [
@@ -86,12 +90,13 @@ export const MENU_OPTIONS = [
       Role.JEFE_NEGOCIOS,
       Role.ASISTENTE_CREDITO,
       Role.ASESOR_CAPTACIONES,
+      Role.COORDINADOR_TECNOLOGIA,
+      Role.ASISTENTE_TECNOLOGIA
     ],
     active: true,
     submenu: [
     { name: 'cuotas vencidas', route: '/cuotas-vencidas' },
     { name: 'carta preferencial', route: '/carta-preferencial' },
-
     // { name: 'cuotas vencidas por agencia', route: '/cuotas-agencia' },
   ],
   },
@@ -107,7 +112,9 @@ export const MENU_OPTIONS = [
       Role.OFICIAL_CUMPLIMIENTO,
       Role.JEFE_OPERATIVO,
       Role.ASISTENTE_OPERACIONES,
-      Role.ASISTENTE_DE_SERVICIO_AL_SOCIO
+      Role.ASISTENTE_DE_SERVICIO_AL_SOCIO,
+      Role.COORDINADOR_TECNOLOGIA,
+      Role.ASISTENTE_TECNOLOGIA
     ],
     active: true,
     submenu: [
@@ -125,8 +132,11 @@ export const MENU_OPTIONS = [
       Role.ADMINISTRATIVO,
       Role.OFICIAL_CUMPLIMIENTO,
       Role.JEFE_OPERATIVO,
+      Role.JEFE_NEGOCIOS,
       Role.ASISTENTE_OPERACIONES,
-      Role.ASISTENTE_DE_SERVICIO_AL_SOCIO
+      Role.ASISTENTE_DE_SERVICIO_AL_SOCIO,
+      Role.COORDINADOR_TECNOLOGIA,
+      Role.ASISTENTE_TECNOLOGIA
     ],
     active: true,
     submenu: [

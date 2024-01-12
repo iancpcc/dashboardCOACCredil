@@ -94,12 +94,12 @@ export class CreditosAdjudicadosComponent {
           data: 'cliente',
         },
         {
-          title: 'Fecha Adjudicación',
-          data: 'fechaadjudicacion',
-        },
-        {
           title: 'Cuotas',
           data: 'cuotas',
+        },
+        {
+          title: 'Fecha Adjudicación',
+          data: 'fechaadjudicacion',
         },
         {
           title: 'Fecha Vencimiento',
